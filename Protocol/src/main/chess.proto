@@ -1,0 +1,93 @@
+syntax = "proto2";
+
+package chess;
+
+option java_package = "com.gilran.chess";
+option java_outer_classname = "Proto";
+
+enum Status {
+	OK = 0;
+	INVALID_REQUEST = 1;
+  INVALID_OR_EXPIRED_SESSION_TOKEN = 2;
+  INVALID_GAME_ID = 3;
+  INVALID_MOVE = 4;
+  NOT_YOUR_TURN = 5;
+  ILLEGAL_MOVE = 6;
+}
+
+// The position status.
+enum GameStatus {
+  // The game is going on and it is white's turn.
+  WHITE_TO_MOVE = 0;
+  // The game is going on and it is black's turn.
+  BLACK_TO_MOVE = 1;
+  // The game is going on and it is white's turn; and white is checked.
+  WHITE_CHECKED = 2;
+  // The game is going on and it is black's turn; and black is checked.
+  BLACK_CHECKED = 3;
+  // Black was checkmated - white won.
+  BLACK_CHECKMATED = 4;
+  // Black resigned - white won.
+  BLACK_RESIGNED = 5;
+  // Black's time ran out - white won.
+  BLACK_CLOCK_EXPIRED = 6;
+  // White was checkmated - black won.
+  WHITE_CHECKMATED = 7;
+  // White resigned - black won.
+  WHITE_RESIGNED = 8;
+  // White's time ran out - black won.
+  WHITE_CLOCK_EXPIRED = 9;
+  // Black was stalemated - draw.
+  BLACK_STALEMATED = 10;
+  // White was stalemated - draw.
+  WHITE_STALEMATED = 11;
+  // Insufficient mating material - draw.
+  INSUFFICIENT_MATERIAL = 12;
+  // Halfmoves clock expired - draw.
+  HALFMOVE_CLOCK_EXPIRED = 13;
+  // Threefold repetition - draw.
+  THREEFOLD_REPETITION = 14;
+  // The players agreed to draw.
+  DRAW_BY_AGREEMENT = 15;
+}
+
+// An error response.
+// This message can be used instead of any other message that has a Status
+// field, and all other fields are optional (all responses should comply).
+message ErrorResponse {
+  optional Status status = 1;
+}
+
+message LoginRequest {
+	required string username = 1;
+}
+message LoginResponse {
+	optional Status status = 1;
+	optional string session_token = 2;
+}
+
+message SeekRequest {
+  required string session_token = 1;
+}
+message SeekResponse {
+  optional Status status = 1;
+  optional string game_id = 2;
+  optional string white = 3;
+  optional string black = 4;
+}
+
+message MoveProto {
+	required string from = 3;
+  required string to = 4;
+}
+
+message MoveRequest {
+  required string session_token = 1;
+  required string game_id = 2;
+  required MoveProto move = 3;
+}
+message MoveResponse {
+  optional Status status = 1;
+	optional GameStatus game_status = 2;
+  repeated MoveProto move = 3;
+}
