@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Chess Client</string>
+    <string name="action_settings">Settings</string>
+    <string name="uesrname">Username:</string>
+    <string name="seek">Seek</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="square_background">Square background</string>
+    <string name="piece_image">Piece image</string>
+    <string name="player_name_placeholder">Player</string>
+
+</resources>
