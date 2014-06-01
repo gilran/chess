@@ -1,7 +1,5 @@
 package com.gilran.chess.android;
 
-import com.gilran.chess.R;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;

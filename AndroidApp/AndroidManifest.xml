@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gilran.chess"
+    package="com.gilran.chess.android"
     android:versionCode="1"
-    android:versionName="1.0-SNAPSHOT" >
+    android:versionName="0.0.1-SNAPSHOT" >
 
     <uses-sdk
-        android:minSdkVersion="10"
+        android:minSdkVersion="11"
         android:targetSdkVersion="19" />
 
     <application

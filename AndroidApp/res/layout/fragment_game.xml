@@ -15,17 +15,6 @@
         android:text="@string/player_name_placeholder"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <android.support.v7.widget.GridLayout
-        android:id="@+id/board"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:verticalSpacing="5dp"
-    		android:horizontalSpacing="20dp"
-    		android:stretchMode="columnWidth"
-    		android:gravity="center_horizontal"
-        android:numColumns="8">
-    </android.support.v7.widget.GridLayout>
-
     <TextView
         style="@style/BoardLayout"
         android:id="@+id/player2"

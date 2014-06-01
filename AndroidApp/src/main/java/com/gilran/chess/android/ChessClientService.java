@@ -8,9 +8,12 @@ import android.os.Binder;
 import android.os.IBinder;
 
 public class ChessClientService extends Service {
-	// Binder given to clients
+	private static String EXTRA_USERNAME = "com.gilran.chess.android.username";
+	
+	// Binder given to clients.
   private final IBinder binder = new LocalBinder();
   
+  // The client itself.
   private Client client;
   
   /**
@@ -26,7 +29,8 @@ public class ChessClientService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		//client = new Client(baseUrl, username);
+		String username = (String) intent.getExtras().get(EXTRA_USERNAME);
+		client = new Client("http://localhost:8080/Server/chess/", username);
 		return binder;
 	}
 
