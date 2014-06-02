@@ -1,5 +1,8 @@
 package com.gilran.chess.server;
 
+import com.gilran.chess.board.Coordinate;
+import com.gilran.chess.board.Move;
+import com.gilran.chess.board.Piece.Color;
 import com.gilran.chess.board.Position;
 import com.gilran.chess.Proto.*;
 import com.google.common.collect.ArrayListMultimap;
@@ -60,5 +63,44 @@ public class Game {
   		return;
   	}
   	callback.run(events.subList(minEvent, events.size()));
+  }
+  
+  public Status move(Color playerColor, String from, String to) {
+  	Coordinate fromCoordinate = Coordinate.get(from);
+    Coordinate toCoordinate = Coordinate.get(to);
+    if (from == null || to == null)
+    	return Status.INVALID_MOVE;
+  	if (position.getActivePlayer() != playerColor)
+    	return Status.NOT_YOUR_TURN;
+    List<Move> moves = position.move(fromCoordinate, toCoordinate);
+    if (moves.isEmpty())
+    	return Status.ILLEGAL_MOVE;
+    
+    GameEvent.Builder eventBuilder = GameEvent.newBuilder();
+    eventBuilder.setType(GameEvent.Type.MOVE_MADE);
+    eventBuilder.setStatus(position.getStatus());
+    for (Move move : moves) {
+    	eventBuilder.addMove(MoveProto.newBuilder()
+    			.setFrom(move.getFrom().name())
+    			.setTo(move.getTo().name()));
+    }
+    addEvent(eventBuilder);
+    
+    switch (position.getStatus()) {
+      case BLACK_CHECKMATED:
+      case BLACK_STALEMATED:
+      case WHITE_CHECKMATED:
+      case WHITE_STALEMATED:
+      case HALFMOVE_CLOCK_EXPIRED:
+      case INSUFFICIENT_MATERIAL:
+      case THREEFOLD_REPETITION:
+      	addEvent(GameEvent.newBuilder()
+      			.setType(GameEvent.Type.GAME_ENDED)
+      			.setStatus(position.getStatus()));
+    	default:
+    		break;
+    }
+    
+  	return Status.OK;
   }
 }

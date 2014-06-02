@@ -3521,11 +3521,6 @@ public final class Proto {
     // optional .chess.Status status = 1;
     boolean hasStatus();
     com.gilran.chess.Proto.Status getStatus();
-    
-    // optional .chess.GameEvent event = 2;
-    boolean hasEvent();
-    com.gilran.chess.Proto.GameEvent getEvent();
-    com.gilran.chess.Proto.GameEventOrBuilder getEventOrBuilder();
   }
   public static final class MoveResponse extends
       com.google.protobuf.GeneratedMessage
@@ -3566,34 +3561,14 @@ public final class Proto {
       return status_;
     }
     
-    // optional .chess.GameEvent event = 2;
-    public static final int EVENT_FIELD_NUMBER = 2;
-    private com.gilran.chess.Proto.GameEvent event_;
-    public boolean hasEvent() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    public com.gilran.chess.Proto.GameEvent getEvent() {
-      return event_;
-    }
-    public com.gilran.chess.Proto.GameEventOrBuilder getEventOrBuilder() {
-      return event_;
-    }
-    
     private void initFields() {
       status_ = com.gilran.chess.Proto.Status.OK;
-      event_ = com.gilran.chess.Proto.GameEvent.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
-      if (hasEvent()) {
-        if (!getEvent().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -3603,9 +3578,6 @@ public final class Proto {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeEnum(1, status_.getNumber());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(2, event_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -3619,10 +3591,6 @@ public final class Proto {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, status_.getNumber());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, event_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -3740,7 +3708,6 @@ public final class Proto {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getEventFieldBuilder();
         }
       }
       private static Builder create() {
@@ -3751,12 +3718,6 @@ public final class Proto {
         super.clear();
         status_ = com.gilran.chess.Proto.Status.OK;
         bitField0_ = (bitField0_ & ~0x00000001);
-        if (eventBuilder_ == null) {
-          event_ = com.gilran.chess.Proto.GameEvent.getDefaultInstance();
-        } else {
-          eventBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
       
@@ -3799,14 +3760,6 @@ public final class Proto {
           to_bitField0_ |= 0x00000001;
         }
         result.status_ = status_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        if (eventBuilder_ == null) {
-          result.event_ = event_;
-        } else {
-          result.event_ = eventBuilder_.build();
-        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3826,20 +3779,11 @@ public final class Proto {
         if (other.hasStatus()) {
           setStatus(other.getStatus());
         }
-        if (other.hasEvent()) {
-          mergeEvent(other.getEvent());
-        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
       
       public final boolean isInitialized() {
-        if (hasEvent()) {
-          if (!getEvent().isInitialized()) {
-            
-            return false;
-          }
-        }
         return true;
       }
       
@@ -3877,15 +3821,6 @@ public final class Proto {
               }
               break;
             }
-            case 18: {
-              com.gilran.chess.Proto.GameEvent.Builder subBuilder = com.gilran.chess.Proto.GameEvent.newBuilder();
-              if (hasEvent()) {
-                subBuilder.mergeFrom(getEvent());
-              }
-              input.readMessage(subBuilder, extensionRegistry);
-              setEvent(subBuilder.buildPartial());
-              break;
-            }
           }
         }
       }
@@ -3914,96 +3849,6 @@ public final class Proto {
         status_ = com.gilran.chess.Proto.Status.OK;
         onChanged();
         return this;
-      }
-      
-      // optional .chess.GameEvent event = 2;
-      private com.gilran.chess.Proto.GameEvent event_ = com.gilran.chess.Proto.GameEvent.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.gilran.chess.Proto.GameEvent, com.gilran.chess.Proto.GameEvent.Builder, com.gilran.chess.Proto.GameEventOrBuilder> eventBuilder_;
-      public boolean hasEvent() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public com.gilran.chess.Proto.GameEvent getEvent() {
-        if (eventBuilder_ == null) {
-          return event_;
-        } else {
-          return eventBuilder_.getMessage();
-        }
-      }
-      public Builder setEvent(com.gilran.chess.Proto.GameEvent value) {
-        if (eventBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          event_ = value;
-          onChanged();
-        } else {
-          eventBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      public Builder setEvent(
-          com.gilran.chess.Proto.GameEvent.Builder builderForValue) {
-        if (eventBuilder_ == null) {
-          event_ = builderForValue.build();
-          onChanged();
-        } else {
-          eventBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      public Builder mergeEvent(com.gilran.chess.Proto.GameEvent value) {
-        if (eventBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              event_ != com.gilran.chess.Proto.GameEvent.getDefaultInstance()) {
-            event_ =
-              com.gilran.chess.Proto.GameEvent.newBuilder(event_).mergeFrom(value).buildPartial();
-          } else {
-            event_ = value;
-          }
-          onChanged();
-        } else {
-          eventBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      public Builder clearEvent() {
-        if (eventBuilder_ == null) {
-          event_ = com.gilran.chess.Proto.GameEvent.getDefaultInstance();
-          onChanged();
-        } else {
-          eventBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-      public com.gilran.chess.Proto.GameEvent.Builder getEventBuilder() {
-        bitField0_ |= 0x00000002;
-        onChanged();
-        return getEventFieldBuilder().getBuilder();
-      }
-      public com.gilran.chess.Proto.GameEventOrBuilder getEventOrBuilder() {
-        if (eventBuilder_ != null) {
-          return eventBuilder_.getMessageOrBuilder();
-        } else {
-          return event_;
-        }
-      }
-      private com.google.protobuf.SingleFieldBuilder<
-          com.gilran.chess.Proto.GameEvent, com.gilran.chess.Proto.GameEvent.Builder, com.gilran.chess.Proto.GameEventOrBuilder> 
-          getEventFieldBuilder() {
-        if (eventBuilder_ == null) {
-          eventBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.gilran.chess.Proto.GameEvent, com.gilran.chess.Proto.GameEvent.Builder, com.gilran.chess.Proto.GameEventOrBuilder>(
-                  event_,
-                  getParentForChildren(),
-                  isClean());
-          event_ = null;
-        }
-        return eventBuilder_;
       }
       
       // @@protoc_insertion_point(builder_scope:chess.MoveResponse)
@@ -6127,33 +5972,32 @@ public final class Proto {
       "hite\030\003 \001(\t\022\r\n\005black\030\004 \001(\t\"%\n\tMoveProto\022\014" +
       "\n\004from\030\003 \002(\t\022\n\n\002to\030\004 \002(\t\"U\n\013MoveRequest\022" +
       "\025\n\rsession_token\030\001 \002(\t\022\017\n\007game_id\030\002 \002(\t\022",
-      "\036\n\004move\030\003 \002(\0132\020.chess.MoveProto\"N\n\014MoveR" +
+      "\036\n\004move\030\003 \002(\0132\020.chess.MoveProto\"-\n\014MoveR" +
+      "esponse\022\035\n\006status\030\001 \001(\0162\r.chess.Status\"\341" +
+      "\001\n\tGameEvent\022\025\n\rserial_number\030\001 \002(\005\022#\n\004t" +
+      "ype\030\002 \002(\0162\025.chess.GameEvent.Type\022!\n\006stat" +
+      "us\030\003 \002(\0162\021.chess.GameStatus\022\036\n\004move\030\004 \003(" +
+      "\0132\020.chess.MoveProto\"U\n\004Type\022\r\n\tMOVE_MADE" +
+      "\020\000\022\016\n\nGAME_ENDED\020\001\022\026\n\022WHITE_OFFERED_DRAW" +
+      "\020\002\022\026\n\022BLACK_OFFERED_DRAW\020\003\"Q\n\rEventsRequ" +
+      "est\022\025\n\rsession_token\030\001 \002(\t\022\017\n\007game_id\030\002 " +
+      "\002(\t\022\030\n\020min_event_number\030\003 \002(\005\"P\n\016EventsR",
       "esponse\022\035\n\006status\030\001 \001(\0162\r.chess.Status\022\037" +
-      "\n\005event\030\002 \001(\0132\020.chess.GameEvent\"\341\001\n\tGame" +
-      "Event\022\025\n\rserial_number\030\001 \002(\005\022#\n\004type\030\002 \002" +
-      "(\0162\025.chess.GameEvent.Type\022!\n\006status\030\003 \002(" +
-      "\0162\021.chess.GameStatus\022\036\n\004move\030\004 \003(\0132\020.che" +
-      "ss.MoveProto\"U\n\004Type\022\r\n\tMOVE_MADE\020\000\022\016\n\nG" +
-      "AME_ENDED\020\001\022\026\n\022WHITE_OFFERED_DRAW\020\002\022\026\n\022B" +
-      "LACK_OFFERED_DRAW\020\003\"Q\n\rEventsRequest\022\025\n\r" +
-      "session_token\030\001 \002(\t\022\017\n\007game_id\030\002 \002(\t\022\030\n\020",
-      "min_event_number\030\003 \002(\005\"P\n\016EventsResponse" +
-      "\022\035\n\006status\030\001 \001(\0162\r.chess.Status\022\037\n\005event" +
-      "\030\002 \003(\0132\020.chess.GameEvent*\227\001\n\006Status\022\006\n\002O" +
-      "K\020\000\022\023\n\017INVALID_REQUEST\020\001\022$\n INVALID_OR_E" +
-      "XPIRED_SESSION_TOKEN\020\002\022\023\n\017INVALID_GAME_I" +
-      "D\020\003\022\020\n\014INVALID_MOVE\020\004\022\021\n\rNOT_YOUR_TURN\020\005" +
-      "\022\020\n\014ILLEGAL_MOVE\020\006*\362\002\n\nGameStatus\022\021\n\rWHI" +
-      "TE_TO_MOVE\020\000\022\021\n\rBLACK_TO_MOVE\020\001\022\021\n\rWHITE" +
-      "_CHECKED\020\002\022\021\n\rBLACK_CHECKED\020\003\022\024\n\020BLACK_C" +
-      "HECKMATED\020\004\022\022\n\016BLACK_RESIGNED\020\005\022\027\n\023BLACK",
-      "_CLOCK_EXPIRED\020\006\022\024\n\020WHITE_CHECKMATED\020\007\022\022" +
-      "\n\016WHITE_RESIGNED\020\010\022\027\n\023WHITE_CLOCK_EXPIRE" +
-      "D\020\t\022\024\n\020BLACK_STALEMATED\020\n\022\024\n\020WHITE_STALE" +
-      "MATED\020\013\022\031\n\025INSUFFICIENT_MATERIAL\020\014\022\032\n\026HA" +
-      "LFMOVE_CLOCK_EXPIRED\020\r\022\030\n\024THREEFOLD_REPE" +
-      "TITION\020\016\022\025\n\021DRAW_BY_AGREEMENT\020\017B\031\n\020com.g" +
-      "ilran.chessB\005Proto"
+      "\n\005event\030\002 \003(\0132\020.chess.GameEvent*\227\001\n\006Stat" +
+      "us\022\006\n\002OK\020\000\022\023\n\017INVALID_REQUEST\020\001\022$\n INVAL" +
+      "ID_OR_EXPIRED_SESSION_TOKEN\020\002\022\023\n\017INVALID" +
+      "_GAME_ID\020\003\022\020\n\014INVALID_MOVE\020\004\022\021\n\rNOT_YOUR" +
+      "_TURN\020\005\022\020\n\014ILLEGAL_MOVE\020\006*\362\002\n\nGameStatus" +
+      "\022\021\n\rWHITE_TO_MOVE\020\000\022\021\n\rBLACK_TO_MOVE\020\001\022\021" +
+      "\n\rWHITE_CHECKED\020\002\022\021\n\rBLACK_CHECKED\020\003\022\024\n\020" +
+      "BLACK_CHECKMATED\020\004\022\022\n\016BLACK_RESIGNED\020\005\022\027" +
+      "\n\023BLACK_CLOCK_EXPIRED\020\006\022\024\n\020WHITE_CHECKMA",
+      "TED\020\007\022\022\n\016WHITE_RESIGNED\020\010\022\027\n\023WHITE_CLOCK" +
+      "_EXPIRED\020\t\022\024\n\020BLACK_STALEMATED\020\n\022\024\n\020WHIT" +
+      "E_STALEMATED\020\013\022\031\n\025INSUFFICIENT_MATERIAL\020" +
+      "\014\022\032\n\026HALFMOVE_CLOCK_EXPIRED\020\r\022\030\n\024THREEFO" +
+      "LD_REPETITION\020\016\022\025\n\021DRAW_BY_AGREEMENT\020\017B\031" +
+      "\n\020com.gilran.chessB\005Proto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -6221,7 +6065,7 @@ public final class Proto {
           internal_static_chess_MoveResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_chess_MoveResponse_descriptor,
-              new java.lang.String[] { "Status", "Event", },
+              new java.lang.String[] { "Status", },
               com.gilran.chess.Proto.MoveResponse.class,
               com.gilran.chess.Proto.MoveResponse.Builder.class);
           internal_static_chess_GameEvent_descriptor =

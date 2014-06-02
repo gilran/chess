@@ -118,33 +118,12 @@ public class ServiceImpl {
     Game game = session.getGame(request.getGameId());
     if (game == null)
       return Status.INVALID_GAME_ID;
-
-    Coordinate from = Coordinate.get(request.getMove().getFrom());
-    Coordinate to = Coordinate.get(request.getMove().getTo());
-    if (from == null || to == null)
-    	return Status.INVALID_MOVE;
     
     Color playerColor = session.getUsername() == game.getWhitePlayer()
     		? Color.WHITE : Color.BLACK;
-    Position position = game.getPosition();
-    if (position.getActivePlayer() != playerColor)
-    	return Status.NOT_YOUR_TURN;
-    
-    List<Move> moves = position.move(from, to);
-    if (moves.isEmpty())
-    	return Status.ILLEGAL_MOVE;
-    
-    GameEvent.Builder eventBuilder = GameEvent.newBuilder();
-    eventBuilder.setType(GameEvent.Type.MOVE_MADE);
-    eventBuilder.setStatus(position.getStatus());
-    for (Move move : moves) {
-    	eventBuilder.addMove(MoveProto.newBuilder()
-    			.setFrom(move.getFrom().name())
-    			.setTo(move.getTo().name()));
-    }
-    callback.Run(MoveResponse.newBuilder()
-    		.setEvent(game.addEvent(eventBuilder))
-    		.build());
+    game.move(
+    		playerColor, request.getMove().getFrom(), request.getMove().getTo());
+    callback.Run(MoveResponse.newBuilder().build());
     
     return Status.OK;
   }

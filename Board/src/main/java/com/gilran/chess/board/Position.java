@@ -6,7 +6,9 @@ import java.util.Map;
 //import java.util.logging.Logger;
 
 
+
 import com.gilran.chess.Proto.GameStatus;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -23,9 +25,11 @@ public class Position extends PositionBase {
 	
   /** Rook starting positions. Used for castling. */
   private static final Map<Piece.Color, Map<CastlingRights.Side, Coordinate>>
-      ROOK_INITIAL_POSITION = ImmutableMap.<
-            Piece.Color, Map<CastlingRights.Side, Coordinate>>builder()
-        .put(
+      ROOK_INITIAL_POSITION;
+  static {
+  	ROOK_INITIAL_POSITION = ImmutableMap.<
+  			Piece.Color, Map<CastlingRights.Side, Coordinate>>builder()
+  			.put(
             Piece.Color.WHITE,
             ImmutableMap.<CastlingRights.Side, Coordinate>builder()
             .put(CastlingRights.Side.KING, Coordinate.get("h1"))
@@ -38,6 +42,7 @@ public class Position extends PositionBase {
             .put(CastlingRights.Side.QUEEN, Coordinate.get("a8"))
             .build())
         .build();
+  }
 
   /**
    * The legal moves in the position.
@@ -212,8 +217,8 @@ public class Position extends PositionBase {
    * @return The rook's castling move.
    */
   private Move completeCastle(Move move) {
-    Piece piece = at(move.getTo());
-    assert piece.getType() == Piece.Type.KING;
+    Piece piece = at(move.getFrom());
+    Preconditions.checkState(piece.getType() == Piece.Type.KING);
     Coordinate from =
         ROOK_INITIAL_POSITION.get(piece.getColor()).get(move.getCastlingSide());
     Coordinate to =
