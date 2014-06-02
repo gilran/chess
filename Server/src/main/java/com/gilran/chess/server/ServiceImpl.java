@@ -134,15 +134,33 @@ public class ServiceImpl {
     if (moves.isEmpty())
     	return Status.ILLEGAL_MOVE;
     
-    MoveResponse.Builder responseBuilder = MoveResponse.newBuilder();
-    responseBuilder.setGameStatus(position.getStatus());
+    GameEvent.Builder eventBuilder = GameEvent.newBuilder();
+    eventBuilder.setType(GameEvent.Type.MOVE_MADE);
+    eventBuilder.setStatus(position.getStatus());
     for (Move move : moves) {
-    	responseBuilder.addMove(MoveProto.newBuilder()
+    	eventBuilder.addMove(MoveProto.newBuilder()
     			.setFrom(move.getFrom().name())
     			.setTo(move.getTo().name()));
     }
-    callback.Run(responseBuilder.build());
+    callback.Run(MoveResponse.newBuilder()
+    		.setEvent(game.addEvent(eventBuilder))
+    		.build());
     
+    return Status.OK;
+  }
+  
+  public Status getEvents(EventsRequest request, Callback callback) {
+    Session session = sessions.get(request.getSessionToken());
+    if (session == null)
+      return Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
+		
+    Game game = session.getGame(request.getGameId());
+    if (game == null)
+      return Status.INVALID_GAME_ID;
+
+    callback.Run(EventsResponse.newBuilder()
+    		.addAllEvent(game.getEvents(request.getMinEventNumber()))
+    		.build());
     return Status.OK;
   }
 }
