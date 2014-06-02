@@ -2,23 +2,39 @@ package com.gilran.chess.android;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.TextView;
 
-public class GameActivity extends Activity {
-
+public class BoardActivity extends Activity {
+	static final String EXTRA_LOCAL_PLAYER_NAME =
+			"com.gilran.chess.android.EXTRA_LOCAL_PLAYER_NAME";
+	
+	private ChessClientService.Connection connection =
+			new ChessClientService.Connection();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if (!connection.isBound())
+			bindService(
+					new Intent(this, ChessClientService.class),
+					connection,
+					Context.BIND_AUTO_CREATE);
+		
 		setContentView(R.layout.activity_game);
 
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
+					.add(R.id.container, new TopLevelFragment()).commit();
 		}
 	}
 
@@ -41,20 +57,27 @@ public class GameActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
+	public static class TopLevelFragment extends Fragment {
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+		public View onCreateView(
+				LayoutInflater inflater,
+				ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater
-					.inflate(R.layout.fragment_game, container, false);
+			View rootView =
+					inflater.inflate(R.layout.fragment_board, container, false);
+			
+			TextView playerNameView =
+					(TextView) rootView.findViewById(R.id.localPlayerName);
+			playerNameView.setText(
+					getActivity().getIntent().getExtras().getString(
+							EXTRA_LOCAL_PLAYER_NAME));
+			
+			GridView board = (GridView) rootView.findViewById(R.id.chessboard);
+			board.setAdapter(new SquareAdapter(getActivity()));
 			return rootView;
 		}
 	}

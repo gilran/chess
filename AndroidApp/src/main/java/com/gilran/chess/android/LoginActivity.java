@@ -1,16 +1,27 @@
 package com.gilran.chess.android;
 
+import com.gilran.chess.Proto.LoginResponse;
+import com.gilran.chess.client.Client.LoggerAdapter.Level;
+
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
+	LoggerAdapter logger = new LoggerAdapter(getClass().getSimpleName());
+	private ChessClientService.Connection connection =
+			new ChessClientService.Connection();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +30,22 @@ public class LoginActivity extends Activity {
 
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
+					.add(R.id.container, new TopLevelFragment()).commit();
 		}
+		
+		if (!connection.isBound())
+			bindService(
+					new Intent(this, ChessClientService.class),
+					connection,
+					Context.BIND_AUTO_CREATE);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		if (connection.isBound()) {
+			unbindService(connection);
+		}
+		super.onDestroy();
 	}
 
 	@Override
@@ -46,21 +71,72 @@ public class LoginActivity extends Activity {
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public static class TopLevelFragment extends Fragment {
+		public View onCreateView(
+				LayoutInflater inflater,
+				ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_login, container,
-					false);
+			View rootView =
+					inflater.inflate(R.layout.fragment_login, container, false);
 			return rootView;
+		}
+	}
+	
+	private class LoginTask extends AsyncTask<Void, Void, LoginResponse> {
+		private ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+		private String username;
+		private Runnable callback;
+		
+		public LoginTask(String username, Runnable callback) {
+			super();
+			this.username = username;
+			this.callback = callback;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			dialog.setMessage("Logging in...");
+			dialog.show();
+		}
+		
+		@Override
+    protected LoginResponse doInBackground(Void... params) {
+	    return connection.getService().login(username);
+    }
+		
+		@Override
+		protected void onPostExecute(LoginResponse response) {
+      dialog.dismiss();
+  		if (response == null ||
+  				response.getStatus() != com.gilran.chess.Proto.Status.OK) {
+      	Toast.makeText(
+      			LoginActivity.this, "Login failed.", Toast.LENGTH_LONG).show();
+      	return;
+      }
+  		
+  		if (callback != null)
+  			callback.run();
 		}
 	}
 
 	public void login(View view) {
-		Intent startGameIntent = new Intent(this, GameActivity.class);
-		startActivity(startGameIntent);
+		EditText usernameEditText = (EditText) findViewById(R.id.loginUsername);
+		final String username = usernameEditText.getText().toString();
+		if (username.isEmpty()) {
+			logger.log(Level.DEBUG, "Empty user name.");
+			Toast.makeText(
+					this, "Please enter a username.", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		LoginTask loginTask = new LoginTask(username, new Runnable() {
+			@Override
+			public void run() {
+	      Intent boardIntent = new Intent(LoginActivity.this, BoardActivity.class);
+	      boardIntent.putExtra(BoardActivity.EXTRA_LOCAL_PLAYER_NAME, username);
+	  		startActivity(boardIntent);
+			}
+		});
+		loginTask.execute();
 	}
 }
