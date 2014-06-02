@@ -33,12 +33,12 @@ public class ForsythEdwardsNotation extends PositionBase {
       NAME_TO_CASTLE;
   /** The starting position of a standard chess game. */
   public static final ForsythEdwardsNotation STARTING_POSITION;
-  
+
   /** An exception that indicates that a FEN string is invalid. */
   public static class InvalidFENStringException extends Exception {
     private static final long serialVersionUID = 3178735674293499971L;
   }
-  
+
   static {
     PIECE_TO_NAME =
         ImmutableMap.<Piece, Character>builder()
@@ -56,14 +56,14 @@ public class ForsythEdwardsNotation extends PositionBase {
         .put(Piece.get(Piece.Type.KING, Piece.Color.BLACK), 'k')
         .build();
     NAME_TO_PIECE = createReverseMap(PIECE_TO_NAME);
-    
+
     COLOR_TO_NAME =
         ImmutableMap.<Piece.Color, String>builder()
         .put(Piece.Color.WHITE, "w")
         .put(Piece.Color.BLACK, "b")
         .build();
     NAME_TO_COLOR = createReverseMap(COLOR_TO_NAME);
-    
+
     CASTLE_TO_NAME = ImmutableMap.<CastlingRights.Castle, Character>builder()
         .put(CastlingRights.Castle.get(
               Piece.Color.WHITE, CastlingRights.Side.KING), 'K')
@@ -75,7 +75,7 @@ public class ForsythEdwardsNotation extends PositionBase {
               Piece.Color.BLACK, CastlingRights.Side.QUEEN), 'q')
         .build();
     NAME_TO_CASTLE = createReverseMap(CASTLE_TO_NAME);
-    
+
     ForsythEdwardsNotation tmpStartingPosition = null;
     try {
       tmpStartingPosition = new ForsythEdwardsNotation(

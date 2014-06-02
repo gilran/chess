@@ -12,15 +12,15 @@ public class EventsListenerThread extends Thread {
   public interface EventHandler {
     void handle(GameEvent event);
   }
-  
+
   private int MAX_FAILED_ATTEMPTS = 25;
-  
+
   private String sessionToken;
   private String gameId;
   private HttpGetter httpGetter;
   private EventHandler eventHandler;
   private AtomicBoolean active;
-  
+
   public EventsListenerThread(
       String baseUrl,
       String sessionToken,
@@ -33,7 +33,7 @@ public class EventsListenerThread extends Thread {
     this.httpGetter = new HttpGetter(baseUrl, logger);
     this.eventHandler = handler;
   }
-  
+
   @Override
   public void run() {
     int failedAttmpts = 0;
@@ -60,7 +60,7 @@ public class EventsListenerThread extends Thread {
         eventHandler.handle(event);
     }
   }
-  
+
   public void stopListening() {
     active.set(false);
   }

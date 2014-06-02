@@ -62,7 +62,7 @@ public class ServiceImpl {
       Game game = new Game(whitePlayer, blackPlayer);
       seek1.session.addGame(game);
       seek2.session.addGame(game);
-      
+
       SeekResponse.Builder responseBuilder = SeekResponse.newBuilder();
       responseBuilder.setGameId(game.getId());
       responseBuilder.setWhite(whitePlayer);
@@ -72,18 +72,18 @@ public class ServiceImpl {
       seek2.callback.Run(response);
     }
   }
-  
+
   /** A map from session tokens to the sessions. */
   private Map<String, Session> sessions;
   /** A currently pending seek (null if there is no pending seek). */
   private PendingSeek pendingSeek;
-  
+
   /** Constructs a new ServiceImpl. */
   public ServiceImpl() {
     sessions = Maps.newHashMap();
     pendingSeek = null;
   }
-  
+
   public Status login(LoginRequest request, Callback callback) {
     Session session = new Session(request.getUsername());
     sessions.put(session.getToken(), session);
@@ -97,9 +97,9 @@ public class ServiceImpl {
     Session session = sessions.get(request.getSessionToken());
     if (session == null)
       return Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
-    
+
     PendingSeek currentSeek = new PendingSeek(session, callback);
-    
+
     if (pendingSeek == null) {
       pendingSeek = currentSeek;
       return Status.OK;
@@ -114,25 +114,25 @@ public class ServiceImpl {
     Session session = sessions.get(request.getSessionToken());
     if (session == null)
       return Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
-    
+
     Game game = session.getGame(request.getGameId());
     if (game == null)
       return Status.INVALID_GAME_ID;
-    
+
     Color playerColor = session.getUsername() == game.getWhitePlayer()
         ? Color.WHITE : Color.BLACK;
     game.move(
         playerColor, request.getMove().getFrom(), request.getMove().getTo());
     callback.Run(MoveResponse.newBuilder().build());
-    
+
     return Status.OK;
   }
-  
+
   public Status getEvents(EventsRequest request, final Callback callback) {
     Session session = sessions.get(request.getSessionToken());
     if (session == null)
       return Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
-    
+
     Game game = session.getGame(request.getGameId());
     if (game == null)
       return Status.INVALID_GAME_ID;

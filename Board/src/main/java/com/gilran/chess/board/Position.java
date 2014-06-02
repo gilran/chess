@@ -22,7 +22,7 @@ import com.google.common.collect.Maps;
 public class Position extends PositionBase {
   // private static final Logger LOGGER = Logger.getLogger(
   //    Thread.currentThread().getStackTrace()[0].getClassName());
-  
+
   /** Rook starting positions. Used for castling. */
   private static final Map<Piece.Color, Map<CastlingRights.Side, Coordinate>>
       ROOK_INITIAL_POSITION;
@@ -505,7 +505,7 @@ public class Position extends PositionBase {
       status = GameStatus.THREEFOLD_REPETITION;
       return;
     }
-    
+
     // TODO(gilran): Handle INSUFFICIENT_MATERIAL.
 
     switch (getActivePlayer()) {

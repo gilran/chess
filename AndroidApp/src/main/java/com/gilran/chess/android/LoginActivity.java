@@ -32,14 +32,14 @@ public class LoginActivity extends Activity {
       getFragmentManager().beginTransaction()
           .add(R.id.container, new TopLevelFragment()).commit();
     }
-    
+
     if (!connection.isBound())
       bindService(
           new Intent(this, ChessClientService.class),
           connection,
           Context.BIND_AUTO_CREATE);
   }
-  
+
   @Override
   protected void onDestroy() {
     if (connection.isBound()) {
@@ -81,29 +81,29 @@ public class LoginActivity extends Activity {
       return rootView;
     }
   }
-  
+
   private class LoginTask extends AsyncTask<Void, Void, LoginResponse> {
     private ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
     private String username;
     private Runnable callback;
-    
+
     public LoginTask(String username, Runnable callback) {
       super();
       this.username = username;
       this.callback = callback;
     }
-    
+
     @Override
     protected void onPreExecute() {
       dialog.setMessage("Logging in...");
       dialog.show();
     }
-    
+
     @Override
     protected LoginResponse doInBackground(Void... params) {
       return connection.getService().login(username);
     }
-    
+
     @Override
     protected void onPostExecute(LoginResponse response) {
       dialog.dismiss();
@@ -113,7 +113,7 @@ public class LoginActivity extends Activity {
             LoginActivity.this, "Login failed.", Toast.LENGTH_LONG).show();
         return;
       }
-      
+
       if (callback != null)
         callback.run();
     }
@@ -128,7 +128,7 @@ public class LoginActivity extends Activity {
           this, "Please enter a username.", Toast.LENGTH_LONG).show();
       return;
     }
-    
+
     LoginTask loginTask = new LoginTask(username, new Runnable() {
       @Override
       public void run() {

@@ -26,30 +26,30 @@ import javax.ws.rs.core.Response;
 public class RequestHandler {
   private static final Logger LOGGER = Logger.getLogger(
       Thread.currentThread().getStackTrace()[0].getClassName());
-  
+
   private static ServiceImpl service;
   private static Map<String, Method> methodsMap;
-  
+
   static {
     service = new ServiceImpl();
     methodsMap = Maps.newHashMap();
-    
+
     Set<Method> methods = Sets.newHashSet(service.getClass().getMethods());
     methods.removeAll(
         Lists.newArrayList(service.getClass().getSuperclass().getMethods()));
-    
+
     for (Method method : methods) {
       Class<?>[] paramTypes = method.getParameterTypes();
-      
+
       Preconditions.checkState(paramTypes.length == 2);
       Preconditions.checkState(Message.class.isAssignableFrom(paramTypes[0]));
       Preconditions.checkState(paramTypes[1] == ServiceImpl.Callback.class);
       Preconditions.checkState(method.getReturnType().equals(Status.class));
-      
+
       methodsMap.put(method.getName(), method);
     }
   }
-  
+
   @GET
   @Path("/{method}")
   public void get(
@@ -62,27 +62,27 @@ public class RequestHandler {
           Response.status(Response.Status.BAD_REQUEST).build());
       return;
     }
-    
+
     Method method = methodsMap.get(methodName);
     if (method == null) {
       asyncResponse.resume(Response.status(Response.Status.NOT_FOUND).build());
       return;
     }
-    
+
     Message request = JsonParser.toProto(requestJson, method.getParameterTypes()[0]);
     if (request == null || !request.isInitialized()) {
       asyncResponse.resume(
           Response.status(Response.Status.BAD_REQUEST).build());
       return;
     }
-    
+
     ServiceImpl.Callback callback = new ServiceImpl.Callback() {
       public void Run(Message response) {
         Preconditions.checkNotNull(response);
         asyncResponse.resume(JsonParser.toJson(response));
       }
     };
-    
+
     Status status;
     try {
       status = (Status) method.invoke(service, request, callback);

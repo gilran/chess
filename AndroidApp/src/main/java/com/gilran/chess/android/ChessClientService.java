@@ -14,10 +14,10 @@ import android.util.Log;
 public class ChessClientService extends Service {
   // Binder given to clients.
   private final IBinder binder = new LocalBinder();
-  
+
   // The client itself.
   private Client client;
-  
+
   /**
    * Class used for the client Binder. Because we know this service always
    * runs in the same process as its clients, we don't need to deal with IPC.
@@ -27,14 +27,14 @@ public class ChessClientService extends Service {
       return ChessClientService.this;
     }
   }
-  
+
   public static class Connection implements ServiceConnection {
     private boolean bound = false;
     ChessClientService service;
-    
+
     public boolean isBound() { return bound; }
     public ChessClientService getService() { return service; }
-    
+
     @Override
     public void onServiceConnected(ComponentName className, IBinder binder) {
         Log.i(getClass().getName(), "Service connected.");
@@ -49,17 +49,17 @@ public class ChessClientService extends Service {
       bound = false;
     }
   };
-  
+
   @Override
   public IBinder onBind(Intent intent) {
     // TODO(gilran): Add the server address to the settings.
     client = new Client(
         "http://192.168.1.162:8080/Server/chess/",
         new LoggerAdapter(Thread.currentThread().getStackTrace()[0].getClassName()));
-    
+
     return binder;
   }
-  
+
   public LoginResponse login(final String username) {
     return client.login(username);
   }

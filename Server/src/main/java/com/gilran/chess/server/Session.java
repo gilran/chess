@@ -16,13 +16,13 @@ public class Session {
   public Session(String username) {
     this.token = UUID.randomUUID().toString();
     this.username = username;
-    this.games = Maps.newHashMap(); 
+    this.games = Maps.newHashMap();
   }
 
   public String getToken() { return token; }
   public String getUsername() { return username; }
-  
-  public void addGame(Game game) { games.put(game.getId(), game); } 
+
+  public void addGame(Game game) { games.put(game.getId(), game); }
   public Game getGame(String id) { return games.get(id); }
 }
 

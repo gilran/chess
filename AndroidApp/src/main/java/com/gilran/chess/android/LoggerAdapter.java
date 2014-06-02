@@ -6,11 +6,11 @@ import com.gilran.chess.client.Client;
 
 public class LoggerAdapter implements Client.LoggerAdapter {
   private String tag;
-  
+
   public LoggerAdapter(String tag) {
     this.tag = tag;
   }
-  
+
   @Override
   public void log(Level level, String message) {
     switch (level) {

@@ -16,20 +16,20 @@ import android.widget.TextView;
 public class BoardActivity extends Activity {
   static final String EXTRA_LOCAL_PLAYER_NAME =
       "com.gilran.chess.android.EXTRA_LOCAL_PLAYER_NAME";
-  
+
   private ChessClientService.Connection connection =
       new ChessClientService.Connection();
-  
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    
+
     if (!connection.isBound())
       bindService(
           new Intent(this, ChessClientService.class),
           connection,
           Context.BIND_AUTO_CREATE);
-    
+
     setContentView(R.layout.activity_game);
 
     if (savedInstanceState == null) {
@@ -57,7 +57,7 @@ public class BoardActivity extends Activity {
     }
     return super.onOptionsItemSelected(item);
   }
-  
+
   /**
    * A placeholder fragment containing a simple view.
    */
@@ -69,13 +69,13 @@ public class BoardActivity extends Activity {
         Bundle savedInstanceState) {
       View rootView =
           inflater.inflate(R.layout.fragment_board, container, false);
-      
+
       TextView playerNameView =
           (TextView) rootView.findViewById(R.id.localPlayerName);
       playerNameView.setText(
           getActivity().getIntent().getExtras().getString(
               EXTRA_LOCAL_PLAYER_NAME));
-      
+
       GridView board = (GridView) rootView.findViewById(R.id.chessboard);
       board.setAdapter(new SquareAdapter(getActivity()));
       return rootView;

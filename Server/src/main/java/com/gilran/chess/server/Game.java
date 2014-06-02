@@ -39,7 +39,7 @@ public class Game {
   public String getWhitePlayer() { return whitePlayer; }
   public String getBlackPlayer() { return blackPlayer; }
   public Position getPosition() { return position; }
-  
+
   public synchronized GameEvent addEvent(GameEvent.Builder eventBuilder) {
     eventBuilder.setSerialNumber(events.size());
     GameEvent event = eventBuilder.build();
@@ -53,7 +53,7 @@ public class Game {
     }
     return event;
   }
-  
+
   public interface EventsCallback {
     void run(List<GameEvent> events);
   }
@@ -64,7 +64,7 @@ public class Game {
     }
     callback.run(events.subList(minEvent, events.size()));
   }
-  
+
   public Status move(Color playerColor, String from, String to) {
     Coordinate fromCoordinate = Coordinate.get(from);
     Coordinate toCoordinate = Coordinate.get(to);
@@ -75,7 +75,7 @@ public class Game {
     List<Move> moves = position.move(fromCoordinate, toCoordinate);
     if (moves.isEmpty())
       return Status.ILLEGAL_MOVE;
-    
+
     GameEvent.Builder eventBuilder = GameEvent.newBuilder();
     eventBuilder.setType(GameEvent.Type.MOVE_MADE);
     eventBuilder.setStatus(position.getStatus());
@@ -85,7 +85,7 @@ public class Game {
           .setTo(move.getTo().name()));
     }
     addEvent(eventBuilder);
-    
+
     switch (position.getStatus()) {
       case BLACK_CHECKMATED:
       case BLACK_STALEMATED:
@@ -100,7 +100,7 @@ public class Game {
       default:
         break;
     }
-    
+
     return Status.OK;
   }
 }

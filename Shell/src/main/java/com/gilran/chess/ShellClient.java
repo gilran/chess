@@ -17,28 +17,28 @@ public class ShellClient {
     ShellClient shell = new ShellClient();
     shell.Run();
   }
-  
+
   private Client client;
   private PrintWriter out = new PrintWriter(System.out);
-  
+
   public ShellClient() {
     out = new PrintWriter(System.out);
   }
-  
+
   public void Run() throws IOException {
     ConsoleReader reader = new ConsoleReader();
     reader.setBellEnabled(false);
-    
+
     String line;
     while ((line = reader.readLine("prompt> ")) != null) {
       out.flush();
-      
+
       if (line.equals("exit"))
         break;
-      
+
       if (line.isEmpty())
         continue;
-      
+
       List<String> commandArgs = Lists.newArrayList(line.split(" "));
       String commandName = commandArgs.remove(0);
       Method method;
@@ -50,12 +50,12 @@ public class ShellClient {
       }
     }
   }
-  
+
   private void print(String message) {
     out.print(message);
     out.flush();
   }
-  
+
   public void login(List<String> args) {
     if (args.size() != 1) {
       print("Usage: login <username>\n");
@@ -64,7 +64,7 @@ public class ShellClient {
     client = new Client("http://localhost:8080/Server/chess/");
     print(client.login(args.get(0)).toString());
   }
-  
+
   public void seek(List<String> args) {
     if (args.size() != 0) {
       print("Usage: seek\n");
@@ -82,7 +82,7 @@ public class ShellClient {
       }
     });
   }
-  
+
   public void move(List<String> args) {
     if (args.size() != 2) {
       print("Usage: move <from> <to>\n");
