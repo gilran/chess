@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.gilran.chess.Proto.GameEvent;
 import com.gilran.chess.client.Client;
+import com.gilran.chess.client.EventsListenerThread;
 import com.google.common.collect.Lists;
 
 import jline.console.ConsoleReader;
@@ -74,7 +75,7 @@ public class ShellClient {
 			return;
 		}
 		print(client.seek().toString());
-		client.startListeningToEvents(new Client.EventHandler() {
+		client.startListeningToEvents(new EventsListenerThread.EventHandler() {
 			@Override
 			public void handle(GameEvent event) {
 				print("\nGot new event:\n" + event.toString() + "prompt> ");

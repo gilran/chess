@@ -149,7 +149,7 @@ public class ServiceImpl {
     return Status.OK;
   }
   
-  public Status getEvents(EventsRequest request, Callback callback) {
+  public Status getEvents(EventsRequest request, final Callback callback) {
     Session session = sessions.get(request.getSessionToken());
     if (session == null)
       return Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
@@ -158,9 +158,14 @@ public class ServiceImpl {
     if (game == null)
       return Status.INVALID_GAME_ID;
 
-    callback.Run(EventsResponse.newBuilder()
-    		.addAllEvent(game.getEvents(request.getMinEventNumber()))
-    		.build());
+    game.getEvents(request.getMinEventNumber(), new Game.EventsCallback() {
+			@Override
+			public void run(List<GameEvent> events) {
+				callback.Run(EventsResponse.newBuilder()
+		    		.addAllEvent(events)
+		    		.build());
+			}
+		});
     return Status.OK;
   }
 }

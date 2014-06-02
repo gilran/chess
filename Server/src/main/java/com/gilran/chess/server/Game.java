@@ -2,9 +2,12 @@ package com.gilran.chess.server;
 
 import com.gilran.chess.board.Position;
 import com.gilran.chess.Proto.*;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +20,8 @@ public class Game {
 	/** The game position. */
   private Position position;
   /** The game events. */
-  List<GameEvent> events;
+  private List<GameEvent> events;
+  private Multimap<Integer, EventsCallback> pendingEventCallbaks;
 
   public Game(String whitePlayer, String blackPlayer) {
 		this.id = UUID.randomUUID().toString();
@@ -25,6 +29,7 @@ public class Game {
     this.blackPlayer = blackPlayer;
     this.position = new Position();
     this.events = Lists.newArrayList();
+    this.pendingEventCallbaks = ArrayListMultimap.create();
   }
 
   public String getId() { return id; }
@@ -36,12 +41,24 @@ public class Game {
   	eventBuilder.setSerialNumber(events.size());
   	GameEvent event = eventBuilder.build();
   	events.add(event);
+  	Collection<EventsCallback> eventCallbacks =
+  			pendingEventCallbaks.get(event.getSerialNumber());
+  	if (eventCallbacks != null) {
+  		List<GameEvent> eventsList = ImmutableList.of(event);
+  		for (EventsCallback callback : eventCallbacks)
+  			callback.run(eventsList);
+  	}
   	return event;
   }
   
-  public synchronized List<GameEvent> getEvents(int minEvent) {
-  	if (minEvent >= events.size())
-  		return Collections.emptyList();
-  	return events.subList(minEvent, events.size());
+  public interface EventsCallback {
+  	void run(List<GameEvent> events);
+  }
+  public synchronized void getEvents(int minEvent, EventsCallback callback) {
+  	if (minEvent >= events.size()) {
+  		pendingEventCallbaks.put(minEvent, callback);
+  		return;
+  	}
+  	callback.run(events.subList(minEvent, events.size()));
   }
 }

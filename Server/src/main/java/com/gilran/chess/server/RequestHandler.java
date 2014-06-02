@@ -39,7 +39,6 @@ public class RequestHandler {
 				Lists.newArrayList(service.getClass().getSuperclass().getMethods()));
 		
 		for (Method method : methods) {
-			LOGGER.info("Registering method: " + method.getName());
 			Class<?>[] paramTypes = method.getParameterTypes();
 			
 			Preconditions.checkState(paramTypes.length == 2);
@@ -57,7 +56,7 @@ public class RequestHandler {
 			@PathParam("method") String methodName,
 			@QueryParam("r") String requestJson,
 			@Suspended final AsyncResponse asyncResponse) {
-		LOGGER.info("Method: " + methodName);
+		LOGGER.info(methodName + "(" + requestJson + ")");
 		if (requestJson == null || requestJson.isEmpty()) {
 			asyncResponse.resume(
 					Response.status(Response.Status.BAD_REQUEST).build());
