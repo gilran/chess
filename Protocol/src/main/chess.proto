@@ -88,6 +88,28 @@ message MoveRequest {
 }
 message MoveResponse {
   optional Status status = 1;
-	optional GameStatus game_status = 2;
-  repeated MoveProto move = 3;
+  optional GameEvent event = 2;
+}
+
+message GameEvent {
+  enum Type {
+    MOVE_MADE = 0;
+    GAME_ENDED = 1;
+    WHITE_OFFERED_DRAW = 2;
+    BLACK_OFFERED_DRAW = 3;
+  }
+  required int32 serial_number = 1;
+  required Type type = 2;
+  required GameStatus status = 3;
+  repeated MoveProto move = 4;
+}
+
+message EventsRequest {
+  required string session_token = 1;
+  required string game_id = 2;
+  required int32 min_event_number = 3;
+}
+message EventsResponse {
+  optional Status status = 1;
+  repeated GameEvent event = 2;
 }
