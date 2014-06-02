@@ -20,16 +20,16 @@ import com.google.common.collect.Maps;
  * @author Gil Ran <gilrun@gmail.com>
  */
 public class Position extends PositionBase {
-	// private static final Logger LOGGER = Logger.getLogger(
-	//		Thread.currentThread().getStackTrace()[0].getClassName());
-	
+  // private static final Logger LOGGER = Logger.getLogger(
+  //    Thread.currentThread().getStackTrace()[0].getClassName());
+  
   /** Rook starting positions. Used for castling. */
   private static final Map<Piece.Color, Map<CastlingRights.Side, Coordinate>>
       ROOK_INITIAL_POSITION;
   static {
-  	ROOK_INITIAL_POSITION = ImmutableMap.<
-  			Piece.Color, Map<CastlingRights.Side, Coordinate>>builder()
-  			.put(
+    ROOK_INITIAL_POSITION = ImmutableMap.<
+        Piece.Color, Map<CastlingRights.Side, Coordinate>>builder()
+        .put(
             Piece.Color.WHITE,
             ImmutableMap.<CastlingRights.Side, Coordinate>builder()
             .put(CastlingRights.Side.KING, Coordinate.get("h1"))
@@ -142,11 +142,11 @@ public class Position extends PositionBase {
       Piece piece = at(move.getFrom());
 
       if (move.getCapture() != null) {
-      	if (piecesPlacement.isOccupied(move.getCapture())) {
-      		capturedPiece = piecesPlacement.remove(move.getCapture());
-      	} else {
-      		move.setCapture(null);
-      	}
+        if (piecesPlacement.isOccupied(move.getCapture())) {
+          capturedPiece = piecesPlacement.remove(move.getCapture());
+        } else {
+          move.setCapture(null);
+        }
       }
       piecesPlacement.move(move.getFrom(), move.getTo());
 
@@ -510,18 +510,18 @@ public class Position extends PositionBase {
 
     switch (getActivePlayer()) {
       case WHITE:
-      	if (hasLegalMoves) {
-      		status = check ? GameStatus.WHITE_CHECKED : GameStatus.WHITE_TO_MOVE;
-      	} else {
-      		status = check ? GameStatus.WHITE_CHECKMATED : GameStatus.WHITE_STALEMATED;
-      	}
+        if (hasLegalMoves) {
+          status = check ? GameStatus.WHITE_CHECKED : GameStatus.WHITE_TO_MOVE;
+        } else {
+          status = check ? GameStatus.WHITE_CHECKMATED : GameStatus.WHITE_STALEMATED;
+        }
         return;
       case BLACK:
-      	if (hasLegalMoves) {
-      		status = check ? GameStatus.BLACK_CHECKED : GameStatus.BLACK_TO_MOVE;
-      	} else {
-      		status = check ? GameStatus.BLACK_CHECKMATED : GameStatus.BLACK_STALEMATED;
-      	}
+        if (hasLegalMoves) {
+          status = check ? GameStatus.BLACK_CHECKED : GameStatus.BLACK_TO_MOVE;
+        } else {
+          status = check ? GameStatus.BLACK_CHECKMATED : GameStatus.BLACK_STALEMATED;
+        }
         return;
     }
   }

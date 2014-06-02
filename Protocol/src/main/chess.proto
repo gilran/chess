@@ -6,8 +6,8 @@ option java_package = "com.gilran.chess";
 option java_outer_classname = "Proto";
 
 enum Status {
-	OK = 0;
-	INVALID_REQUEST = 1;
+  OK = 0;
+  INVALID_REQUEST = 1;
   INVALID_OR_EXPIRED_SESSION_TOKEN = 2;
   INVALID_GAME_ID = 3;
   INVALID_MOVE = 4;
@@ -59,11 +59,11 @@ message ErrorResponse {
 }
 
 message LoginRequest {
-	required string username = 1;
+  required string username = 1;
 }
 message LoginResponse {
-	optional Status status = 1;
-	optional string session_token = 2;
+  optional Status status = 1;
+  optional string session_token = 2;
 }
 
 message SeekRequest {
@@ -77,7 +77,7 @@ message SeekResponse {
 }
 
 message MoveProto {
-	required string from = 3;
+  required string from = 3;
   required string to = 4;
 }
 

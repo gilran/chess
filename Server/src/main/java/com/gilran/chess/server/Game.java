@@ -20,14 +20,14 @@ public class Game {
   /** The players. */
   private String whitePlayer;
   private String blackPlayer;
-	/** The game position. */
+  /** The game position. */
   private Position position;
   /** The game events. */
   private List<GameEvent> events;
   private Multimap<Integer, EventsCallback> pendingEventCallbaks;
 
   public Game(String whitePlayer, String blackPlayer) {
-		this.id = UUID.randomUUID().toString();
+    this.id = UUID.randomUUID().toString();
     this.whitePlayer = whitePlayer;
     this.blackPlayer = blackPlayer;
     this.position = new Position();
@@ -41,48 +41,48 @@ public class Game {
   public Position getPosition() { return position; }
   
   public synchronized GameEvent addEvent(GameEvent.Builder eventBuilder) {
-  	eventBuilder.setSerialNumber(events.size());
-  	GameEvent event = eventBuilder.build();
-  	events.add(event);
-  	Collection<EventsCallback> eventCallbacks =
-  			pendingEventCallbaks.get(event.getSerialNumber());
-  	if (eventCallbacks != null) {
-  		List<GameEvent> eventsList = ImmutableList.of(event);
-  		for (EventsCallback callback : eventCallbacks)
-  			callback.run(eventsList);
-  	}
-  	return event;
+    eventBuilder.setSerialNumber(events.size());
+    GameEvent event = eventBuilder.build();
+    events.add(event);
+    Collection<EventsCallback> eventCallbacks =
+        pendingEventCallbaks.get(event.getSerialNumber());
+    if (eventCallbacks != null) {
+      List<GameEvent> eventsList = ImmutableList.of(event);
+      for (EventsCallback callback : eventCallbacks)
+        callback.run(eventsList);
+    }
+    return event;
   }
   
   public interface EventsCallback {
-  	void run(List<GameEvent> events);
+    void run(List<GameEvent> events);
   }
   public synchronized void getEvents(int minEvent, EventsCallback callback) {
-  	if (minEvent >= events.size()) {
-  		pendingEventCallbaks.put(minEvent, callback);
-  		return;
-  	}
-  	callback.run(events.subList(minEvent, events.size()));
+    if (minEvent >= events.size()) {
+      pendingEventCallbaks.put(minEvent, callback);
+      return;
+    }
+    callback.run(events.subList(minEvent, events.size()));
   }
   
   public Status move(Color playerColor, String from, String to) {
-  	Coordinate fromCoordinate = Coordinate.get(from);
+    Coordinate fromCoordinate = Coordinate.get(from);
     Coordinate toCoordinate = Coordinate.get(to);
     if (from == null || to == null)
-    	return Status.INVALID_MOVE;
-  	if (position.getActivePlayer() != playerColor)
-    	return Status.NOT_YOUR_TURN;
+      return Status.INVALID_MOVE;
+    if (position.getActivePlayer() != playerColor)
+      return Status.NOT_YOUR_TURN;
     List<Move> moves = position.move(fromCoordinate, toCoordinate);
     if (moves.isEmpty())
-    	return Status.ILLEGAL_MOVE;
+      return Status.ILLEGAL_MOVE;
     
     GameEvent.Builder eventBuilder = GameEvent.newBuilder();
     eventBuilder.setType(GameEvent.Type.MOVE_MADE);
     eventBuilder.setStatus(position.getStatus());
     for (Move move : moves) {
-    	eventBuilder.addMove(MoveProto.newBuilder()
-    			.setFrom(move.getFrom().name())
-    			.setTo(move.getTo().name()));
+      eventBuilder.addMove(MoveProto.newBuilder()
+          .setFrom(move.getFrom().name())
+          .setTo(move.getTo().name()));
     }
     addEvent(eventBuilder);
     
@@ -94,13 +94,13 @@ public class Game {
       case HALFMOVE_CLOCK_EXPIRED:
       case INSUFFICIENT_MATERIAL:
       case THREEFOLD_REPETITION:
-      	addEvent(GameEvent.newBuilder()
-      			.setType(GameEvent.Type.GAME_ENDED)
-      			.setStatus(position.getStatus()));
-    	default:
-    		break;
+        addEvent(GameEvent.newBuilder()
+            .setType(GameEvent.Type.GAME_ENDED)
+            .setStatus(position.getStatus()));
+      default:
+        break;
     }
     
-  	return Status.OK;
+    return Status.OK;
   }
 }

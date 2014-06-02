@@ -27,7 +27,7 @@ public class ForsythEdwardsNotation extends PositionBase {
   private static final ImmutableMap<String, Piece.Color> NAME_TO_COLOR;
   /** A map from castling rights to their names in FEN. */
   private static final ImmutableMap<CastlingRights.Castle, Character>
-  		CASTLE_TO_NAME;
+      CASTLE_TO_NAME;
   /** A map from FEN castling move name to the castling. */
   private static final ImmutableMap<Character, CastlingRights.Castle>
       NAME_TO_CASTLE;
@@ -203,7 +203,7 @@ public class ForsythEdwardsNotation extends PositionBase {
       builder.append(PIECE_TO_NAME.get(piece));
     }
     if (emptySquares != 0)
-    	builder.append(String.valueOf(emptySquares));
+      builder.append(String.valueOf(emptySquares));
     return builder.toString();
   }
 
