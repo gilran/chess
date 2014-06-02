@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import com.gilran.chess.Proto.GameEvent;
 import com.gilran.chess.client.Client;
 import com.google.common.collect.Lists;
 
@@ -45,7 +46,6 @@ public class ShellClient {
 				method.invoke(this, commandArgs);
 			} catch (Exception e) {
 				print("Unknown command: " + commandName + "\n");
-				continue;
 			}
 		}
 	}
@@ -60,14 +60,13 @@ public class ShellClient {
 			print("Usage: login <username>\n");
 			return;
 		}
-		client =
-				new Client("http://localhost:8080/Server/chess/", args.get(0));
-		print(client.login().toString());
+		client = new Client("http://localhost:8080/Server/chess/");
+		print(client.login(args.get(0)).toString());
 	}
 	
 	public void seek(List<String> args) {
 		if (args.size() != 0) {
-			print("Usage: seek");
+			print("Usage: seek\n");
 			return;
 		}
 		if (client == null) {
@@ -75,6 +74,12 @@ public class ShellClient {
 			return;
 		}
 		print(client.seek().toString());
+		client.startListeningToEvents(new Client.EventHandler() {
+			@Override
+			public void handle(GameEvent event) {
+				print("\nGot new event:\n" + event.toString() + "prompt> ");
+			}
+		});
 	}
 	
 	public void move(List<String> args) {
