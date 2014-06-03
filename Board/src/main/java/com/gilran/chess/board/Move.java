@@ -1,6 +1,5 @@
 package com.gilran.chess.board;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSortedSet;
 
 import java.util.Collections;
@@ -173,11 +172,6 @@ public class Move {
     builder.append(from.toString());
     builder.append(capture == null ? "-" : "x");
     builder.append(to.toString());
-
-    // TODO(gilran): Remove this - this is for debug.
-    builder.append(" (");
-    builder.append(Joiner.on(", ").join(unoccupied));
-    builder.append(")");
 
     return builder.toString();
 

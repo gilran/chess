@@ -1,5 +1,8 @@
 package com.gilran.chess.android;
 
+import com.gilran.chess.Proto.LoginResponse;
+import com.gilran.chess.client.Client.LoggerAdapter.Level;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -14,9 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.gilran.chess.Proto.LoginResponse;
-import com.gilran.chess.client.Client.LoggerAdapter.Level;
 
 public class LoginActivity extends Activity {
   LoggerAdapter logger = new LoggerAdapter(getClass().getSimpleName());

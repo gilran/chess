@@ -1,16 +1,17 @@
 package com.gilran.chess.board;
 
+import com.gilran.chess.Proto.GameStatus;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import com.gilran.chess.Proto.GameStatus;
+import java.util.Set;
 
 /**
  * A position on the chess board.
@@ -80,6 +81,18 @@ public class Position extends PositionBase {
     previousPositions = Maps.newHashMap();
     updateLegalMoves();
     updateStatus();
+  }
+  
+  public Set<Coordinate> getLegalMoves(Coordinate from) {
+    Piece piece = getPiecesPlacement().at(from);
+    if (piece == null) {
+      return Collections.emptySet();
+    }
+    Map<Coordinate, Move> movesMap = legalMoves.get(piece.getColor()).get(from);
+    if (movesMap == null) {
+      return Collections.emptySet();
+    }
+    return movesMap.keySet();
   }
 
   /** Returns the piece type to which pawns are promoted for the given side. */

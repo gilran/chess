@@ -4,8 +4,8 @@
     tools:context="com.gilran.chess.android.GameActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_seek"
         android:orderInCategory="100"
-        android:title="@string/action_settings"/>
+        android:title="@string/seek"/>
 
 </menu>

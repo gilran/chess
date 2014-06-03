@@ -1,5 +1,9 @@
 package com.gilran.chess.client;
 
+import com.gilran.chess.JsonParser;
+import com.gilran.chess.client.Client.LoggerAdapter;
+import com.gilran.chess.client.Client.LoggerAdapter.Level;
+
 import com.google.protobuf.Message;
 
 import org.apache.http.HttpResponse;
@@ -10,10 +14,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
-
-import com.gilran.chess.JsonParser;
-import com.gilran.chess.client.Client.LoggerAdapter;
-import com.gilran.chess.client.Client.LoggerAdapter.Level;
 
 public class HttpGetter {
   private LoggerAdapter logger;

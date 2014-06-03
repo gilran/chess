@@ -1,5 +1,10 @@
 package com.gilran.chess.android;
 
+import com.gilran.chess.Proto.*;
+import com.gilran.chess.board.Coordinate;
+import com.gilran.chess.client.Client;
+import com.gilran.chess.client.GameEventHandler;
+
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -7,9 +12,6 @@ import android.content.ServiceConnection;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-
-import com.gilran.chess.Proto.LoginResponse;
-import com.gilran.chess.client.Client;
 
 public class ChessClientService extends Service {
   // Binder given to clients.
@@ -65,4 +67,17 @@ public class ChessClientService extends Service {
     return client.login(username);
   }
 
+  public SeekResponse seek(GameEventHandler handler) {
+    SeekResponse response = client.seek();
+    if (response == null || response.getStatus() != Status.OK) {
+      return response;
+    }
+    
+    client.startListeningToEvents(handler);
+    return response;
+  }
+  
+  public MoveResponse move(Coordinate from, Coordinate to) {
+    return client.move(from.toString(), to.toString());
+  }
 }

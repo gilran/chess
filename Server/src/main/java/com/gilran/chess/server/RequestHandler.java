@@ -1,5 +1,9 @@
 package com.gilran.chess.server;
 
+import com.gilran.chess.JsonParser;
+import com.gilran.chess.Proto.ErrorResponse;
+import com.gilran.chess.Proto.Status;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -18,10 +22,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
-
-import com.gilran.chess.JsonParser;
-import com.gilran.chess.Proto.ErrorResponse;
-import com.gilran.chess.Proto.Status;
 
 @Path("/")
 public class RequestHandler {

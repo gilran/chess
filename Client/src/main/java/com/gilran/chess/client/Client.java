@@ -1,9 +1,9 @@
 package com.gilran.chess.client;
 
-import com.google.common.base.Preconditions;
-
 import com.gilran.chess.Proto.*;
 import com.gilran.chess.client.Client.LoggerAdapter.Level;
+
+import com.google.common.base.Preconditions;
 
 public class Client {
   public interface LoggerAdapter {
@@ -69,8 +69,7 @@ public class Client {
         MoveResponse.class);
   }
 
-  public void startListeningToEvents(
-      EventsListenerThread.EventHandler handler) {
+  public void startListeningToEvents(GameEventHandler handler) {
     if (eventsListenerThread != null) {
       return;
     }

@@ -13,8 +13,8 @@ import java.util.Set;
  *
  * @author Gil Ran <gilrun@gmail.com>
  */
-/* package */ class PiecesPlacement
-    implements Iterable<PiecesPlacement.PlacementEntry> {
+public class PiecesPlacement
+		implements Iterable<PiecesPlacement.PlacementEntry> {
   /** A map from a coordinate to the piece that occupies it. */
   private Map<Coordinate, Piece> coordinateToPiece;
 

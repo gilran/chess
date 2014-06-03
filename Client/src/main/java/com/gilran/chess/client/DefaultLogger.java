@@ -1,11 +1,11 @@
 package com.gilran.chess.client;
 
+import com.gilran.chess.client.Client.LoggerAdapter;
+
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 import java.util.logging.Logger;
-
-import com.gilran.chess.client.Client.LoggerAdapter;
 
 public class DefaultLogger implements LoggerAdapter {
   static final Map<LoggerAdapter.Level, java.util.logging.Level> LEVELS =

@@ -1,31 +1,27 @@
 package com.gilran.chess.client;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.gilran.chess.Proto.EventsRequest;
 import com.gilran.chess.Proto.EventsResponse;
 import com.gilran.chess.Proto.GameEvent;
 import com.gilran.chess.client.Client.LoggerAdapter;
 
-public class EventsListenerThread extends Thread {
-  public interface EventHandler {
-    void handle(GameEvent event);
-  }
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+public class EventsListenerThread extends Thread {
   private static final int MAX_FAILED_ATTEMPTS = 25;
 
   private String sessionToken;
   private String gameId;
   private HttpGetter httpGetter;
-  private EventHandler eventHandler;
+  private GameEventHandler eventHandler;
   private AtomicBoolean active;
 
   public EventsListenerThread(
       String baseUrl,
       String sessionToken,
       String gameId,
-      EventHandler handler,
+      GameEventHandler handler,
       LoggerAdapter logger) {
     this.active = new AtomicBoolean(true);
     this.sessionToken = sessionToken;

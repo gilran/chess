@@ -73,7 +73,7 @@ import java.util.Map;
    * <p>A copy is returned in order to prevent clients from changing the
    * position's internal pieces placement.
    * */
-  /* package */ PiecesPlacement getPiecesPlacement() {
+  public PiecesPlacement getPiecesPlacement() {
     return new PiecesPlacement(piecesPlacement);
   }
 

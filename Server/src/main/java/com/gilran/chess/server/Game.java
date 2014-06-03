@@ -1,5 +1,10 @@
 package com.gilran.chess.server;
 
+import com.gilran.chess.Proto.*;
+import com.gilran.chess.board.Coordinate;
+import com.gilran.chess.board.Move;
+import com.gilran.chess.board.Piece.Color;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -9,37 +14,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import com.gilran.chess.Proto.*;
-import com.gilran.chess.board.Coordinate;
-import com.gilran.chess.board.Move;
-import com.gilran.chess.board.Piece.Color;
-import com.gilran.chess.board.Position;
-
-public class Game {
+public class Game extends com.gilran.chess.board.Game {
   /** The game id. */
   private String id;
-  /** The players. */
-  private String whitePlayer;
-  private String blackPlayer;
-  /** The game position. */
-  private Position position;
   /** The game events. */
   private List<GameEvent> events;
   private Multimap<Integer, EventsCallback> pendingEventCallbaks;
 
   public Game(String whitePlayer, String blackPlayer) {
+    super(whitePlayer, blackPlayer);
     this.id = UUID.randomUUID().toString();
-    this.whitePlayer = whitePlayer;
-    this.blackPlayer = blackPlayer;
-    this.position = new Position();
     this.events = Lists.newArrayList();
     this.pendingEventCallbaks = ArrayListMultimap.create();
   }
 
-  public String getId() { return id; }
-  public String getWhitePlayer() { return whitePlayer; }
-  public String getBlackPlayer() { return blackPlayer; }
-  public Position getPosition() { return position; }
+  public String getId() {
+    return id;
+  }
 
   public synchronized GameEvent addEvent(GameEvent.Builder eventBuilder) {
     eventBuilder.setSerialNumber(events.size());
@@ -73,17 +64,17 @@ public class Game {
     if (from == null || to == null) {
       return Status.INVALID_MOVE;
     }
-    if (position.getActivePlayer() != playerColor) {
+    if (getPosition().getActivePlayer() != playerColor) {
       return Status.NOT_YOUR_TURN;
     }
-    List<Move> moves = position.move(fromCoordinate, toCoordinate);
+    List<Move> moves = getPosition().move(fromCoordinate, toCoordinate);
     if (moves.isEmpty()) {
       return Status.ILLEGAL_MOVE;
     }
 
     GameEvent.Builder eventBuilder = GameEvent.newBuilder();
     eventBuilder.setType(GameEvent.Type.MOVE_MADE);
-    eventBuilder.setStatus(position.getStatus());
+    eventBuilder.setStatus(getPosition().getStatus());
     for (Move move : moves) {
       eventBuilder.addMove(MoveProto.newBuilder()
           .setFrom(move.getFrom().name())
@@ -91,7 +82,7 @@ public class Game {
     }
     addEvent(eventBuilder);
 
-    switch (position.getStatus()) {
+    switch (getPosition().getStatus()) {
       case BLACK_CHECKMATED:
       case BLACK_STALEMATED:
       case WHITE_CHECKMATED:
@@ -101,7 +92,7 @@ public class Game {
       case THREEFOLD_REPETITION:
         addEvent(GameEvent.newBuilder()
             .setType(GameEvent.Type.GAME_ENDED)
-            .setStatus(position.getStatus()));
+            .setStatus(getPosition().getStatus()));
         break;
       default:
         break;

@@ -1,5 +1,8 @@
 package com.gilran.chess.server;
 
+import com.gilran.chess.Proto.*;
+import com.gilran.chess.board.Piece;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.protobuf.Message;
@@ -7,12 +10,6 @@ import com.google.protobuf.Message;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import com.gilran.chess.Proto.*;
-import com.gilran.chess.board.Coordinate;
-import com.gilran.chess.board.Move;
-import com.gilran.chess.board.Piece;
-import com.gilran.chess.board.Position;
 
 /**
  * The chess service implementation.

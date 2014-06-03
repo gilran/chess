@@ -1,15 +1,14 @@
 package com.gilran.chess;
 
+import com.gilran.chess.Proto.GameEvent;
+import com.gilran.chess.client.Client;
+import com.gilran.chess.client.GameEventHandler;
 import com.google.common.collect.Lists;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.List;
-
-import com.gilran.chess.Proto.GameEvent;
-import com.gilran.chess.client.Client;
-import com.gilran.chess.client.EventsListenerThread;
 
 import jline.console.ConsoleReader;
 
@@ -79,7 +78,7 @@ public class ShellClient {
       return;
     }
     print(client.seek().toString());
-    client.startListeningToEvents(new EventsListenerThread.EventHandler() {
+    client.startListeningToEvents(new GameEventHandler() {
       @Override
       public void handle(GameEvent event) {
         print("\nGot new event:\n" + event.toString() + "prompt> ");

@@ -1,10 +1,10 @@
 package com.gilran.chess.android;
 
+import com.gilran.chess.client.Client;
+
 import com.google.common.base.Preconditions;
 
 import android.util.Log;
-
-import com.gilran.chess.client.Client;
 
 public class LoggerAdapter implements Client.LoggerAdapter {
   private String tag;
