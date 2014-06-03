@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>Client</artifactId>
-  
+
   <dependencies>
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -18,7 +18,7 @@
       <artifactId>httpclient</artifactId>
       <version>4.1.1</version>
     </dependency>
-    
+
     <!-- Local dependencies -->
     <dependency>
       <groupId>com.gilran.chess</groupId>

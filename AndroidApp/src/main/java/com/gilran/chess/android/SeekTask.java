@@ -8,7 +8,7 @@ import android.content.Context;
 public class SeekTask extends AsyncGetTask<SeekResponse> {
   private static final String ACTION_MESSAGE = "Seeking an opponent...";
   private static final String ERROR_MESSAGE = "Seek found no match.";
-  
+
   private GameEventHandler gameEventHandler;
 
   public SeekTask(

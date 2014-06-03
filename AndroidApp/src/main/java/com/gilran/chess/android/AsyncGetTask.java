@@ -43,20 +43,20 @@ public abstract class AsyncGetTask<Response>
       dialog.show();
     }
   }
-  
+
   @Override
   protected Response doInBackground(Void... params) {
     return run();
   }
-  
-  protected abstract Response run(); 
+
+  protected abstract Response run();
 
   @Override
   protected void onPostExecute(Response response) {
     if (dialog != null) {
       dialog.dismiss();
     }
-    
+
     if (response == null) {
       Toast.makeText(context, actionError, Toast.LENGTH_LONG).show();
       return;

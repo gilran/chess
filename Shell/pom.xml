@@ -18,7 +18,7 @@
       <artifactId>guava</artifactId>
       <version>17.0</version>
     </dependency>
-    
+
     <!-- Local dependencies -->
     <dependency>
       <groupId>com.gilran.chess</groupId>

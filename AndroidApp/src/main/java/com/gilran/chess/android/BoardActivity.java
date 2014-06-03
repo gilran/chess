@@ -55,9 +55,9 @@ public class BoardActivity extends Activity {
     }
 
     username = getIntent().getExtras().getString(EXTRA_LOCAL_PLAYER_NAME);
-    
+
     setContentView(R.layout.activity_game);
-    
+
     if (savedInstanceState == null) {
       getFragmentManager().beginTransaction()
           .add(R.id.container, new BoardFragment()).commit();
@@ -116,23 +116,23 @@ public class BoardActivity extends Activity {
       return rootView;
     }
   }
-  
+
   private class SeekTaskCallback implements SeekTask.Callback<SeekResponse> {
     @Override
     public void run(SeekResponse response) {
       game = new Game(response.getWhite(), response.getBlack());
       pieceColor = username.equals(game.getWhitePlayer())
           ? Piece.Color.WHITE : Piece.Color.BLACK;
-      
+
       TextView playerNameView =
           (TextView) findViewById(R.id.otherPlayerName);
       playerNameView.setText(game.getPlayer(Piece.otherColor(pieceColor)));
-      
+
       squareAdapter.setOrientation(pieceColor);
       squareAdapter.draw(game.getPosition());
     }
   }
-  
+
   private class EventHandler implements GameEventHandler {
     @Override
     public void handle(GameEvent event) {
@@ -146,33 +146,33 @@ public class BoardActivity extends Activity {
       }
     }
   }
-  
+
   /**
    * Applies the moves received as part of a game event.
-   * 
+   *
    * <p>Applies locally the first move, which is the move the player indicated.
    * This is needed in order to update the position and calculate legal moves
    * for the next move.
    * The locally calculated moves list should be identical to the received
-   * list.  
+   * list.
    */
   private void applyMoves(List<MoveProto> moves) {
     Preconditions.checkArgument(!moves.isEmpty());
-    
+
     Coordinate from = Coordinate.get(moves.get(0).getFrom());
     Coordinate to = Coordinate.get(moves.get(0).getTo());
     Preconditions.checkState(from != null && to != null);
-    
+
     final List<Move> calculatedMoves = game.getPosition().move(from, to);
     Preconditions.checkState(calculatedMoves.size() == moves.size());
-    
+
     board.post(new Runnable() {
       public void run() {
         squareAdapter.move(calculatedMoves);
       }
     });
   }
-  
+
   public void seek() {
     SeekTask seekTask =  new SeekTask(
         this,
@@ -181,9 +181,9 @@ public class BoardActivity extends Activity {
         new SeekTaskCallback());
     seekTask.execute();
   }
-  
+
   private void handleCoordinateClicked(Coordinate coordinate) {
-    if (moveSource != null && 
+    if (moveSource != null &&
         game.getPosition().getLegalMoves(moveSource).contains(coordinate)) {
       MoveTask moveTask =
           new MoveTask(this, connection.getService(), moveSource, coordinate);
@@ -192,22 +192,22 @@ public class BoardActivity extends Activity {
       setMoveSource(coordinate);
     }
   }
-  
+
   private void setMoveSource(Coordinate coordinate) {
     if (game == null || game.getPosition().getActivePlayer() != pieceColor) {
       return;
     }
-    
+
     Piece piece = game.getPosition().getPiecesPlacement().at(coordinate);
     if (piece == null || piece.getColor() != pieceColor) {
       return;
     }
-    
+
     Set<Coordinate> destinations = game.getPosition().getLegalMoves(coordinate);
     if (destinations.isEmpty()) {
       return;
     }
-    
+
     moveSource = coordinate;
     GridView board = (GridView) findViewById(R.id.chessboard);
     SquareAdapter squareAdapter = (SquareAdapter) board.getAdapter();

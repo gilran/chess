@@ -12,7 +12,7 @@ public class MoveTask extends AsyncGetTask<MoveResponse> {
 
   private Coordinate from;
   private Coordinate to;
-  
+
   public MoveTask(
       Context context,
       ChessClientService service,

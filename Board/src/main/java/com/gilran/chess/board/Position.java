@@ -82,7 +82,7 @@ public class Position extends PositionBase {
     updateLegalMoves();
     updateStatus();
   }
-  
+
   public Set<Coordinate> getLegalMoves(Coordinate from) {
     Piece piece = getPiecesPlacement().at(from);
     if (piece == null) {

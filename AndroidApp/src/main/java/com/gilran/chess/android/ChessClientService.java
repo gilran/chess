@@ -72,11 +72,11 @@ public class ChessClientService extends Service {
     if (response == null || response.getStatus() != Status.OK) {
       return response;
     }
-    
+
     client.startListeningToEvents(handler);
     return response;
   }
-  
+
   public MoveResponse move(Coordinate from, Coordinate to) {
     return client.move(from.toString(), to.toString());
   }

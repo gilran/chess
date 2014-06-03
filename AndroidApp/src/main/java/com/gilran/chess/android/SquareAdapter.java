@@ -25,12 +25,12 @@ import java.util.Map;
 public class SquareAdapter extends BaseAdapter {
   private static enum HightlightColor { GREEN, YELLOW }
   private static enum SquareColor { LIGHT, DARK }
-  
+
   private static final Map<SquareColor, Integer> SQUARE_BACKGROUND;
   private static final Map<HightlightColor, Map<SquareColor, Integer>>
       HIGHLIGHTED_SQUARE_BACKGROUND;
   private static final Map<Piece, Integer> PIECE_IMAGE;
-  
+
   static {
     SQUARE_BACKGROUND =
         ImmutableMap.<SquareAdapter.SquareColor, Integer>builder()
@@ -50,7 +50,7 @@ public class SquareAdapter extends BaseAdapter {
     HIGHLIGHTED_SQUARE_BACKGROUND = ImmutableMap.of(
         HightlightColor.GREEN, greenSquareBackground,
         HightlightColor.YELLOW, yellowSquareBackground);
-    
+
     PIECE_IMAGE = ImmutableMap.<Piece, Integer>builder()
         .put(Piece.get(Piece.Type.PAWN, Piece.Color.WHITE),
              R.drawable.white_pawn)
@@ -78,7 +78,7 @@ public class SquareAdapter extends BaseAdapter {
              R.drawable.black_king)
         .build();
   }
-  
+
   private Context context;
   private View square[][];
   private Piece.Color orientation;
@@ -90,7 +90,7 @@ public class SquareAdapter extends BaseAdapter {
     this.highlightedSquares = ArrayListMultimap.create();
     createSquares();
   }
-  
+
   private void createSquares() {
     square = new View[Coordinate.FILES][Coordinate.RANKS];
     LayoutInflater layoutInflater =
@@ -107,7 +107,7 @@ public class SquareAdapter extends BaseAdapter {
       }
     }
   }
-  
+
   @Override
   public int getCount() {
     return Coordinate.FILES * Coordinate.RANKS;
@@ -132,19 +132,19 @@ public class SquareAdapter extends BaseAdapter {
 
     return square[column][row];
   }
-  
+
   public void setOrientation(Piece.Color orientation) {
     this.orientation = orientation;
   }
-  
+
   private SquareColor getSquareColor(int file, int rank) {
     return (file + rank) % 2 == 0 ? SquareColor.DARK : SquareColor.LIGHT;
   }
-  
+
   private SquareColor getSquareColor(Coordinate coordinate) {
     return getSquareColor(coordinate.getFile(), coordinate.getRank());
   }
-  
+
   public Coordinate getCoordinate(int position) {
     Preconditions.checkArgument(0 <= position && position <= getCount());
     int file = -1;
@@ -161,7 +161,7 @@ public class SquareAdapter extends BaseAdapter {
     }
     return Preconditions.checkNotNull(Coordinate.get(file, rank));
   }
-  
+
   private int getPosition(Coordinate coordinate) {
     int position = -1;
     switch (orientation) {
@@ -176,28 +176,28 @@ public class SquareAdapter extends BaseAdapter {
             Coordinate.LAST_FILE - coordinate.getFile();
         break;
     }
-    
+
     Preconditions.checkState(position >= 0);
     return position;
   }
-  
+
   private ImageView getPieceImageView(Coordinate coordinate) {
     View square = (View) getItem(getPosition(coordinate));
     return (ImageView) square.findViewById(R.id.piece);
   }
-  
+
   private ImageView getBackgroundImageView(Coordinate coordinate) {
     View square = (View) getItem(getPosition(coordinate));
     return (ImageView) square.findViewById(R.id.square_background);
   }
-  
+
   public void draw(Position chessPosition) {
     for (PlacementEntry entry : chessPosition.getPiecesPlacement()) {
       ImageView pieceImageView = getPieceImageView(entry.getCoordinate());
       pieceImageView.setImageResource(PIECE_IMAGE.get(entry.getPiece()));
     }
   }
-  
+
   private void resetHighlights(HightlightColor color) {
     for (Coordinate coordinate : highlightedSquares.get(color)) {
       ImageView square = getBackgroundImageView(coordinate);
@@ -206,11 +206,11 @@ public class SquareAdapter extends BaseAdapter {
     }
     highlightedSquares.removeAll(color);
   }
-  
+
   public void resetHighlights() {
     resetHighlights(HightlightColor.YELLOW);
   }
-  
+
   private void highlight(
       HightlightColor color, Iterable<Coordinate> coordinates) {
     resetHighlights(color);
@@ -221,11 +221,11 @@ public class SquareAdapter extends BaseAdapter {
       highlightedSquares.put(color, coordinate);
     }
   }
-  
+
   public void highlight(Iterable<Coordinate> coordinates) {
     highlight(HightlightColor.YELLOW, coordinates);
   }
-  
+
   public void move(List<Move> moves) {
     List<Coordinate> coordinates = Lists.newLinkedList();
     for (Move move : moves) {

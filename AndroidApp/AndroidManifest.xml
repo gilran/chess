@@ -7,7 +7,7 @@
   <uses-sdk
       android:minSdkVersion="11"
       android:targetSdkVersion="19" />
-  
+
   <uses-permission android:name="android.permission.INTERNET" />
 	
 	<application
@@ -27,7 +27,7 @@
 	      android:name="com.gilran.chess.android.BoardActivity"
 	      android:label="@string/title_activity_game" >
 	  </activity>
-	  <service 
+	  <service
 	      android:name="com.gilran.chess.android.ChessClientService">
 	  </service>
 	</application>

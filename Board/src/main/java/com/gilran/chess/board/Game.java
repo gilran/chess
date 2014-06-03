@@ -6,8 +6,8 @@ public class Game {
   private String blackPlayer;
   /** The game position. */
   private Position position;
-  
-  public Game(String whitePlayer, String blackPlayer) {   
+
+  public Game(String whitePlayer, String blackPlayer) {
     this.whitePlayer = whitePlayer;
     this.blackPlayer = blackPlayer;
     this.position = new Position();

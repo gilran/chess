@@ -15,7 +15,7 @@
         android:background="#222222"
         android:text="@string/player_name_placeholder"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-    
+
     <GridView
         android:id="@+id/chessboard"
         android:layout_width="fill_parent"
@@ -40,5 +40,5 @@
         android:background="#222222"
         android:text=""
         android:textAppearance="?android:attr/textAppearanceLarge" />
-    
+
 </LinearLayout>
