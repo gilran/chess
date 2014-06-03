@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.gilran.chess.board.Coordinate;
+import com.gilran.chess.board.Move;
 import com.gilran.chess.board.Piece;
 import com.gilran.chess.board.PiecesPlacement.PlacementEntry;
 import com.gilran.chess.board.Position;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,9 +22,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 public class SquareAdapter extends BaseAdapter {
+  private static enum HightlightColor { GREEN, YELLOW }
   private static enum SquareColor { LIGHT, DARK }
+  
   private static final Map<SquareColor, Integer> SQUARE_BACKGROUND;
-  private static final Map<SquareColor, Integer> HIGHLIGHTED_SQUARE_BACKGROUND;
+  private static final Map<HightlightColor, Map<SquareColor, Integer>>
+      HIGHLIGHTED_SQUARE_BACKGROUND;
   private static final Map<Piece, Integer> PIECE_IMAGE;
   
   static {
@@ -30,11 +36,20 @@ public class SquareAdapter extends BaseAdapter {
         .put(SquareColor.LIGHT, R.drawable.light_square)
         .put(SquareColor.DARK, R.drawable.dark_square)
         .build();
-    HIGHLIGHTED_SQUARE_BACKGROUND =
+    Map<SquareAdapter.SquareColor, Integer> greenSquareBackground =
         ImmutableMap.<SquareAdapter.SquareColor, Integer>builder()
-        .put(SquareColor.LIGHT, R.drawable.highlighted_light_square)
-        .put(SquareColor.DARK, R.drawable.highlighted_dark_square)
+        .put(SquareColor.LIGHT, R.drawable.green_light_square)
+        .put(SquareColor.DARK, R.drawable.green_dark_square)
         .build();
+    Map<SquareAdapter.SquareColor, Integer> yellowSquareBackground =
+        ImmutableMap.<SquareAdapter.SquareColor, Integer>builder()
+        .put(SquareColor.LIGHT, R.drawable.yellow_light_square)
+        .put(SquareColor.DARK, R.drawable.yellow_dark_square)
+        .build();
+    HIGHLIGHTED_SQUARE_BACKGROUND = ImmutableMap.of(
+        HightlightColor.GREEN, greenSquareBackground,
+        HightlightColor.YELLOW, yellowSquareBackground);
+    
     PIECE_IMAGE = ImmutableMap.<Piece, Integer>builder()
         .put(Piece.get(Piece.Type.PAWN, Piece.Color.WHITE),
              R.drawable.white_pawn)
@@ -66,12 +81,12 @@ public class SquareAdapter extends BaseAdapter {
   private Context context;
   private View square[][];
   private Piece.Color orientation;
-  private List<Coordinate> highlightedSquares;
+  private Multimap<HightlightColor, Coordinate> highlightedSquares;
 
   public SquareAdapter(Context context) {
     this.context = context;
     this.orientation = Piece.Color.WHITE;
-    this.highlightedSquares = Lists.newLinkedList();
+    this.highlightedSquares = ArrayListMultimap.create();
     createSquares();
   }
   
@@ -182,29 +197,47 @@ public class SquareAdapter extends BaseAdapter {
     }
   }
   
-  public void resetHighlights() {
-    for (Coordinate coordinate : highlightedSquares) {
+  private void resetHighlights(HightlightColor color) {
+    for (Coordinate coordinate : highlightedSquares.get(color)) {
       ImageView square = getBackgroundImageView(coordinate);
       square.setImageResource(
           SQUARE_BACKGROUND.get(getSquareColor(coordinate)));
     }
-    highlightedSquares.clear();
+    highlightedSquares.removeAll(color);
   }
   
-  public void highlight(Iterable<Coordinate> coordinates) {
-    resetHighlights();
+  public void resetHighlights() {
+    resetHighlights(HightlightColor.YELLOW);
+  }
+  
+  private void highlight(
+      HightlightColor color, Iterable<Coordinate> coordinates) {
+    resetHighlights(color);
     for (Coordinate coordinate : coordinates) {
       ImageView square = getBackgroundImageView(coordinate);
-      square.setImageResource(
-          HIGHLIGHTED_SQUARE_BACKGROUND.get(getSquareColor(coordinate)));
-      highlightedSquares.add(coordinate);
+      square.setImageResource(HIGHLIGHTED_SQUARE_BACKGROUND
+          .get(color).get(getSquareColor(coordinate)));
+      highlightedSquares.put(color, coordinate);
     }
   }
   
-  public void move(Coordinate from, Coordinate to) {
-    ImageView fromImageView = getPieceImageView(from);
-    ImageView toImageView = getPieceImageView(to);
-    toImageView.setImageDrawable(fromImageView.getDrawable());
-    fromImageView.setImageResource(0);
+  public void highlight(Iterable<Coordinate> coordinates) {
+    highlight(HightlightColor.YELLOW, coordinates);
+  }
+  
+  public void move(List<Move> moves) {
+    List<Coordinate> coordinates = Lists.newLinkedList();
+    for (Move move : moves) {
+      Coordinate from = move.getFrom();
+      Coordinate to = move.getTo();
+      ImageView fromPiece = getPieceImageView(from);
+      ImageView toPiece = getPieceImageView(to);
+      toPiece.setImageDrawable(fromPiece.getDrawable());
+      fromPiece.setImageDrawable(null);
+      coordinates.add(from);
+      coordinates.add(to);
+    }
+    resetHighlights(HightlightColor.YELLOW);
+    highlight(HightlightColor.GREEN, coordinates);
   }
 }

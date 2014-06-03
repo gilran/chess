@@ -162,16 +162,14 @@ public class BoardActivity extends Activity {
     Coordinate to = Coordinate.get(moves.get(0).getTo());
     Preconditions.checkState(from != null && to != null);
     
-    List<Move> calculatedMoves = game.getPosition().move(from, to);
+    final List<Move> calculatedMoves = game.getPosition().move(from, to);
     Preconditions.checkState(calculatedMoves.size() == moves.size());
     
-    for (final Move move : calculatedMoves) {
-      board.post(new Runnable() {
-        public void run() {
-          squareAdapter.move(move.getFrom(), move.getTo());
-        }
-      });
-    }
+    board.post(new Runnable() {
+      public void run() {
+        squareAdapter.move(calculatedMoves);
+      }
+    });
   }
   
   public void seek() {
@@ -186,7 +184,6 @@ public class BoardActivity extends Activity {
   private void handleCoordinateClicked(Coordinate coordinate) {
     if (moveSource != null && 
         game.getPosition().getLegalMoves(moveSource).contains(coordinate)) {
-      squareAdapter.resetHighlights();
       MoveTask moveTask =
           new MoveTask(this, connection.getService(), moveSource, coordinate);
       moveTask.execute();
