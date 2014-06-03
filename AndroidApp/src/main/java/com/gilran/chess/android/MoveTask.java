@@ -1,10 +1,11 @@
 package com.gilran.chess.android;
 
-import android.content.Context;
-
 import com.gilran.chess.Proto.MoveResponse;
 import com.gilran.chess.board.Coordinate;
+
 import com.google.common.base.Preconditions;
+
+import android.content.Context;
 
 public class MoveTask extends AsyncGetTask<MoveResponse> {
   private static final String ERROR_MESSAGE = "Failed to send move.";

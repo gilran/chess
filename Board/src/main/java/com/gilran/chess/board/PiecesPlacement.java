@@ -14,7 +14,7 @@ import java.util.Set;
  * @author Gil Ran <gilrun@gmail.com>
  */
 public class PiecesPlacement
-		implements Iterable<PiecesPlacement.PlacementEntry> {
+    implements Iterable<PiecesPlacement.PlacementEntry> {
   /** A map from a coordinate to the piece that occupies it. */
   private Map<Coordinate, Piece> coordinateToPiece;
 

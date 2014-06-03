@@ -1,13 +1,11 @@
 package com.gilran.chess.android;
 
-import java.util.List;
-import java.util.Map;
-
 import com.gilran.chess.board.Coordinate;
 import com.gilran.chess.board.Move;
 import com.gilran.chess.board.Piece;
 import com.gilran.chess.board.PiecesPlacement.PlacementEntry;
 import com.gilran.chess.board.Position;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
@@ -20,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+
+import java.util.List;
+import java.util.Map;
 
 public class SquareAdapter extends BaseAdapter {
   private static enum HightlightColor { GREEN, YELLOW }

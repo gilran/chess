@@ -1,8 +1,5 @@
 package com.gilran.chess.android;
 
-import java.util.List;
-import java.util.Set;
-
 import com.gilran.chess.Proto.GameEvent;
 import com.gilran.chess.Proto.MoveProto;
 import com.gilran.chess.Proto.SeekResponse;
@@ -11,6 +8,7 @@ import com.gilran.chess.board.Game;
 import com.gilran.chess.board.Move;
 import com.gilran.chess.board.Piece;
 import com.gilran.chess.client.GameEventHandler;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
@@ -28,6 +26,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import java.util.List;
+import java.util.Set;
 
 public class BoardActivity extends Activity {
   static final String EXTRA_LOCAL_PLAYER_NAME =
