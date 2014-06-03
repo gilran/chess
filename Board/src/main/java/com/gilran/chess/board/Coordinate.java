@@ -49,7 +49,9 @@ public class Coordinate implements Comparable<Coordinate> {
 
   /** Returns the coordinate at the given file and rank. */
   public static Coordinate get(int file, int rank) {
-    if (!isValidFile(file) || !isValidRank(rank)) return null;
+    if (!isValidFile(file) || !isValidRank(rank)) {
+      return null;
+    }
     return COORDINATES[file][rank];
   }
 
@@ -59,10 +61,14 @@ public class Coordinate implements Comparable<Coordinate> {
    * file is in lower-case. For example: "e4".
    */
   public static Coordinate get(String name) {
-    if (name.length() != 2) return null;
+    if (name.length() != 2) {
+      return null;
+    }
     Integer file = fileIndex(name.charAt(0));
     Integer rank = rankIndex(name.charAt(1));
-    if (file == null || rank == null) return null;
+    if (file == null || rank == null) {
+      return null;
+    }
     return get(file, rank);
   }
 
@@ -107,12 +113,12 @@ public class Coordinate implements Comparable<Coordinate> {
 
   /** Returns the name of the file. */
   private char fileName() {
-    return (char)('a' + file);
+    return (char) ('a' + file);
   }
 
   /** Returns the name of the rank. */
   private char rankName() {
-    return (char)('1' + rank);
+    return (char) ('1' + rank);
   }
 
   /**
@@ -120,16 +126,22 @@ public class Coordinate implements Comparable<Coordinate> {
    * invalid.
    */
   private static Integer fileIndex(char file) {
-    int index = (int)(file - 'a');
-    if (!isValidFile(index)) return null;
+    int index = (int) (file - 'a');
+    if (!isValidFile(index)) {
+      return null;
+    }
     return index;
   }
 
   /** Returns the rank index for the given rank name. */
   private static Integer rankIndex(char rank) {
-    if (!Character.isDigit(rank)) return null;
+    if (!Character.isDigit(rank)) {
+      return null;
+    }
     int index = Character.digit(rank, 10) - 1;
-    if (!isValidRank(index)) return null;
+    if (!isValidRank(index)) {
+      return null;
+    }
     return index;
   }
 
@@ -138,10 +150,12 @@ public class Coordinate implements Comparable<Coordinate> {
   }
 
   public int compareTo(Coordinate other) {
-    if (this.file != other.file)
+    if (this.file != other.file) {
       return this.file < other.file ? -1 : 1;
-    if (this.rank != other.rank)
+    }
+    if (this.rank != other.rank) {
       return this.rank < other.rank ? -1 : 1;
+    }
     return 0;
   }
 }

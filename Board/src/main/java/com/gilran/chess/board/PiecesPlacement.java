@@ -1,12 +1,12 @@
 package com.gilran.chess.board;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 /**
  * The placement of pieces on the board.
@@ -96,7 +96,9 @@ import com.google.common.collect.Sets;
    */
   public boolean anyOccupied(Iterable<Coordinate> coordinates) {
     for (Coordinate coordinate : coordinates) {
-      if (isOccupied(coordinate)) return true;
+      if (isOccupied(coordinate)) {
+        return true;
+      }
     }
     return false;
   }

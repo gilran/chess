@@ -1,9 +1,9 @@
 package com.gilran.chess.board;
 
-import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+
+import java.util.Map;
 
 /**
  * The castling rights a chess position.
@@ -86,7 +86,7 @@ import com.google.common.collect.Maps;
     rightsMap.put(Castle.get(Piece.Color.BLACK, Side.QUEEN), defaultRight);
   }
 
-  /** Copy constructor */
+  /** Copy constructor. */
   CastlingRights(CastlingRights other) {
     rightsMap = Maps.newHashMap(other.rightsMap);
   }

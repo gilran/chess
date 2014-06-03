@@ -1,9 +1,9 @@
 package com.gilran.chess.server;
 
+import com.google.common.collect.Maps;
+
 import java.util.Map;
 import java.util.UUID;
-
-import com.google.common.collect.Maps;
 
 public class Session {
   /** The session token. */

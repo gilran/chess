@@ -1,13 +1,13 @@
 package com.gilran.chess.board;
 
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * A chess piece.
@@ -123,8 +123,9 @@ public abstract class Piece {
    * @return A list of all possible moves from the give coordinate.
    */
   public List<Move> moves(Coordinate from) {
-    if (movesMap == null)
+    if (movesMap == null) {
       initMovesMap();
+    }
     return movesMap.get(from);
   }
 
@@ -136,26 +137,28 @@ public abstract class Piece {
   }
 
   /**
-   * Creates a new move and adds it to the list.
+   * Creates a new move and adds it to the list builder.
    * If one of the coordinates is null, a move is not created or added.
    * @param from The from coordinate of the move.
    * @param to The to coordinate of the move.
-   * @param moves The moves list.
+   * @param listBuilder The list builder to which the move is added.
    */
   protected static void addMove(
       Coordinate from, Coordinate to, ImmutableList.Builder<Move> listBuilder) {
-    if (from == null || to == null) return;
+    if (from == null || to == null) {
+      return;
+    }
     listBuilder.add(new Move(from, to));
   }
 
   /**
-   * Adds moves to the moves list, where each move is to one (files, ranks) step
-   * from the previous move's to, and must have all previous moves' to
-   * coordinates unoccupied.
+   * Adds moves to the moves list builder, where each move is to one (files,
+   * ranks) step from the previous move's to, and must have all previous moves'
+   * to coordinates unoccupied.
    * @param from The current piece coordinate.
    * @param files The number of files per move.
    * @param ranks The number of ranks per move.
-   * @param list The moves list to which moves will be added.
+   * @param listBuilder The list builder to which the moves are added.
    */
   protected static void addMovesSeries(
       Coordinate from,
@@ -179,7 +182,7 @@ public abstract class Piece {
         Color.WHITE, Coordinate.FIRST_RANK + 1,
         Color.BLACK, Coordinate.LAST_RANK - 1);
 
-    /** Constructor */
+    /** Constructor. */
     public Pawn(Color color) {
       super(Type.PAWN, color);
     }
@@ -233,7 +236,7 @@ public abstract class Piece {
 
   /** A chess rook. */
   private static class Rook extends Piece {
-    /** Constructor */
+    /** Constructor. */
     public Rook(Color color) {
       super(Type.ROOK, color);
     }
@@ -253,7 +256,7 @@ public abstract class Piece {
 
   /** A chess knight. */
   private static class Knight extends Piece {
-    /** Constructor */
+    /** Constructor. */
     public Knight(Color color) {
       super(Type.KNIGHT, color);
     }
@@ -277,7 +280,7 @@ public abstract class Piece {
 
   /** A chess bishop. */
   private static class Bishop extends Piece {
-    /** Constructor */
+    /** Constructor. */
     public Bishop(Color color) {
       super(Type.BISHOP, color);
     }
@@ -297,7 +300,7 @@ public abstract class Piece {
 
   /** A chess queen. */
   private static class Queen extends Piece {
-    /** Constructor */
+    /** Constructor. */
     public Queen(Color color) {
       super(Type.QUEEN, color);
     }
@@ -321,7 +324,7 @@ public abstract class Piece {
 
   /** A chess king. */
   private static class King extends Piece {
-    /** Constructor */
+    /** Constructor. */
     public King(Color color) {
       super(Type.KING, color);
     }

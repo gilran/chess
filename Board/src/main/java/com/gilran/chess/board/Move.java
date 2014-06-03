@@ -1,10 +1,10 @@
 package com.gilran.chess.board;
 
-import java.util.Collections;
-import java.util.Set;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSortedSet;
+
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * A move on the chess board.
@@ -140,9 +140,15 @@ public class Move {
 
   @Override
   public boolean equals(Object other) {
-    if (other == null) return false;
-    if (other == this) return true;
-    if (!(other instanceof Move)) return false;
+    if (other == null) {
+      return false;
+    }
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof Move)) {
+      return false;
+    }
     Move otherMove = (Move) other;
     return
       this.from == otherMove.from &&
@@ -156,8 +162,12 @@ public class Move {
   }
 
   public String toString() {
-    if (getCastlingSide() == CastlingRights.Side.KING) return "O-O";
-    if (getCastlingSide() == CastlingRights.Side.QUEEN) return "O-O-O";
+    if (getCastlingSide() == CastlingRights.Side.KING) {
+      return "O-O";
+    }
+    if (getCastlingSide() == CastlingRights.Side.QUEEN) {
+      return "O-O-O";
+    }
 
     StringBuilder builder = new StringBuilder(5);
     builder.append(from.toString());

@@ -1,8 +1,8 @@
 package com.gilran.chess.board;
 
-import java.util.Map;
-
 import com.google.common.collect.Maps;
+
+import java.util.Map;
 
 /**
  * A base class for chess position and position-like (such as annotations)

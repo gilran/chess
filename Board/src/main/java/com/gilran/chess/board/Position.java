@@ -1,18 +1,16 @@
 package com.gilran.chess.board;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-//import java.util.logging.Logger;
-
-
-
-import com.gilran.chess.Proto.GameStatus;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import com.gilran.chess.Proto.GameStatus;
 
 /**
  * A position on the chess board.
@@ -99,7 +97,7 @@ public class Position extends PositionBase {
     this.promotionPieceType.put(color, promotionPieceType);
   }
 
-  /** Returns the game's status */
+  /** Returns the game's status. */
   public GameStatus getStatus() { return status; }
 
   /**
@@ -178,8 +176,9 @@ public class Position extends PositionBase {
     List<Move> moves = Lists.newArrayList();
 
     if (!legalMoves.get(activePlayer).containsKey(from) ||
-        !legalMoves.get(activePlayer).get(from).containsKey(to))
+        !legalMoves.get(activePlayer).get(from).containsKey(to)) {
       return moves;
+    }
 
     Move theMove = legalMoves.get(activePlayer).get(from).get(to);
     moves.add(theMove);
@@ -187,17 +186,22 @@ public class Position extends PositionBase {
     Piece piece = at(from);
     boolean isCapture =
         theMove.getCapture() != null && at(theMove.getCapture()) != null;
-    if (!isCapture) theMove.setCapture(null);
+    if (!isCapture) {
+      theMove.setCapture(null);
+    }
 
-    if (theMove.getCastlingSide() != null)
+    if (theMove.getCastlingSide() != null) {
       moves.add(completeCastle(theMove));
+    }
 
     apply(moves);
     updateCastlingRights(theMove, piece);
 
     enPassantTarget = theMove.getEnPassantTarget();
     activePlayer = Piece.otherColor(activePlayer);
-    if (activePlayer == Piece.Color.WHITE) currentMove++;
+    if (activePlayer == Piece.Color.WHITE) {
+      currentMove++;
+    }
     if (isCapture || piece.getType() == Piece.Type.PAWN) {
       halfMovesClock = 0;
     } else {
@@ -297,8 +301,9 @@ public class Position extends PositionBase {
       Map<Coordinate, Map<Coordinate, Move>> sideMoves =
           moves.get(piece.getColor());
       List<Move> movesList = Lists.newLinkedList(piece.moves(from));
-      if (removeIllegalMoves(movesList))
+      if (removeIllegalMoves(movesList)) {
         continue;
+      }
       Map<Coordinate, Move> coordinateMoves = Maps.newHashMap();
       for (Move move : movesList) {
         coordinateMoves.put(move.getTo(), move);
@@ -343,15 +348,17 @@ public class Position extends PositionBase {
     Piece piece = at(move.getFrom());
 
     // No piece at the from-coordinate.
-    if (piece == null)
+    if (piece == null) {
       return false;
+    }
 
     Piece capturedPiece = at(move.getTo());
     boolean capture = false;
     if (capturedPiece != null) {
       // Trying to capture a piece of the same color.
-      if (piece.getColor() == capturedPiece.getColor())
+      if (piece.getColor() == capturedPiece.getColor()) {
         return false;
+      }
       capture = true;
       move.setCapture(move.getTo());
     }
@@ -363,8 +370,9 @@ public class Position extends PositionBase {
         move.setCapture(
             getEnPassantTarget().add(
                 0, piece.getColor() == Piece.Color.WHITE ? -1 : 1));
-        if (!piecesPlacement.isOccupied(move.getCapture()))
+        if (!piecesPlacement.isOccupied(move.getCapture())) {
           return false;
+        }
       } else {
         return false;
       }
@@ -373,13 +381,15 @@ public class Position extends PositionBase {
     // If the move is a castle, but the castling right was lost, the move is
     // illegal.
     if (move.getCastlingSide() != null) {
-      if (!castlingRights.get(piece.getColor(), move.getCastlingSide()))
+      if (!castlingRights.get(piece.getColor(), move.getCastlingSide())) {
         return false;
+      }
     }
 
     // A square that must be unoccupied for this move to be legal is occupied.
-    if (piecesPlacement.anyOccupied(move.getUnoccupied()))
+    if (piecesPlacement.anyOccupied(move.getUnoccupied())) {
       return false;
+    }
 
     return true;
   }
@@ -395,15 +405,17 @@ public class Position extends PositionBase {
     while (fromIt.hasNext()) {
       Map<Coordinate, Move> toMap = fromIt.next();
       Iterator<Move> toIt = toMap.values().iterator();
-      while(toIt.hasNext()) {
+      while (toIt.hasNext()) {
         Move move = toIt.next();
         // A square that must be unthreatened for this move to be legal is
         // threatened.
-        if (anyThreatened(move.getUnthreatened(), otherColor, legalMoves))
+        if (anyThreatened(move.getUnthreatened(), otherColor, legalMoves)) {
           toIt.remove();
+        }
       }
-      if (toMap.isEmpty())
+      if (toMap.isEmpty()) {
         fromIt.remove();
+      }
     }
   }
 
@@ -422,8 +434,9 @@ public class Position extends PositionBase {
       Piece.Color color,
       Map<Piece.Color, Map<Coordinate, Map<Coordinate, Move>>> movesMap) {
     for (Coordinate coordinate : coordinates) {
-      if (isThreatened(coordinate, color, movesMap))
+      if (isThreatened(coordinate, color, movesMap)) {
         return true;
+      }
     }
     return false;
   }
@@ -442,8 +455,9 @@ public class Position extends PositionBase {
       Map<Piece.Color, Map<Coordinate, Map<Coordinate, Move>>> movesMap) {
     Map<Coordinate, Map<Coordinate, Move>> sideMoves = movesMap.get(color);
     for (Map<Coordinate, Move> toMap : sideMoves.values()) {
-      if (toMap.containsKey(coordinate))
+      if (toMap.containsKey(coordinate)) {
         return true;
+      }
     }
     return false;
   }
@@ -472,7 +486,7 @@ public class Position extends PositionBase {
     while (fromIt.hasNext()) {
       Map<Coordinate, Move> toMap = fromIt.next();
       Iterator<Move> toIt = toMap.values().iterator();
-      while(toIt.hasNext()) {
+      while (toIt.hasNext()) {
         Move move = toIt.next();
 
         // Simulating the moves and testing for check.
@@ -483,15 +497,17 @@ public class Position extends PositionBase {
         boolean checked = isChecked(color, moves);
         revert(moveAsList, capturedPiece);
 
-        if (checked)
+        if (checked) {
           toIt.remove();
+        }
       }
-      if (toMap.isEmpty())
+      if (toMap.isEmpty()) {
         fromIt.remove();
+      }
     }
   }
 
-  /** Updates the position status (testing for end-game conditions) */
+  /** Updates the position status (testing for end-game conditions). */
   private void updateStatus() {
     boolean check = isChecked(getActivePlayer(), legalMoves);
     boolean hasLegalMoves = !legalMoves.get(getActivePlayer()).isEmpty();
@@ -513,14 +529,16 @@ public class Position extends PositionBase {
         if (hasLegalMoves) {
           status = check ? GameStatus.WHITE_CHECKED : GameStatus.WHITE_TO_MOVE;
         } else {
-          status = check ? GameStatus.WHITE_CHECKMATED : GameStatus.WHITE_STALEMATED;
+          status =
+            check ? GameStatus.WHITE_CHECKMATED : GameStatus.WHITE_STALEMATED;
         }
         return;
       case BLACK:
         if (hasLegalMoves) {
           status = check ? GameStatus.BLACK_CHECKED : GameStatus.BLACK_TO_MOVE;
         } else {
-          status = check ? GameStatus.BLACK_CHECKMATED : GameStatus.BLACK_STALEMATED;
+          status =
+            check ? GameStatus.BLACK_CHECKMATED : GameStatus.BLACK_STALEMATED;
         }
         return;
     }

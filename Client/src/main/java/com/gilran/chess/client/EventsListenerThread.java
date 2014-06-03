@@ -13,7 +13,7 @@ public class EventsListenerThread extends Thread {
     void handle(GameEvent event);
   }
 
-  private int MAX_FAILED_ATTEMPTS = 25;
+  private static final int MAX_FAILED_ATTEMPTS = 25;
 
   private String sessionToken;
   private String gameId;
@@ -49,15 +49,17 @@ public class EventsListenerThread extends Thread {
           EventsResponse.class);
       if (response == null) {
         failedAttmpts++;
-        if (failedAttmpts == MAX_FAILED_ATTEMPTS)
+        if (failedAttmpts == MAX_FAILED_ATTEMPTS) {
           break;
+        }
         continue;
       }
       failedAttmpts = 0;
       List<GameEvent> events = response.getEventList();
       nextEventNumber = events.get(events.size() - 1).getSerialNumber() + 1;
-      for (GameEvent event : events)
+      for (GameEvent event : events) {
         eventHandler.handle(event);
+      }
     }
   }
 

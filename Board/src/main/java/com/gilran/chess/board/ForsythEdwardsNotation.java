@@ -1,13 +1,13 @@
 package com.gilran.chess.board;
 
-import java.util.Map;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Ints;
+
+import java.util.Map;
 
 /**
  * A Forsyth-Edwards Notation (FEN) of a chess position.
@@ -18,7 +18,7 @@ import com.google.common.primitives.Ints;
  */
 public class ForsythEdwardsNotation extends PositionBase {
   /** A map from piece to its name in FEN. */
-  private static  ImmutableMap<Piece, Character> PIECE_TO_NAME;
+  private static final ImmutableMap<Piece, Character> PIECE_TO_NAME;
   /** A map from a FEN piece name to the piece. */
   private static final ImmutableMap<Character, Piece> NAME_TO_PIECE;
   /** A map form a player color to its name in FEN. */
@@ -108,12 +108,16 @@ public class ForsythEdwardsNotation extends PositionBase {
     this.fenString = fenString;
 
     String[] fenParts = fenString.split(" ");
-    if (fenParts.length != 6) throw new InvalidFENStringException();
+    if (fenParts.length != 6) {
+      throw new InvalidFENStringException();
+    }
 
     parsePiecePlacement(fenParts[0]);
 
     activePlayer = NAME_TO_COLOR.get(fenParts[1]);
-    if (activePlayer == null) throw new InvalidFENStringException();
+    if (activePlayer == null) {
+      throw new InvalidFENStringException();
+    }
 
     parseCastlingRights(fenParts[2]);
 
@@ -121,15 +125,21 @@ public class ForsythEdwardsNotation extends PositionBase {
       enPassantTarget = null;
     } else {
       enPassantTarget = Coordinate.get(fenParts[3]);
-      if (enPassantTarget == null) throw new InvalidFENStringException();
+      if (enPassantTarget == null) {
+        throw new InvalidFENStringException();
+      }
     }
 
     Integer tmpHalfMovesClock = Ints.tryParse(fenParts[4]);
-    if (tmpHalfMovesClock == null) throw new InvalidFENStringException();
+    if (tmpHalfMovesClock == null) {
+      throw new InvalidFENStringException();
+    }
     halfMovesClock = tmpHalfMovesClock;
 
     Integer tmpCurrentMove = Ints.tryParse(fenParts[5]);
-    if (tmpCurrentMove == null) throw new InvalidFENStringException();
+    if (tmpCurrentMove == null) {
+      throw new InvalidFENStringException();
+    }
     currentMove = tmpCurrentMove;
   }
 
@@ -202,8 +212,9 @@ public class ForsythEdwardsNotation extends PositionBase {
 
       builder.append(PIECE_TO_NAME.get(piece));
     }
-    if (emptySquares != 0)
+    if (emptySquares != 0) {
       builder.append(String.valueOf(emptySquares));
+    }
     return builder.toString();
   }
 
@@ -215,14 +226,16 @@ public class ForsythEdwardsNotation extends PositionBase {
       throws InvalidFENStringException {
     int file = Coordinate.FIRST_FILE;
     for (int i = 0; i < placementString.length(); i++) {
-      if (file > Coordinate.LAST_FILE)
+      if (file > Coordinate.LAST_FILE) {
         throw new InvalidFENStringException();
+      }
 
       Character currentChar = placementString.charAt(i);
       Piece piece = NAME_TO_PIECE.get(currentChar);
       if (piece == null) {
-        if (!Character.isDigit(currentChar))
+        if (!Character.isDigit(currentChar)) {
           throw new InvalidFENStringException();
+        }
         file += Character.digit(currentChar, 10);
       } else {
         Coordinate coordinate = Coordinate.get(file, rank);
@@ -233,8 +246,9 @@ public class ForsythEdwardsNotation extends PositionBase {
         file++;
       }
     }
-    if (file != Coordinate.FILES)
+    if (file != Coordinate.FILES) {
       throw new InvalidFENStringException();
+    }
   }
 
   /** Returns the castling rights field of a FEN for the given postion. */
@@ -258,11 +272,15 @@ public class ForsythEdwardsNotation extends PositionBase {
       throws InvalidFENStringException{
     castlingRights = new CastlingRights(false);
 
-    if (rightsString == "-") return;
+    if (rightsString == "-") {
+      return;
+    }
 
     for (int i = 0; i < rightsString.length(); i++) {
       CastlingRights.Castle castle = NAME_TO_CASTLE.get(rightsString.charAt(i));
-      if (castle == null) throw new InvalidFENStringException();
+      if (castle == null) {
+        throw new InvalidFENStringException();
+      }
       castlingRights.set(castle, true);
     }
   }

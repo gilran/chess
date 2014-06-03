@@ -1,18 +1,15 @@
 package com.gilran.chess.server;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
-
-import com.gilran.chess.JsonParser;
-import com.gilran.chess.Proto.ErrorResponse;
-import com.gilran.chess.Proto.Status;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.protobuf.Message;
+
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -21,6 +18,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
+
+import com.gilran.chess.JsonParser;
+import com.gilran.chess.Proto.ErrorResponse;
+import com.gilran.chess.Proto.Status;
 
 @Path("/")
 public class RequestHandler {
@@ -69,7 +70,8 @@ public class RequestHandler {
       return;
     }
 
-    Message request = JsonParser.toProto(requestJson, method.getParameterTypes()[0]);
+    Message request =
+      JsonParser.toProto(requestJson, method.getParameterTypes()[0]);
     if (request == null || !request.isInitialized()) {
       asyncResponse.resume(
           Response.status(Response.Status.BAD_REQUEST).build());
@@ -77,7 +79,7 @@ public class RequestHandler {
     }
 
     ServiceImpl.Callback callback = new ServiceImpl.Callback() {
-      public void Run(Message response) {
+      public void run(Message response) {
         Preconditions.checkNotNull(response);
         asyncResponse.resume(JsonParser.toJson(response));
       }
@@ -89,7 +91,8 @@ public class RequestHandler {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    if (status != Status.OK)
-      callback.Run(ErrorResponse.newBuilder().setStatus(status).build());
+    if (status != Status.OK) {
+      callback.run(ErrorResponse.newBuilder().setStatus(status).build());
+    }
   }
 }

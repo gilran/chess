@@ -1,17 +1,18 @@
 package com.gilran.chess.server;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+import com.google.protobuf.Message;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.gilran.chess.Proto.*;
 import com.gilran.chess.board.Coordinate;
 import com.gilran.chess.board.Move;
+import com.gilran.chess.board.Piece;
 import com.gilran.chess.board.Position;
-import com.gilran.chess.board.Piece.Color;
-import com.gilran.chess.Proto.*;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
-import com.google.protobuf.Message;
 
 /**
  * The chess service implementation.
@@ -29,9 +30,9 @@ public class ServiceImpl {
     /**
      * Runs the callback.
      *
-     * @param The response proto message.
+     * @param response The response proto message.
      */
-    void Run(Message response);
+    void run(Message response);
   }
 
   /** A class for a pending seek. */
@@ -68,8 +69,8 @@ public class ServiceImpl {
       responseBuilder.setWhite(whitePlayer);
       responseBuilder.setBlack(blackPlayer);
       SeekResponse response = responseBuilder.build();
-      seek1.callback.Run(response);
-      seek2.callback.Run(response);
+      seek1.callback.run(response);
+      seek2.callback.run(response);
     }
   }
 
@@ -87,7 +88,7 @@ public class ServiceImpl {
   public Status login(LoginRequest request, Callback callback) {
     Session session = new Session(request.getUsername());
     sessions.put(session.getToken(), session);
-    callback.Run(LoginResponse.newBuilder()
+    callback.run(LoginResponse.newBuilder()
         .setSessionToken(session.getToken())
         .build());
     return Status.OK;
@@ -95,8 +96,9 @@ public class ServiceImpl {
 
   public synchronized Status seek(SeekRequest request, Callback callback) {
     Session session = sessions.get(request.getSessionToken());
-    if (session == null)
+    if (session == null) {
       return Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
+    }
 
     PendingSeek currentSeek = new PendingSeek(session, callback);
 
@@ -112,35 +114,39 @@ public class ServiceImpl {
 
   public Status move(MoveRequest request, Callback callback) {
     Session session = sessions.get(request.getSessionToken());
-    if (session == null)
+    if (session == null) {
       return Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
+    }
 
     Game game = session.getGame(request.getGameId());
-    if (game == null)
+    if (game == null) {
       return Status.INVALID_GAME_ID;
+    }
 
-    Color playerColor = session.getUsername() == game.getWhitePlayer()
-        ? Color.WHITE : Color.BLACK;
+    Piece.Color playerColor = session.getUsername() == game.getWhitePlayer()
+        ? Piece.Color.WHITE : Piece.Color.BLACK;
     game.move(
         playerColor, request.getMove().getFrom(), request.getMove().getTo());
-    callback.Run(MoveResponse.newBuilder().build());
+    callback.run(MoveResponse.newBuilder().build());
 
     return Status.OK;
   }
 
   public Status getEvents(EventsRequest request, final Callback callback) {
     Session session = sessions.get(request.getSessionToken());
-    if (session == null)
+    if (session == null) {
       return Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
+    }
 
     Game game = session.getGame(request.getGameId());
-    if (game == null)
+    if (game == null) {
       return Status.INVALID_GAME_ID;
+    }
 
     game.getEvents(request.getMinEventNumber(), new Game.EventsCallback() {
       @Override
       public void run(List<GameEvent> events) {
-        callback.Run(EventsResponse.newBuilder()
+        callback.run(EventsResponse.newBuilder()
             .addAllEvent(events)
             .build());
       }

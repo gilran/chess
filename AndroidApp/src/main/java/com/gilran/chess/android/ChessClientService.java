@@ -1,8 +1,5 @@
 package com.gilran.chess.android;
 
-import com.gilran.chess.Proto.LoginResponse;
-import com.gilran.chess.client.Client;
-
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -10,6 +7,9 @@ import android.content.ServiceConnection;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+
+import com.gilran.chess.Proto.LoginResponse;
+import com.gilran.chess.client.Client;
 
 public class ChessClientService extends Service {
   // Binder given to clients.
@@ -55,7 +55,8 @@ public class ChessClientService extends Service {
     // TODO(gilran): Add the server address to the settings.
     client = new Client(
         "http://192.168.1.162:8080/Server/chess/",
-        new LoggerAdapter(Thread.currentThread().getStackTrace()[0].getClassName()));
+        new LoggerAdapter(
+            Thread.currentThread().getStackTrace()[0].getClassName()));
 
     return binder;
   }

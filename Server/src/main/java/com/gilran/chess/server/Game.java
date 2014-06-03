@@ -1,10 +1,5 @@
 package com.gilran.chess.server;
 
-import com.gilran.chess.board.Coordinate;
-import com.gilran.chess.board.Move;
-import com.gilran.chess.board.Piece.Color;
-import com.gilran.chess.board.Position;
-import com.gilran.chess.Proto.*;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -13,6 +8,12 @@ import com.google.common.collect.Multimap;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import com.gilran.chess.Proto.*;
+import com.gilran.chess.board.Coordinate;
+import com.gilran.chess.board.Move;
+import com.gilran.chess.board.Piece.Color;
+import com.gilran.chess.board.Position;
 
 public class Game {
   /** The game id. */
@@ -48,8 +49,9 @@ public class Game {
         pendingEventCallbaks.get(event.getSerialNumber());
     if (eventCallbacks != null) {
       List<GameEvent> eventsList = ImmutableList.of(event);
-      for (EventsCallback callback : eventCallbacks)
+      for (EventsCallback callback : eventCallbacks) {
         callback.run(eventsList);
+      }
     }
     return event;
   }
@@ -68,13 +70,16 @@ public class Game {
   public Status move(Color playerColor, String from, String to) {
     Coordinate fromCoordinate = Coordinate.get(from);
     Coordinate toCoordinate = Coordinate.get(to);
-    if (from == null || to == null)
+    if (from == null || to == null) {
       return Status.INVALID_MOVE;
-    if (position.getActivePlayer() != playerColor)
+    }
+    if (position.getActivePlayer() != playerColor) {
       return Status.NOT_YOUR_TURN;
+    }
     List<Move> moves = position.move(fromCoordinate, toCoordinate);
-    if (moves.isEmpty())
+    if (moves.isEmpty()) {
       return Status.ILLEGAL_MOVE;
+    }
 
     GameEvent.Builder eventBuilder = GameEvent.newBuilder();
     eventBuilder.setType(GameEvent.Type.MOVE_MADE);
@@ -97,6 +102,7 @@ public class Game {
         addEvent(GameEvent.newBuilder()
             .setType(GameEvent.Type.GAME_ENDED)
             .setStatus(position.getStatus()));
+        break;
       default:
         break;
     }

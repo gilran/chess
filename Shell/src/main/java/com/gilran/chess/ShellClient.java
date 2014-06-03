@@ -1,5 +1,7 @@
 package com.gilran.chess;
 
+import com.google.common.collect.Lists;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
@@ -8,14 +10,14 @@ import java.util.List;
 import com.gilran.chess.Proto.GameEvent;
 import com.gilran.chess.client.Client;
 import com.gilran.chess.client.EventsListenerThread;
-import com.google.common.collect.Lists;
 
 import jline.console.ConsoleReader;
 
 public class ShellClient {
-  public static void main(String[] args) throws IOException, InterruptedException {
+  public static void main(String[] args)
+      throws IOException, InterruptedException {
     ShellClient shell = new ShellClient();
-    shell.Run();
+    shell.run();
   }
 
   private Client client;
@@ -25,7 +27,7 @@ public class ShellClient {
     out = new PrintWriter(System.out);
   }
 
-  public void Run() throws IOException {
+  public void run() throws IOException {
     ConsoleReader reader = new ConsoleReader();
     reader.setBellEnabled(false);
 
@@ -33,11 +35,13 @@ public class ShellClient {
     while ((line = reader.readLine("prompt> ")) != null) {
       out.flush();
 
-      if (line.equals("exit"))
+      if (line.equals("exit")) {
         break;
+      }
 
-      if (line.isEmpty())
+      if (line.isEmpty()) {
         continue;
+      }
 
       List<String> commandArgs = Lists.newArrayList(line.split(" "));
       String commandName = commandArgs.remove(0);

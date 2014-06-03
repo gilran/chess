@@ -48,7 +48,7 @@ public class SquareAdapter extends BaseAdapter {
     }
     ImageView squareView =
         (ImageView) squareContainerView.findViewById(R.id.square_background);
-    squareView.setImageResource(SQUARE_BACKGROUND[(file + rank)%2]);
+    squareView.setImageResource(SQUARE_BACKGROUND[(file + rank) % 2]);
     return squareContainerView;
   }
 }

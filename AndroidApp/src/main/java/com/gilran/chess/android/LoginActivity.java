@@ -1,8 +1,5 @@
 package com.gilran.chess.android;
 
-import com.gilran.chess.Proto.LoginResponse;
-import com.gilran.chess.client.Client.LoggerAdapter.Level;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -17,6 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.gilran.chess.Proto.LoginResponse;
+import com.gilran.chess.client.Client.LoggerAdapter.Level;
 
 public class LoginActivity extends Activity {
   LoggerAdapter logger = new LoggerAdapter(getClass().getSimpleName());
@@ -33,11 +33,12 @@ public class LoginActivity extends Activity {
           .add(R.id.container, new TopLevelFragment()).commit();
     }
 
-    if (!connection.isBound())
+    if (!connection.isBound()) {
       bindService(
           new Intent(this, ChessClientService.class),
           connection,
           Context.BIND_AUTO_CREATE);
+    }
   }
 
   @Override
@@ -114,8 +115,9 @@ public class LoginActivity extends Activity {
         return;
       }
 
-      if (callback != null)
+      if (callback != null) {
         callback.run();
+      }
     }
   }
 
@@ -132,7 +134,8 @@ public class LoginActivity extends Activity {
     LoginTask loginTask = new LoginTask(username, new Runnable() {
       @Override
       public void run() {
-        Intent boardIntent = new Intent(LoginActivity.this, BoardActivity.class);
+        Intent boardIntent =
+            new Intent(LoginActivity.this, BoardActivity.class);
         boardIntent.putExtra(BoardActivity.EXTRA_LOCAL_PLAYER_NAME, username);
         startActivity(boardIntent);
       }

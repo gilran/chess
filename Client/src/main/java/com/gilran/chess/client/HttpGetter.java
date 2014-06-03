@@ -1,18 +1,19 @@
 package com.gilran.chess.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URLEncoder;
+import com.google.protobuf.Message;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URLEncoder;
+
 import com.gilran.chess.JsonParser;
 import com.gilran.chess.client.Client.LoggerAdapter;
 import com.gilran.chess.client.Client.LoggerAdapter.Level;
-import com.google.protobuf.Message;
 
 public class HttpGetter {
   private LoggerAdapter logger;
@@ -59,8 +60,9 @@ public class HttpGetter {
       return null;
     }
 
-    if (!responseType.isAssignableFrom(responseProto.getClass()))
+    if (!responseType.isAssignableFrom(responseProto.getClass())) {
       return null;
+    }
     return responseType.cast(responseProto);
   }
 

@@ -6,8 +6,9 @@ import com.googlecode.protobuf.format.JsonFormat.ParseException;
 
 public class JsonParser {
   public static <T> Message toProto(String json, Class<T> type) {
-    if (json == null)
+    if (json == null) {
       return null;
+    }
 
     Message.Builder builder = null;
 
@@ -24,8 +25,9 @@ public class JsonParser {
       return null;
     }
 
-    if (!builder.isInitialized())
+    if (!builder.isInitialized()) {
       return null;
+    }
     return builder.build();
   }
 

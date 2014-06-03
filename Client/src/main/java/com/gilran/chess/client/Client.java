@@ -1,8 +1,9 @@
 package com.gilran.chess.client;
 
+import com.google.common.base.Preconditions;
+
 import com.gilran.chess.Proto.*;
 import com.gilran.chess.client.Client.LoggerAdapter.Level;
-import com.google.common.base.Preconditions;
 
 public class Client {
   public interface LoggerAdapter {
@@ -35,8 +36,9 @@ public class Client {
         "login",
         LoginRequest.newBuilder().setUsername(this.username).build(),
         LoginResponse.class);
-    if (response == null)
+    if (response == null) {
       return null;
+    }
     sessionToken = response.getSessionToken();
     logger.log(Level.DEBUG, "Logged in. Session token: " + sessionToken);
     return response;
@@ -48,8 +50,9 @@ public class Client {
         "seek",
         SeekRequest.newBuilder().setSessionToken(sessionToken).build(),
         SeekResponse.class);
-    if (response == null)
+    if (response == null) {
       return null;
+    }
     gameId = response.getGameId();
     return response;
   }
@@ -68,8 +71,9 @@ public class Client {
 
   public void startListeningToEvents(
       EventsListenerThread.EventHandler handler) {
-    if (eventsListenerThread != null)
+    if (eventsListenerThread != null) {
       return;
+    }
     Preconditions.checkNotNull(sessionToken);
     Preconditions.checkNotNull(gameId);
     eventsListenerThread = new EventsListenerThread(
@@ -78,8 +82,9 @@ public class Client {
   }
 
   public void stopListeningToEvents() {
-    if (eventsListenerThread == null)
+    if (eventsListenerThread == null) {
       return;
+    }
     eventsListenerThread.stopListening();
     eventsListenerThread = null;
   }

@@ -24,11 +24,12 @@ public class BoardActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    if (!connection.isBound())
+    if (!connection.isBound()) {
       bindService(
           new Intent(this, ChessClientService.class),
           connection,
           Context.BIND_AUTO_CREATE);
+    }
 
     setContentView(R.layout.activity_game);
 
