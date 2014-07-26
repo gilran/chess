@@ -102,11 +102,6 @@ message MoveRequest {
   required MoveProto move = 2;
 }
 
-// The response for a a MoveRequest.
-message MoveResponse {
-  optional Status status = 1;
-}
-
 // An event that happened in the game.
 message GameEvent {
   enum Type {
@@ -133,4 +128,9 @@ message EventsRequest {
 message EventsResponse {
   optional Status status = 1;
   repeated GameEvent event = 2;
+}
+
+message PositionResponse {
+  optional Status status = 1;
+  optional string fen = 2;
 }

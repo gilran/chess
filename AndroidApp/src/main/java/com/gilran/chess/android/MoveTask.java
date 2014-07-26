@@ -1,13 +1,13 @@
 package com.gilran.chess.android;
 
-import com.gilran.chess.Proto.MoveResponse;
+import com.gilran.chess.Proto.ErrorResponse;
 import com.gilran.chess.board.Coordinate;
 
 import com.google.common.base.Preconditions;
 
 import android.content.Context;
 
-public class MoveTask extends AsyncGetTask<MoveResponse> {
+public class MoveTask extends AsyncGetTask<ErrorResponse> {
   private static final String ERROR_MESSAGE = "Failed to send move.";
 
   private Coordinate from;
@@ -29,7 +29,7 @@ public class MoveTask extends AsyncGetTask<MoveResponse> {
   }
 
   @Override
-  protected MoveResponse run() {
+  protected ErrorResponse run() {
     return service.move(from, to);
   }
 

@@ -1,6 +1,7 @@
 package com.gilran.chess.server;
 
 import com.gilran.chess.Proto.*;
+import com.gilran.chess.board.ForsythEdwardsNotation;
 import com.gilran.chess.board.Piece;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -146,7 +147,7 @@ public class ServiceImpl {
         gameActionInfo.playerColor,
         request.getMove().getFrom(),
         request.getMove().getTo());
-    callback.run(MoveResponse.newBuilder().build());
+    callback.run(ErrorResponse.newBuilder().build());
 
     return Status.OK;
   }
@@ -199,6 +200,17 @@ public class ServiceImpl {
 
     gameActionInfo.game.clearDrawOffer(gameActionInfo.playerColor);
     callback.run(ErrorResponse.newBuilder().build());
+    return Status.OK;
+  }
+  
+  public Status getPosition(GameInfo request, final Callback callback) {
+    GameActionInfo gameActionInfo = getGameActionInfo(request);
+    if (gameActionInfo.status != Status.OK) {
+      return gameActionInfo.status;
+    }
+    String fen = new ForsythEdwardsNotation(gameActionInfo.game.getPosition())
+        .toString();
+    callback.run(PositionResponse.newBuilder().setFen(fen).build());
     return Status.OK;
   }
 }

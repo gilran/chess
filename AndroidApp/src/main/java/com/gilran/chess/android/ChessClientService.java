@@ -77,7 +77,7 @@ public class ChessClientService extends Service {
     return response;
   }
 
-  public MoveResponse move(Coordinate from, Coordinate to) {
+  public ErrorResponse move(Coordinate from, Coordinate to) {
     return client.move(from.toString(), to.toString());
   }
 }

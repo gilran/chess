@@ -3955,353 +3955,6 @@ public final class Proto {
     // @@protoc_insertion_point(class_scope:chess.MoveRequest)
   }
   
-  public interface MoveResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-    
-    // optional .chess.Status status = 1;
-    boolean hasStatus();
-    com.gilran.chess.Proto.Status getStatus();
-  }
-  public static final class MoveResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements MoveResponseOrBuilder {
-    // Use MoveResponse.newBuilder() to construct.
-    private MoveResponse(Builder builder) {
-      super(builder);
-    }
-    private MoveResponse(boolean noInit) {}
-    
-    private static final MoveResponse defaultInstance;
-    public static MoveResponse getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public MoveResponse getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.gilran.chess.Proto.internal_static_chess_MoveResponse_descriptor;
-    }
-    
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.gilran.chess.Proto.internal_static_chess_MoveResponse_fieldAccessorTable;
-    }
-    
-    private int bitField0_;
-    // optional .chess.Status status = 1;
-    public static final int STATUS_FIELD_NUMBER = 1;
-    private com.gilran.chess.Proto.Status status_;
-    public boolean hasStatus() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    public com.gilran.chess.Proto.Status getStatus() {
-      return status_;
-    }
-    
-    private void initFields() {
-      status_ = com.gilran.chess.Proto.Status.OK;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-      
-      memoizedIsInitialized = 1;
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeEnum(1, status_.getNumber());
-      }
-      getUnknownFields().writeTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(1, status_.getNumber());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-    
-    public static com.gilran.chess.Proto.MoveResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.gilran.chess.Proto.MoveResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.gilran.chess.Proto.MoveResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.gilran.chess.Proto.MoveResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.gilran.chess.Proto.MoveResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.gilran.chess.Proto.MoveResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.gilran.chess.Proto.MoveResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.gilran.chess.Proto.MoveResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.gilran.chess.Proto.MoveResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.gilran.chess.Proto.MoveResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.gilran.chess.Proto.MoveResponse prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.gilran.chess.Proto.MoveResponseOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.gilran.chess.Proto.internal_static_chess_MoveResponse_descriptor;
-      }
-      
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.gilran.chess.Proto.internal_static_chess_MoveResponse_fieldAccessorTable;
-      }
-      
-      // Construct using com.gilran.chess.Proto.MoveResponse.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-      
-      private Builder(BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-      
-      public Builder clear() {
-        super.clear();
-        status_ = com.gilran.chess.Proto.Status.OK;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-      
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.gilran.chess.Proto.MoveResponse.getDescriptor();
-      }
-      
-      public com.gilran.chess.Proto.MoveResponse getDefaultInstanceForType() {
-        return com.gilran.chess.Proto.MoveResponse.getDefaultInstance();
-      }
-      
-      public com.gilran.chess.Proto.MoveResponse build() {
-        com.gilran.chess.Proto.MoveResponse result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-      
-      private com.gilran.chess.Proto.MoveResponse buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        com.gilran.chess.Proto.MoveResponse result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return result;
-      }
-      
-      public com.gilran.chess.Proto.MoveResponse buildPartial() {
-        com.gilran.chess.Proto.MoveResponse result = new com.gilran.chess.Proto.MoveResponse(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.status_ = status_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-      
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.gilran.chess.Proto.MoveResponse) {
-          return mergeFrom((com.gilran.chess.Proto.MoveResponse)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-      
-      public Builder mergeFrom(com.gilran.chess.Proto.MoveResponse other) {
-        if (other == com.gilran.chess.Proto.MoveResponse.getDefaultInstance()) return this;
-        if (other.hasStatus()) {
-          setStatus(other.getStatus());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-      
-      public final boolean isInitialized() {
-        return true;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
-                onChanged();
-                return this;
-              }
-              break;
-            }
-            case 8: {
-              int rawValue = input.readEnum();
-              com.gilran.chess.Proto.Status value = com.gilran.chess.Proto.Status.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(1, rawValue);
-              } else {
-                bitField0_ |= 0x00000001;
-                status_ = value;
-              }
-              break;
-            }
-          }
-        }
-      }
-      
-      private int bitField0_;
-      
-      // optional .chess.Status status = 1;
-      private com.gilran.chess.Proto.Status status_ = com.gilran.chess.Proto.Status.OK;
-      public boolean hasStatus() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      public com.gilran.chess.Proto.Status getStatus() {
-        return status_;
-      }
-      public Builder setStatus(com.gilran.chess.Proto.Status value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000001;
-        status_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearStatus() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        status_ = com.gilran.chess.Proto.Status.OK;
-        onChanged();
-        return this;
-      }
-      
-      // @@protoc_insertion_point(builder_scope:chess.MoveResponse)
-    }
-    
-    static {
-      defaultInstance = new MoveResponse(true);
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:chess.MoveResponse)
-  }
-  
   public interface GameEventOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
@@ -6299,6 +5952,447 @@ public final class Proto {
     // @@protoc_insertion_point(class_scope:chess.EventsResponse)
   }
   
+  public interface PositionResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // optional .chess.Status status = 1;
+    boolean hasStatus();
+    com.gilran.chess.Proto.Status getStatus();
+    
+    // optional string fen = 2;
+    boolean hasFen();
+    String getFen();
+  }
+  public static final class PositionResponse extends
+      com.google.protobuf.GeneratedMessage
+      implements PositionResponseOrBuilder {
+    // Use PositionResponse.newBuilder() to construct.
+    private PositionResponse(Builder builder) {
+      super(builder);
+    }
+    private PositionResponse(boolean noInit) {}
+    
+    private static final PositionResponse defaultInstance;
+    public static PositionResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public PositionResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.gilran.chess.Proto.internal_static_chess_PositionResponse_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.gilran.chess.Proto.internal_static_chess_PositionResponse_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // optional .chess.Status status = 1;
+    public static final int STATUS_FIELD_NUMBER = 1;
+    private com.gilran.chess.Proto.Status status_;
+    public boolean hasStatus() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public com.gilran.chess.Proto.Status getStatus() {
+      return status_;
+    }
+    
+    // optional string fen = 2;
+    public static final int FEN_FIELD_NUMBER = 2;
+    private java.lang.Object fen_;
+    public boolean hasFen() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public String getFen() {
+      java.lang.Object ref = fen_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          fen_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getFenBytes() {
+      java.lang.Object ref = fen_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        fen_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
+    private void initFields() {
+      status_ = com.gilran.chess.Proto.Status.OK;
+      fen_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, status_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getFenBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, status_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getFenBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.gilran.chess.Proto.PositionResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.gilran.chess.Proto.PositionResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.gilran.chess.Proto.PositionResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.gilran.chess.Proto.PositionResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.gilran.chess.Proto.PositionResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.gilran.chess.Proto.PositionResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.gilran.chess.Proto.PositionResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.gilran.chess.Proto.PositionResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.gilran.chess.Proto.PositionResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.gilran.chess.Proto.PositionResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.gilran.chess.Proto.PositionResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.gilran.chess.Proto.PositionResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.gilran.chess.Proto.internal_static_chess_PositionResponse_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.gilran.chess.Proto.internal_static_chess_PositionResponse_fieldAccessorTable;
+      }
+      
+      // Construct using com.gilran.chess.Proto.PositionResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        status_ = com.gilran.chess.Proto.Status.OK;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fen_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.gilran.chess.Proto.PositionResponse.getDescriptor();
+      }
+      
+      public com.gilran.chess.Proto.PositionResponse getDefaultInstanceForType() {
+        return com.gilran.chess.Proto.PositionResponse.getDefaultInstance();
+      }
+      
+      public com.gilran.chess.Proto.PositionResponse build() {
+        com.gilran.chess.Proto.PositionResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.gilran.chess.Proto.PositionResponse buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.gilran.chess.Proto.PositionResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.gilran.chess.Proto.PositionResponse buildPartial() {
+        com.gilran.chess.Proto.PositionResponse result = new com.gilran.chess.Proto.PositionResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.status_ = status_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.fen_ = fen_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.gilran.chess.Proto.PositionResponse) {
+          return mergeFrom((com.gilran.chess.Proto.PositionResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.gilran.chess.Proto.PositionResponse other) {
+        if (other == com.gilran.chess.Proto.PositionResponse.getDefaultInstance()) return this;
+        if (other.hasStatus()) {
+          setStatus(other.getStatus());
+        }
+        if (other.hasFen()) {
+          setFen(other.getFen());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              com.gilran.chess.Proto.Status value = com.gilran.chess.Proto.Status.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                status_ = value;
+              }
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              fen_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // optional .chess.Status status = 1;
+      private com.gilran.chess.Proto.Status status_ = com.gilran.chess.Proto.Status.OK;
+      public boolean hasStatus() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public com.gilran.chess.Proto.Status getStatus() {
+        return status_;
+      }
+      public Builder setStatus(com.gilran.chess.Proto.Status value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearStatus() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        status_ = com.gilran.chess.Proto.Status.OK;
+        onChanged();
+        return this;
+      }
+      
+      // optional string fen = 2;
+      private java.lang.Object fen_ = "";
+      public boolean hasFen() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public String getFen() {
+        java.lang.Object ref = fen_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          fen_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setFen(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        fen_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearFen() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fen_ = getDefaultInstance().getFen();
+        onChanged();
+        return this;
+      }
+      void setFen(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        fen_ = value;
+        onChanged();
+      }
+      
+      // @@protoc_insertion_point(builder_scope:chess.PositionResponse)
+    }
+    
+    static {
+      defaultInstance = new PositionResponse(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:chess.PositionResponse)
+  }
+  
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_chess_ErrorResponse_descriptor;
   private static
@@ -6340,11 +6434,6 @@ public final class Proto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_chess_MoveRequest_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_chess_MoveResponse_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_chess_MoveResponse_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_chess_GameEvent_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -6359,6 +6448,11 @@ public final class Proto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_chess_EventsResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_chess_PositionResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_chess_PositionResponse_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -6380,33 +6474,33 @@ public final class Proto {
       "session_token\030\001 \002(\t\022\017\n\007game_id\030\002 \002(\t\"Q\n\013",
       "MoveRequest\022\"\n\tgame_info\030\001 \002(\0132\017.chess.G" +
       "ameInfo\022\036\n\004move\030\002 \002(\0132\020.chess.MoveProto\"" +
-      "-\n\014MoveResponse\022\035\n\006status\030\001 \001(\0162\r.chess." +
-      "Status\"\225\002\n\tGameEvent\022\025\n\rserial_number\030\001 " +
-      "\002(\005\022#\n\004type\030\002 \002(\0162\025.chess.GameEvent.Type" +
-      "\022!\n\006status\030\003 \002(\0162\021.chess.GameStatus\022\036\n\004m" +
-      "ove\030\004 \003(\0132\020.chess.MoveProto\"\210\001\n\004Type\022\r\n\t" +
-      "MOVE_MADE\020\000\022\016\n\nGAME_ENDED\020\001\022\026\n\022WHITE_OFF" +
-      "ERED_DRAW\020\002\022\026\n\022BLACK_OFFERED_DRAW\020\003\022\027\n\023D" +
-      "RAW_OFFER_DECLINED\020\004\022\030\n\024DRAW_OFFER_WITHD",
-      "RAWN\020\005\"M\n\rEventsRequest\022\"\n\tgame_info\030\001 \002" +
-      "(\0132\017.chess.GameInfo\022\030\n\020min_event_number\030" +
-      "\002 \002(\005\"P\n\016EventsResponse\022\035\n\006status\030\001 \001(\0162" +
-      "\r.chess.Status\022\037\n\005event\030\002 \003(\0132\020.chess.Ga" +
-      "meEvent*\227\001\n\006Status\022\006\n\002OK\020\000\022\023\n\017INVALID_RE" +
-      "QUEST\020\001\022$\n INVALID_OR_EXPIRED_SESSION_TO" +
-      "KEN\020\002\022\023\n\017INVALID_GAME_ID\020\003\022\020\n\014INVALID_MO" +
-      "VE\020\004\022\021\n\rNOT_YOUR_TURN\020\005\022\020\n\014ILLEGAL_MOVE\020" +
-      "\006*\362\002\n\nGameStatus\022\021\n\rWHITE_TO_MOVE\020\000\022\021\n\rB" +
-      "LACK_TO_MOVE\020\001\022\021\n\rWHITE_CHECKED\020\002\022\021\n\rBLA",
-      "CK_CHECKED\020\003\022\024\n\020BLACK_CHECKMATED\020\004\022\022\n\016BL" +
-      "ACK_RESIGNED\020\005\022\027\n\023BLACK_CLOCK_EXPIRED\020\006\022" +
-      "\024\n\020WHITE_CHECKMATED\020\007\022\022\n\016WHITE_RESIGNED\020" +
-      "\010\022\027\n\023WHITE_CLOCK_EXPIRED\020\t\022\024\n\020BLACK_STAL" +
-      "EMATED\020\n\022\024\n\020WHITE_STALEMATED\020\013\022\031\n\025INSUFF" +
-      "ICIENT_MATERIAL\020\014\022\032\n\026HALFMOVE_CLOCK_EXPI" +
-      "RED\020\r\022\030\n\024THREEFOLD_REPETITION\020\016\022\025\n\021DRAW_" +
-      "BY_AGREEMENT\020\017B\031\n\020com.gilran.chessB\005Prot" +
-      "o"
+      "\225\002\n\tGameEvent\022\025\n\rserial_number\030\001 \002(\005\022#\n\004" +
+      "type\030\002 \002(\0162\025.chess.GameEvent.Type\022!\n\006sta" +
+      "tus\030\003 \002(\0162\021.chess.GameStatus\022\036\n\004move\030\004 \003" +
+      "(\0132\020.chess.MoveProto\"\210\001\n\004Type\022\r\n\tMOVE_MA" +
+      "DE\020\000\022\016\n\nGAME_ENDED\020\001\022\026\n\022WHITE_OFFERED_DR" +
+      "AW\020\002\022\026\n\022BLACK_OFFERED_DRAW\020\003\022\027\n\023DRAW_OFF" +
+      "ER_DECLINED\020\004\022\030\n\024DRAW_OFFER_WITHDRAWN\020\005\"" +
+      "M\n\rEventsRequest\022\"\n\tgame_info\030\001 \002(\0132\017.ch",
+      "ess.GameInfo\022\030\n\020min_event_number\030\002 \002(\005\"P" +
+      "\n\016EventsResponse\022\035\n\006status\030\001 \001(\0162\r.chess" +
+      ".Status\022\037\n\005event\030\002 \003(\0132\020.chess.GameEvent" +
+      "\">\n\020PositionResponse\022\035\n\006status\030\001 \001(\0162\r.c" +
+      "hess.Status\022\013\n\003fen\030\002 \001(\t*\227\001\n\006Status\022\006\n\002O" +
+      "K\020\000\022\023\n\017INVALID_REQUEST\020\001\022$\n INVALID_OR_E" +
+      "XPIRED_SESSION_TOKEN\020\002\022\023\n\017INVALID_GAME_I" +
+      "D\020\003\022\020\n\014INVALID_MOVE\020\004\022\021\n\rNOT_YOUR_TURN\020\005" +
+      "\022\020\n\014ILLEGAL_MOVE\020\006*\362\002\n\nGameStatus\022\021\n\rWHI" +
+      "TE_TO_MOVE\020\000\022\021\n\rBLACK_TO_MOVE\020\001\022\021\n\rWHITE",
+      "_CHECKED\020\002\022\021\n\rBLACK_CHECKED\020\003\022\024\n\020BLACK_C" +
+      "HECKMATED\020\004\022\022\n\016BLACK_RESIGNED\020\005\022\027\n\023BLACK" +
+      "_CLOCK_EXPIRED\020\006\022\024\n\020WHITE_CHECKMATED\020\007\022\022" +
+      "\n\016WHITE_RESIGNED\020\010\022\027\n\023WHITE_CLOCK_EXPIRE" +
+      "D\020\t\022\024\n\020BLACK_STALEMATED\020\n\022\024\n\020WHITE_STALE" +
+      "MATED\020\013\022\031\n\025INSUFFICIENT_MATERIAL\020\014\022\032\n\026HA" +
+      "LFMOVE_CLOCK_EXPIRED\020\r\022\030\n\024THREEFOLD_REPE" +
+      "TITION\020\016\022\025\n\021DRAW_BY_AGREEMENT\020\017B\031\n\020com.g" +
+      "ilran.chessB\005Proto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -6477,16 +6571,8 @@ public final class Proto {
               new java.lang.String[] { "GameInfo", "Move", },
               com.gilran.chess.Proto.MoveRequest.class,
               com.gilran.chess.Proto.MoveRequest.Builder.class);
-          internal_static_chess_MoveResponse_descriptor =
-            getDescriptor().getMessageTypes().get(8);
-          internal_static_chess_MoveResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_chess_MoveResponse_descriptor,
-              new java.lang.String[] { "Status", },
-              com.gilran.chess.Proto.MoveResponse.class,
-              com.gilran.chess.Proto.MoveResponse.Builder.class);
           internal_static_chess_GameEvent_descriptor =
-            getDescriptor().getMessageTypes().get(9);
+            getDescriptor().getMessageTypes().get(8);
           internal_static_chess_GameEvent_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_chess_GameEvent_descriptor,
@@ -6494,7 +6580,7 @@ public final class Proto {
               com.gilran.chess.Proto.GameEvent.class,
               com.gilran.chess.Proto.GameEvent.Builder.class);
           internal_static_chess_EventsRequest_descriptor =
-            getDescriptor().getMessageTypes().get(10);
+            getDescriptor().getMessageTypes().get(9);
           internal_static_chess_EventsRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_chess_EventsRequest_descriptor,
@@ -6502,13 +6588,21 @@ public final class Proto {
               com.gilran.chess.Proto.EventsRequest.class,
               com.gilran.chess.Proto.EventsRequest.Builder.class);
           internal_static_chess_EventsResponse_descriptor =
-            getDescriptor().getMessageTypes().get(11);
+            getDescriptor().getMessageTypes().get(10);
           internal_static_chess_EventsResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_chess_EventsResponse_descriptor,
               new java.lang.String[] { "Status", "Event", },
               com.gilran.chess.Proto.EventsResponse.class,
               com.gilran.chess.Proto.EventsResponse.Builder.class);
+          internal_static_chess_PositionResponse_descriptor =
+            getDescriptor().getMessageTypes().get(11);
+          internal_static_chess_PositionResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_chess_PositionResponse_descriptor,
+              new java.lang.String[] { "Status", "Fen", },
+              com.gilran.chess.Proto.PositionResponse.class,
+              com.gilran.chess.Proto.PositionResponse.Builder.class);
           return null;
         }
       };

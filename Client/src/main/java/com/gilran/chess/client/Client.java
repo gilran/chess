@@ -2,8 +2,8 @@ package com.gilran.chess.client;
 
 import com.gilran.chess.Proto.*;
 import com.gilran.chess.client.Client.LoggerAdapter.Level;
-
 import com.google.common.base.Preconditions;
+import com.google.protobuf.Message;
 
 public class Client {
   public interface LoggerAdapter {
@@ -57,7 +57,7 @@ public class Client {
     return response;
   }
 
-  public MoveResponse move(String from, String to) {
+  public ErrorResponse move(String from, String to) {
     Preconditions.checkNotNull(sessionToken);
     Preconditions.checkNotNull(gameId);
     return httpGetter.get(
@@ -67,10 +67,11 @@ public class Client {
                 .setSessionToken(sessionToken)
                 .setGameId(gameId))
             .setMove(MoveProto.newBuilder().setFrom(from).setTo(to)).build(),
-        MoveResponse.class);
+        ErrorResponse.class);
   }
 
-  public ErrorResponse callSimpleMethod(String methodName) {
+  public <T extends Message> T callSimpleMethod(
+      String methodName, Class<T> type) {
     Preconditions.checkNotNull(sessionToken);
     Preconditions.checkNotNull(gameId);
     return httpGetter.get(
@@ -78,22 +79,30 @@ public class Client {
         GameInfo.newBuilder()
             .setSessionToken(sessionToken)
             .setGameId(gameId).build(),
-        ErrorResponse.class);
+        type);
   }
   
   public ErrorResponse resign() {
     return callSimpleMethod(
-        Thread.currentThread().getStackTrace()[1].getMethodName());
+        Thread.currentThread().getStackTrace()[1].getMethodName(),
+        ErrorResponse.class);
   }
   
   public ErrorResponse offerDraw() {
     return callSimpleMethod(
-        Thread.currentThread().getStackTrace()[1].getMethodName());
+        Thread.currentThread().getStackTrace()[1].getMethodName(),
+        ErrorResponse.class);
   }
 
   public ErrorResponse declineDrawOffer() {
     return callSimpleMethod(
-        Thread.currentThread().getStackTrace()[1].getMethodName());
+        Thread.currentThread().getStackTrace()[1].getMethodName(),
+        ErrorResponse.class);
+  }
+  public PositionResponse getPosition() {
+    return callSimpleMethod(
+        Thread.currentThread().getStackTrace()[1].getMethodName(),
+        PositionResponse.class);
   }
 
   public void startListeningToEvents(GameEventHandler handler) {

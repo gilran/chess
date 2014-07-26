@@ -1,6 +1,13 @@
 package com.gilran.chess;
 
+import com.gilran.chess.Proto.ErrorResponse;
 import com.gilran.chess.Proto.GameEvent;
+import com.gilran.chess.Proto.PositionResponse;
+import com.gilran.chess.Proto.Status;
+import com.gilran.chess.board.Coordinate;
+import com.gilran.chess.board.ForsythEdwardsNotation;
+import com.gilran.chess.board.ForsythEdwardsNotation.InvalidFENStringException;
+import com.gilran.chess.board.Piece;
 import com.gilran.chess.client.Client;
 import com.gilran.chess.client.GameEventHandler;
 import com.google.common.collect.Lists;
@@ -107,7 +114,7 @@ public class ShellClient {
       print("Not connected. Please login.");
       return;
     }
-    print(client.callSimpleMethod(methodName).toString());
+    print(client.callSimpleMethod(methodName, ErrorResponse.class).toString());
   }
   
   public void resign(List<String> args) {
@@ -123,5 +130,68 @@ public class ShellClient {
   public void declineDrawOffer(List<String> args) {
     callSimpleMethod(
         Thread.currentThread().getStackTrace()[1].getMethodName(), args);
+  }
+
+  private String getFen() {
+    PositionResponse response = client.getPosition();
+    if (response.getStatus() != Status.OK) {
+      print(response.toString() + "\n");
+      return null;
+    }
+    return response.getFen();
+  }
+  
+  public void fen(List<String> args) {
+    if (args.size() != 0) {
+      print("Usage: print\n");
+      return;
+    }
+    if (client == null) {
+      print("Not connected. Please login.");
+      return;
+    }
+    String fen = getFen();
+    if (fen != null) {
+      print(fen + "\n");
+    }
+  }
+  
+  public void print(List<String> args) {
+    if (args.size() != 0) {
+      print("Usage: print\n");
+      return;
+    }
+    if (client == null) {
+      print("Not connected. Please login.");
+      return;
+    }
+    
+    String fen = getFen();
+    if (fen == null) {
+      return;
+    }
+    
+    ForsythEdwardsNotation position;
+    try {
+      position = new ForsythEdwardsNotation(fen);
+    } catch (InvalidFENStringException e) {
+      print(e.toString() + "\n");
+      return;
+    }
+
+    print("    A   B   C   D   E   F   G   H  \n");
+    print("  +---+---+---+---+---+---+---+---+\n");
+    for (int r = Coordinate.LAST_RANK; r >= Coordinate.FIRST_RANK; --r) {
+      print(String.format("%d ", r + 1));
+      for (int f = Coordinate.FIRST_FILE; f <= Coordinate.LAST_FILE; ++f) {
+        Piece piece = position.getPiecesPlacement().at(Coordinate.get(f, r));
+        Character pieceName =
+            piece == null ? ' ' : ForsythEdwardsNotation.getPieceName(piece); 
+        print("| " + pieceName + " ");
+      }
+      print(String.format("| %d\n", r + 1));
+      print("  +---+---+---+---+---+---+---+---+\n");
+    }
+    print("    A   B   C   D   E   F   G   H  \n");
   }
 }
