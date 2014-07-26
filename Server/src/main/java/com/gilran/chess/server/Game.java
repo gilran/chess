@@ -3,8 +3,8 @@ package com.gilran.chess.server;
 import com.gilran.chess.Proto.*;
 import com.gilran.chess.board.Coordinate;
 import com.gilran.chess.board.Move;
+import com.gilran.chess.board.Piece;
 import com.gilran.chess.board.Piece.Color;
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -19,7 +19,10 @@ public class Game extends com.gilran.chess.board.Game {
   private String id;
   /** The game events. */
   private List<GameEvent> events;
+  /** Callbacks for pending getEvent calls. */
   private Multimap<Integer, EventsCallback> pendingEventCallbaks;
+  /** Player that offered draw. */
+  Piece.Color drawOffer;
 
   public Game(String whitePlayer, String blackPlayer) {
     super(whitePlayer, blackPlayer);
@@ -72,6 +75,9 @@ public class Game extends com.gilran.chess.board.Game {
       return Status.ILLEGAL_MOVE;
     }
 
+    // By making a move, a draw offer is declined/withdrawn.
+    drawOffer = null;
+
     GameEvent.Builder eventBuilder = GameEvent.newBuilder();
     eventBuilder.setType(GameEvent.Type.MOVE_MADE);
     eventBuilder.setStatus(getPosition().getStatus());
@@ -99,5 +105,53 @@ public class Game extends com.gilran.chess.board.Game {
     }
 
     return Status.OK;
+  }
+  
+  void resign(Piece.Color playerColor) {
+    getPosition().setStatus(
+        playerColor == Piece.Color.WHITE
+            ? GameStatus.WHITE_RESIGNED
+            : GameStatus.BLACK_RESIGNED);
+    addEvent(GameEvent.newBuilder()
+        .setType(GameEvent.Type.GAME_ENDED)
+        .setStatus(getPosition().getStatus()));
+  }
+
+  void addDrawOffer(Piece.Color playerColor) {
+    if (drawOffer == null) {
+      // No outstanding offer. This is an offer.
+      drawOffer = playerColor;
+    } else if (drawOffer == playerColor) {
+      // There is an outstanding offer from this player. Nothing needs to be
+      // done.
+      return;
+    } else if (drawOffer != playerColor) {
+      // There is an outstanding offer from the other player - accepting the
+      // draw.
+      getPosition().setStatus(GameStatus.DRAW_BY_AGREEMENT);
+    }
+    addEvent(GameEvent.newBuilder()
+        .setType(
+            playerColor == Piece.Color.WHITE
+                ? GameEvent.Type.WHITE_OFFERED_DRAW
+                : GameEvent.Type.BLACK_OFFERED_DRAW)
+        .setStatus(getPosition().getStatus()));
+  }
+
+  void clearDrawOffer(Piece.Color playerColor) {
+    if (drawOffer == null) {
+      // There is no outstanding draw offer. Nothing needs to be done.
+      return;
+    }
+
+    GameEvent.Type eventType =
+        playerColor == drawOffer
+            ? GameEvent.Type.DRAW_OFFER_WITHDRAWN
+            : GameEvent.Type.DRAW_OFFER_DECLINED;
+    drawOffer = null;
+
+    addEvent(GameEvent.newBuilder()
+        .setType(eventType)
+        .setStatus(getPosition().getStatus()));
   }
 }

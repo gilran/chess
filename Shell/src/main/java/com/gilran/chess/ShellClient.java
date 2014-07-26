@@ -97,4 +97,31 @@ public class ShellClient {
     }
     print(client.move(args.get(0), args.get(1)).toString());
   }
+  
+  private void callSimpleMethod(String methodName, List<String> args) {
+    if (args.size() != 0) {
+      print("Usage: " + methodName + "\n");
+      return;
+    }
+    if (client == null) {
+      print("Not connected. Please login.");
+      return;
+    }
+    print(client.callSimpleMethod(methodName).toString());
+  }
+  
+  public void resign(List<String> args) {
+    callSimpleMethod(
+        Thread.currentThread().getStackTrace()[1].getMethodName(), args);
+  }
+  
+  public void offerDraw(List<String> args) {
+    callSimpleMethod(
+        Thread.currentThread().getStackTrace()[1].getMethodName(), args);
+  }
+  
+  public void declineDrawOffer(List<String> args) {
+    callSimpleMethod(
+        Thread.currentThread().getStackTrace()[1].getMethodName(), args);
+  }
 }

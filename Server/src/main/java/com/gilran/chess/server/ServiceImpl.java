@@ -2,7 +2,6 @@ package com.gilran.chess.server;
 
 import com.gilran.chess.Proto.*;
 import com.gilran.chess.board.Piece;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.protobuf.Message;
@@ -108,39 +107,58 @@ public class ServiceImpl {
     pendingSeek = null;
     return Status.OK;
   }
+  
+  private static class GameActionInfo {
+    public Game game;
+    Piece.Color playerColor;
+    public Status status;
+  }
+  
+  private <T> GameActionInfo getGameActionInfo(GameInfo gameInfo) {
+    GameActionInfo gameActionInfo = new GameActionInfo();
+    
+    Session session = sessions.get(gameInfo.getSessionToken());
+    if (session == null) {
+      gameActionInfo.status = Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
+      return gameActionInfo;
+    }
+    
+    Game game = session.getGame(gameInfo.getGameId());
+    if (game == null) {
+      gameActionInfo.status = Status.INVALID_GAME_ID;
+      return gameActionInfo;
+    }
+    
+    gameActionInfo.status = Status.OK;
+    gameActionInfo.game = game;
+    gameActionInfo.playerColor = session.getUsername() == game.getWhitePlayer()
+        ? Piece.Color.WHITE : Piece.Color.BLACK;
+    return gameActionInfo;
+  }
 
   public Status move(MoveRequest request, Callback callback) {
-    Session session = sessions.get(request.getSessionToken());
-    if (session == null) {
-      return Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
+    GameActionInfo gameActionInfo = getGameActionInfo(request.getGameInfo());
+    if (gameActionInfo.status != Status.OK) {
+      return gameActionInfo.status;
     }
-
-    Game game = session.getGame(request.getGameId());
-    if (game == null) {
-      return Status.INVALID_GAME_ID;
-    }
-
-    Piece.Color playerColor = session.getUsername() == game.getWhitePlayer()
-        ? Piece.Color.WHITE : Piece.Color.BLACK;
-    game.move(
-        playerColor, request.getMove().getFrom(), request.getMove().getTo());
+    
+    gameActionInfo.game.move(
+        gameActionInfo.playerColor,
+        request.getMove().getFrom(),
+        request.getMove().getTo());
     callback.run(MoveResponse.newBuilder().build());
 
     return Status.OK;
   }
 
   public Status getEvents(EventsRequest request, final Callback callback) {
-    Session session = sessions.get(request.getSessionToken());
-    if (session == null) {
-      return Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
+    GameActionInfo gameActionInfo = getGameActionInfo(request.getGameInfo());
+    if (gameActionInfo.status != Status.OK) {
+      return gameActionInfo.status;
     }
 
-    Game game = session.getGame(request.getGameId());
-    if (game == null) {
-      return Status.INVALID_GAME_ID;
-    }
-
-    game.getEvents(request.getMinEventNumber(), new Game.EventsCallback() {
+    gameActionInfo.game.getEvents(
+        request.getMinEventNumber(), new Game.EventsCallback() {
       @Override
       public void run(List<GameEvent> events) {
         callback.run(EventsResponse.newBuilder()
@@ -148,6 +166,39 @@ public class ServiceImpl {
             .build());
       }
     });
+    return Status.OK;
+  }
+  
+  public Status resign(GameInfo request, final Callback callback) {
+    GameActionInfo gameActionInfo = getGameActionInfo(request);
+    if (gameActionInfo.status != Status.OK) {
+      return gameActionInfo.status;
+    }
+
+    gameActionInfo.game.resign(gameActionInfo.playerColor);
+    callback.run(ErrorResponse.newBuilder().build());
+    return Status.OK;
+  }
+
+  public Status offerDraw(GameInfo request, final Callback callback) {
+    GameActionInfo gameActionInfo = getGameActionInfo(request);
+    if (gameActionInfo.status != Status.OK) {
+      return gameActionInfo.status;
+    }
+
+    gameActionInfo.game.addDrawOffer(gameActionInfo.playerColor);
+    callback.run(ErrorResponse.newBuilder().build());
+    return Status.OK;
+  }
+
+  public Status declineDrawOffer(GameInfo request, final Callback callback) {
+    GameActionInfo gameActionInfo = getGameActionInfo(request);
+    if (gameActionInfo.status != Status.OK) {
+      return gameActionInfo.status;
+    }
+
+    gameActionInfo.game.clearDrawOffer(gameActionInfo.playerColor);
+    callback.run(ErrorResponse.newBuilder().build());
     return Status.OK;
   }
 }

@@ -63,10 +63,37 @@ public class Client {
     return httpGetter.get(
         "move",
         MoveRequest.newBuilder()
-            .setSessionToken(sessionToken)
-            .setGameId(gameId)
+            .setGameInfo(GameInfo.newBuilder()
+                .setSessionToken(sessionToken)
+                .setGameId(gameId))
             .setMove(MoveProto.newBuilder().setFrom(from).setTo(to)).build(),
         MoveResponse.class);
+  }
+
+  public ErrorResponse callSimpleMethod(String methodName) {
+    Preconditions.checkNotNull(sessionToken);
+    Preconditions.checkNotNull(gameId);
+    return httpGetter.get(
+        methodName,
+        GameInfo.newBuilder()
+            .setSessionToken(sessionToken)
+            .setGameId(gameId).build(),
+        ErrorResponse.class);
+  }
+  
+  public ErrorResponse resign() {
+    return callSimpleMethod(
+        Thread.currentThread().getStackTrace()[1].getMethodName());
+  }
+  
+  public ErrorResponse offerDraw() {
+    return callSimpleMethod(
+        Thread.currentThread().getStackTrace()[1].getMethodName());
+  }
+
+  public ErrorResponse declineDrawOffer() {
+    return callSimpleMethod(
+        Thread.currentThread().getStackTrace()[1].getMethodName());
   }
 
   public void startListeningToEvents(GameEventHandler handler) {

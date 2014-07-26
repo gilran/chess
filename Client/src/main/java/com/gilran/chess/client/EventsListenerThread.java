@@ -3,6 +3,7 @@ package com.gilran.chess.client;
 import com.gilran.chess.Proto.EventsRequest;
 import com.gilran.chess.Proto.EventsResponse;
 import com.gilran.chess.Proto.GameEvent;
+import com.gilran.chess.Proto.GameInfo;
 import com.gilran.chess.client.Client.LoggerAdapter;
 
 import java.util.List;
@@ -38,8 +39,9 @@ public class EventsListenerThread extends Thread {
       EventsResponse response = httpGetter.get(
           "getEvents",
           EventsRequest.newBuilder()
-          .setSessionToken(sessionToken)
-          .setGameId(gameId)
+          .setGameInfo(GameInfo.newBuilder()
+              .setSessionToken(sessionToken)
+              .setGameId(gameId))
           .setMinEventNumber(nextEventNumber)
           .build(),
           EventsResponse.class);

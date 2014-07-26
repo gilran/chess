@@ -112,6 +112,23 @@ public class Position extends PositionBase {
 
   /** Returns the game's status. */
   public GameStatus getStatus() { return status; }
+  /**
+   * Sets the game's status.
+   * Only allows setting the game status to statuses not derived from the board
+   * position.
+   * Returns true iff the status was set.
+   **/
+  public boolean setStatus(GameStatus status) {
+    switch (status) {
+      case BLACK_RESIGNED:
+      case WHITE_RESIGNED:
+      case DRAW_BY_AGREEMENT:
+        this.status = status;
+        return true;
+      default:
+        return false;
+    }
+  }
 
   /**
    * Reverts moves, without any legallity tests.

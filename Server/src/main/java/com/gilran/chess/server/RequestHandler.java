@@ -42,6 +42,7 @@ public class RequestHandler {
     for (Method method : methods) {
       Class<?>[] paramTypes = method.getParameterTypes();
 
+      LOGGER.info("paramTypes.length = " + paramTypes.length);
       Preconditions.checkState(paramTypes.length == 2);
       Preconditions.checkState(Message.class.isAssignableFrom(paramTypes[0]));
       Preconditions.checkState(paramTypes[1] == ServiceImpl.Callback.class);

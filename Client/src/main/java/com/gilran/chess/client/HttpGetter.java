@@ -60,7 +60,8 @@ public class HttpGetter {
       return null;
     }
 
-    if (!responseType.isAssignableFrom(responseProto.getClass())) {
+    if (responseProto == null ||
+        !responseType.isAssignableFrom(responseProto.getClass())) {
       return null;
     }
     return responseType.cast(responseProto);

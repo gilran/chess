@@ -58,17 +58,23 @@ message ErrorResponse {
   optional Status status = 1;
 }
 
+// A request to login and start a new session.
 message LoginRequest {
   required string username = 1;
 }
+
+// The response for a LoginRequest.
 message LoginResponse {
   optional Status status = 1;
   optional string session_token = 2;
 }
 
+// A request to seek an oponent and start a game.
 message SeekRequest {
   required string session_token = 1;
 }
+
+// The response for a SeekRequest.
 message SeekResponse {
   optional Status status = 1;
   optional string game_id = 2;
@@ -76,26 +82,40 @@ message SeekResponse {
   optional string black = 4;
 }
 
+// A message representing a move.
 message MoveProto {
-  required string from = 3;
-  required string to = 4;
+  required string from = 1;
+  required string to = 2;
 }
 
-message MoveRequest {
+// A message for the game information.
+// The GameInfo message is also used as the request for methods that don't
+// require any additional info.
+message GameInfo {
   required string session_token = 1;
   required string game_id = 2;
-  required MoveProto move = 3;
 }
+
+// MoveRequest is used to make a move in the game.
+message MoveRequest {
+  required GameInfo game_info = 1;
+  required MoveProto move = 2;
+}
+
+// The response for a a MoveRequest.
 message MoveResponse {
   optional Status status = 1;
 }
 
+// An event that happened in the game.
 message GameEvent {
   enum Type {
     MOVE_MADE = 0;
     GAME_ENDED = 1;
     WHITE_OFFERED_DRAW = 2;
     BLACK_OFFERED_DRAW = 3;
+    DRAW_OFFER_DECLINED = 4;
+    DRAW_OFFER_WITHDRAWN = 5;
   }
   required int32 serial_number = 1;
   required Type type = 2;
@@ -103,11 +123,13 @@ message GameEvent {
   repeated MoveProto move = 4;
 }
 
+// A request for new game events. All game events with serial number greater
+// than or equal to the min_event_number will be returned.
 message EventsRequest {
-  required string session_token = 1;
-  required string game_id = 2;
-  required int32 min_event_number = 3;
+  required GameInfo game_info = 1;
+  required int32 min_event_number = 2;
 }
+// The response for an EventsRequest.
 message EventsResponse {
   optional Status status = 1;
   repeated GameEvent event = 2;
