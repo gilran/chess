@@ -104,7 +104,7 @@ public class ShellClient {
     }
     print(client.move(args.get(0), args.get(1)).toString());
   }
-  
+
   private void callSimpleMethod(String methodName, List<String> args) {
     if (args.size() != 0) {
       print("Usage: " + methodName + "\n");
@@ -116,17 +116,17 @@ public class ShellClient {
     }
     print(client.callSimpleMethod(methodName, ErrorResponse.class).toString());
   }
-  
+
   public void resign(List<String> args) {
     callSimpleMethod(
         Thread.currentThread().getStackTrace()[1].getMethodName(), args);
   }
-  
+
   public void offerDraw(List<String> args) {
     callSimpleMethod(
         Thread.currentThread().getStackTrace()[1].getMethodName(), args);
   }
-  
+
   public void declineDrawOffer(List<String> args) {
     callSimpleMethod(
         Thread.currentThread().getStackTrace()[1].getMethodName(), args);
@@ -140,7 +140,7 @@ public class ShellClient {
     }
     return response.getFen();
   }
-  
+
   public void fen(List<String> args) {
     if (args.size() != 0) {
       print("Usage: print\n");
@@ -155,7 +155,7 @@ public class ShellClient {
       print(fen + "\n");
     }
   }
-  
+
   public void print(List<String> args) {
     if (args.size() != 0) {
       print("Usage: print\n");
@@ -165,12 +165,12 @@ public class ShellClient {
       print("Not connected. Please login.");
       return;
     }
-    
+
     String fen = getFen();
     if (fen == null) {
       return;
     }
-    
+
     ForsythEdwardsNotation position;
     try {
       position = new ForsythEdwardsNotation(fen);
@@ -186,7 +186,7 @@ public class ShellClient {
       for (int f = Coordinate.FIRST_FILE; f <= Coordinate.LAST_FILE; ++f) {
         Piece piece = position.getPiecesPlacement().at(Coordinate.get(f, r));
         Character pieceName =
-            piece == null ? ' ' : ForsythEdwardsNotation.getPieceName(piece); 
+            piece == null ? ' ' : ForsythEdwardsNotation.getPieceName(piece);
         print("| " + pieceName + " ");
       }
       print(String.format("| %d\n", r + 1));

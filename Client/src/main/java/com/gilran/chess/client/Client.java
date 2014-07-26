@@ -81,13 +81,13 @@ public class Client {
             .setGameId(gameId).build(),
         type);
   }
-  
+
   public ErrorResponse resign() {
     return callSimpleMethod(
         Thread.currentThread().getStackTrace()[1].getMethodName(),
         ErrorResponse.class);
   }
-  
+
   public ErrorResponse offerDraw() {
     return callSimpleMethod(
         Thread.currentThread().getStackTrace()[1].getMethodName(),

@@ -108,28 +108,28 @@ public class ServiceImpl {
     pendingSeek = null;
     return Status.OK;
   }
-  
+
   private static class GameActionInfo {
     public Game game;
     Piece.Color playerColor;
     public Status status;
   }
-  
+
   private <T> GameActionInfo getGameActionInfo(GameInfo gameInfo) {
     GameActionInfo gameActionInfo = new GameActionInfo();
-    
+
     Session session = sessions.get(gameInfo.getSessionToken());
     if (session == null) {
       gameActionInfo.status = Status.INVALID_OR_EXPIRED_SESSION_TOKEN;
       return gameActionInfo;
     }
-    
+
     Game game = session.getGame(gameInfo.getGameId());
     if (game == null) {
       gameActionInfo.status = Status.INVALID_GAME_ID;
       return gameActionInfo;
     }
-    
+
     gameActionInfo.status = Status.OK;
     gameActionInfo.game = game;
     gameActionInfo.playerColor = session.getUsername() == game.getWhitePlayer()
@@ -142,7 +142,7 @@ public class ServiceImpl {
     if (gameActionInfo.status != Status.OK) {
       return gameActionInfo.status;
     }
-    
+
     gameActionInfo.game.move(
         gameActionInfo.playerColor,
         request.getMove().getFrom(),
@@ -169,7 +169,7 @@ public class ServiceImpl {
     });
     return Status.OK;
   }
-  
+
   public Status resign(GameInfo request, final Callback callback) {
     GameActionInfo gameActionInfo = getGameActionInfo(request);
     if (gameActionInfo.status != Status.OK) {
@@ -202,7 +202,7 @@ public class ServiceImpl {
     callback.run(ErrorResponse.newBuilder().build());
     return Status.OK;
   }
-  
+
   public Status getPosition(GameInfo request, final Callback callback) {
     GameActionInfo gameActionInfo = getGameActionInfo(request);
     if (gameActionInfo.status != Status.OK) {

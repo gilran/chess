@@ -284,7 +284,7 @@ public class ForsythEdwardsNotation extends PositionBase {
       castlingRights.set(castle, true);
     }
   }
-  
+
   public static Character getPieceName(Piece piece) {
     return PIECE_TO_NAME.get(piece);
   }

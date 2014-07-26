@@ -106,7 +106,7 @@ public class Game extends com.gilran.chess.board.Game {
 
     return Status.OK;
   }
-  
+
   void resign(Piece.Color playerColor) {
     getPosition().setStatus(
         playerColor == Piece.Color.WHITE
