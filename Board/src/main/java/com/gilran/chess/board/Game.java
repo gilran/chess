@@ -1,5 +1,7 @@
 package com.gilran.chess.board;
 
+import com.gilran.chess.board.Piece.Color;
+
 public class Game {
   /** The players. */
   private String whitePlayer;
@@ -24,5 +26,13 @@ public class Game {
   }
   public Position getPosition() {
     return position;
+  }
+
+  public Color getOutstandingDrawOffer() {
+    return position.getOutstandingDrawOffer();
+  }
+
+  public void setOutstandingDrawOffer(Color outstandingDrawOffer) {
+    position.setOutstandingDrawOffer(outstandingDrawOffer);
   }
 }

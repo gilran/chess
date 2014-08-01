@@ -1,6 +1,7 @@
 package com.gilran.chess.client;
 
 import com.gilran.chess.Proto.*;
+import com.gilran.chess.Proto.GameEvent.Type;
 import com.gilran.chess.client.Client.LoggerAdapter.Level;
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Message;
@@ -83,36 +84,37 @@ public class Client {
   }
 
   public ErrorResponse resign() {
-    return callSimpleMethod(
-        Thread.currentThread().getStackTrace()[1].getMethodName(),
-        ErrorResponse.class);
+    return callSimpleMethod("resign", ErrorResponse.class);
   }
 
-  public ErrorResponse offerDraw() {
-    return callSimpleMethod(
-        Thread.currentThread().getStackTrace()[1].getMethodName(),
-        ErrorResponse.class);
+  public ErrorResponse offerOrAcceptDraw() {
+    return callSimpleMethod("offerDraw", ErrorResponse.class);
   }
 
   public ErrorResponse declineDrawOffer() {
-    return callSimpleMethod(
-        Thread.currentThread().getStackTrace()[1].getMethodName(),
-        ErrorResponse.class);
+    return callSimpleMethod("declineDrawOffer", ErrorResponse.class);
   }
   public PositionResponse getPosition() {
-    return callSimpleMethod(
-        Thread.currentThread().getStackTrace()[1].getMethodName(),
-        PositionResponse.class);
+    return callSimpleMethod("getPosition", PositionResponse.class);
   }
 
-  public void startListeningToEvents(GameEventHandler handler) {
+  public void startListeningToEvents(final GameEventHandler handler) {
     if (eventsListenerThread != null) {
       return;
     }
     Preconditions.checkNotNull(sessionToken);
     Preconditions.checkNotNull(gameId);
+    GameEventHandler handlerWithEndGame = new GameEventHandler() {
+      @Override
+      public void handle(GameEvent event) {
+        if (event.getType() == Type.GAME_ENDED) {
+          stopListeningToEvents();
+        }
+        handler.handle(event);
+      }
+    };
     eventsListenerThread = new EventsListenerThread(
-        baseUrl, sessionToken, gameId, handler, logger);
+        baseUrl, sessionToken, gameId, handlerWithEndGame, logger);
     eventsListenerThread.start();
   }
 

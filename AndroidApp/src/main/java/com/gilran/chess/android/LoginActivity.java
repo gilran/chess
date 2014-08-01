@@ -86,10 +86,12 @@ public class LoginActivity extends Activity {
   private class LoginTask extends AsyncTask<Void, Void, LoginResponse> {
     private ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
     private String username;
+    private String serverAddress;
     private Runnable callback;
 
-    public LoginTask(String username, Runnable callback) {
+    public LoginTask(String serverAddress, String username, Runnable callback) {
       super();
+      this.serverAddress = serverAddress;
       this.username = username;
       this.callback = callback;
     }
@@ -102,7 +104,7 @@ public class LoginActivity extends Activity {
 
     @Override
     protected LoginResponse doInBackground(Void... params) {
-      return connection.getService().login(username);
+      return connection.getService().login(serverAddress, username);
     }
 
     @Override
@@ -122,7 +124,9 @@ public class LoginActivity extends Activity {
   }
 
   public void login(View view) {
+    EditText serverAddressEditText = (EditText) findViewById(R.id.serverAddress);
     EditText usernameEditText = (EditText) findViewById(R.id.loginUsername);
+    final String serverAddress = serverAddressEditText.getText().toString();
     final String username = usernameEditText.getText().toString();
     if (username.isEmpty()) {
       logger.log(Level.DEBUG, "Empty user name.");
@@ -131,7 +135,8 @@ public class LoginActivity extends Activity {
       return;
     }
 
-    LoginTask loginTask = new LoginTask(username, new Runnable() {
+    LoginTask loginTask = new LoginTask(
+        serverAddress, username, new Runnable() {
       @Override
       public void run() {
         Intent boardIntent =

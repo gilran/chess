@@ -54,16 +54,15 @@ public class ChessClientService extends Service {
 
   @Override
   public IBinder onBind(Intent intent) {
-    // TODO(gilran): Add the server address to the settings.
-    client = new Client(
-        "http://192.168.1.162:8080/Server/chess/",
-        new LoggerAdapter(
-            Thread.currentThread().getStackTrace()[0].getClassName()));
-
     return binder;
   }
 
-  public LoginResponse login(final String username) {
+  public LoginResponse login(
+      final String serverAddress, final String username) {
+    client = new Client(
+        serverAddress,
+        new LoggerAdapter(
+            Thread.currentThread().getStackTrace()[0].getClassName()));
     return client.login(username);
   }
 
@@ -79,5 +78,17 @@ public class ChessClientService extends Service {
 
   public ErrorResponse move(Coordinate from, Coordinate to) {
     return client.move(from.toString(), to.toString());
+  }
+  
+  public ErrorResponse resign() {
+    return client.resign();
+  }
+  
+  public ErrorResponse offerOrAcceptDraw() {
+    return client.offerOrAcceptDraw();
+  }
+  
+  public ErrorResponse declineDrawOffer() {
+    return client.declineDrawOffer();
   }
 }

@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * A position on the chess board.
@@ -19,8 +20,8 @@ import java.util.Set;
  * @author Gil Ran <gilrun@gmail.com>
  */
 public class Position extends PositionBase {
-  // private static final Logger LOGGER = Logger.getLogger(
-  //    Thread.currentThread().getStackTrace()[0].getClassName());
+  private static final Logger LOGGER = Logger.getLogger(
+      Thread.currentThread().getStackTrace()[0].getClassName());
 
   /** Rook starting positions. Used for castling. */
   private static final Map<Piece.Color, Map<CastlingRights.Side, Coordinate>>
@@ -69,6 +70,12 @@ public class Position extends PositionBase {
 
   /** The game's status. */
   private GameStatus status;
+  
+  /**
+   * The player who offered draw.
+   * Null if none of the players offered draw.
+   */
+  private Piece.Color outstandingDrawOffer;
 
   /** Constructs a board with the starting position of a standard chess game. */
   public Position() {
@@ -128,6 +135,16 @@ public class Position extends PositionBase {
       default:
         return false;
     }
+  }
+  
+  /** Returns the player who offered draw, or null if there is no draw offer. */
+  public Piece.Color getOutstandingDrawOffer() {
+    return outstandingDrawOffer;
+  }
+
+  /** Sets the player who offered draw. */
+  public void setOutstandingDrawOffer(Piece.Color outstandingDrawOffer) {
+    this.outstandingDrawOffer = outstandingDrawOffer;
   }
 
   /**
@@ -238,6 +255,7 @@ public class Position extends PositionBase {
       halfMovesClock++;
     }
 
+    setOutstandingDrawOffer(null);
     updateLegalMoves();
     updateStatus();
 
@@ -302,14 +320,19 @@ public class Position extends PositionBase {
    * threefold repetition.
    * */
   private boolean isThreefoldRepetition() {
-    String fen = new ForsythEdwardsNotation(this).toString();
-    Integer numberOfTimesPositionWasSeen = previousPositions.get(fen);
+    ForsythEdwardsNotation fen = new ForsythEdwardsNotation(this);
+    // The position identifier is the FEN string without the half-move clock and
+    // the full-move counter.
+    String positionId = fen.toString().replaceAll(" [^ ]+ [^ ]+$", "");
+    
+    Integer numberOfTimesPositionWasSeen = previousPositions.get(positionId);
     if (numberOfTimesPositionWasSeen == null) {
-      previousPositions.put(fen, 1);
-      return false;
+      numberOfTimesPositionWasSeen = 0;
     }
+    LOGGER.info(positionId + " seen " + numberOfTimesPositionWasSeen + " time(s)");
 
     numberOfTimesPositionWasSeen++;
+    previousPositions.put(positionId, numberOfTimesPositionWasSeen);
     return numberOfTimesPositionWasSeen == 3;
   }
 

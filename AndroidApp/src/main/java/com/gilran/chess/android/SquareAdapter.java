@@ -133,10 +133,6 @@ public class SquareAdapter extends BaseAdapter {
     return square[column][row];
   }
 
-  public void setOrientation(Piece.Color orientation) {
-    this.orientation = orientation;
-  }
-
   private SquareColor getSquareColor(int file, int rank) {
     return (file + rank) % 2 == 0 ? SquareColor.DARK : SquareColor.LIGHT;
   }
@@ -191,11 +187,25 @@ public class SquareAdapter extends BaseAdapter {
     return (ImageView) square.findViewById(R.id.square_background);
   }
 
-  public void draw(Position chessPosition) {
+  public void draw(Position chessPosition, Piece.Color orientation) {
+    clear();
+    this.orientation = orientation;
     for (PlacementEntry entry : chessPosition.getPiecesPlacement()) {
       ImageView pieceImageView = getPieceImageView(entry.getCoordinate());
       pieceImageView.setImageResource(PIECE_IMAGE.get(entry.getPiece()));
     }
+  }
+  
+  public void clear() {
+    for (int r = Coordinate.FIRST_RANK; r <= Coordinate.LAST_RANK; ++r) {
+      for (int f = Coordinate.FIRST_FILE; f <= Coordinate.LAST_FILE; ++f) {
+        getPieceImageView(Coordinate.get(f, r)).setImageDrawable(null);
+      }
+    }
+    for (HightlightColor color : HightlightColor.values()) {
+      resetHighlights(color);
+    }
+    orientation = Piece.Color.WHITE;
   }
 
   private void resetHighlights(HightlightColor color) {
