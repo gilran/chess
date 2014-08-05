@@ -1,0 +1,38 @@
+                            Shell Client User Manual
+                            ========================
+
+Running
+=======
+In order to run the Shell Client, export the shell client jar file (see
+instructions in the README file) and run it using:
+  java -jar /tmp/shell.jar
+
+Commands
+========
+* login <server-address> <username> - Logs into the server, starting a session.
+      <server-address> - The base-url of the server. For example:
+          http://192.168.1.162:8080/Server/chess/
+      <username> - The username to use when logging in. The username is used only
+          as a display name.
+* seek - Seeks an opponent. May be used only after login. When the seek is
+      matched, the game information is printed, mentioning the username of the
+      player playing white and the player playing black.
+      Once playing a game, the client listens for game events. Any new events
+      will be printed.
+* move <from> <to> - Makes a move in a game. May be used only after a seek was
+      matched, and before the game ended.
+      <from> - The square from which the piece moves. For example: e2.
+      <to> - The square to which the piece moves. For example: e4.
+      Castling is considered a king move. For example, white's king-side castle
+      is done using 'move e1 g1'.
+* resign - Resigns a game. May be used only after a seek was matched, and before
+      the game ended.
+* offerDraw - Offers draw. May be used only after a seek was matched, and before
+      the game ended. Also used for accepting a draw offer.
+* declineDrawOffer - Declines a draw offer. May be used only after a seek was
+      matched, and before the game ended. Also used for accepting a draw offer.
+* fen - Prints the board position FEN (Forsyth-Edwards Notation). May be used
+        only after a seek was matched, and before the game ended.
+* print - Prints the board in ASCII art. May be used only after a seek was
+        matched, and before the game ended.
+* help - The help command prints a list of all available commands.
