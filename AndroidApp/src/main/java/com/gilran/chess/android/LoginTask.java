@@ -1,8 +1,8 @@
 package com.gilran.chess.android;
 
-import android.content.Context;
-
 import com.gilran.chess.Proto.LoginResponse;
+
+import android.content.Context;
 
 /** An async task for logging-in to the server. */
 class LoginTask extends AsyncGetTask<LoginResponse> {

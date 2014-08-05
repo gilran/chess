@@ -11,6 +11,8 @@ import android.widget.Toast;
 /**
  * An async task for GET requests to the chess server.
  *
+ * @param <Response> The type of the taks response.
+ *
  * @author Gil Ran <gilrun@gmail.com>
  */
 public abstract class AsyncGetTask<Response>

@@ -267,6 +267,7 @@ public class BoardActivity extends Activity {
         case DRAW_OFFER_DECLINED:
         case DRAW_OFFER_WITHDRAWN:
           handleDrawOfferDecline();
+          break;
         default:
           Log.w(getClass().getSimpleName(),
                 "Got unhandled event: " + event.toString());
