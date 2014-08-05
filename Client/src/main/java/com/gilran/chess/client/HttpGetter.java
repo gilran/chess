@@ -15,17 +15,42 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 
+/**
+ * A class for managing HTTP GET requests.
+ * <p>The HttpGetter hides the HTTP GET request by using only protobuf messages
+ * in its public interface.
+ *
+ * @author Gil Ran <gilrun@gmail.com>
+ */
 public class HttpGetter {
+  /** Logger. */
   private LoggerAdapter logger;
+  /** The server base URL. */
   private String baseUrl;
+  /** An http client. */
   private DefaultHttpClient httpClient = new DefaultHttpClient();
 
+  /**
+   * Constructor.
+   *
+   * @param baseUrl The base URL of the server.
+   * @param logger The logger that should be used. If null, a default logger,
+   *     using standard java logging is used.
+   */
   public HttpGetter(String baseUrl, LoggerAdapter logger) {
     this.logger = logger == null ? new DefaultLogger() : logger;
     this.baseUrl = baseUrl;
     this.httpClient = new DefaultHttpClient();
   }
 
+  /**
+   * Does a GET request.
+   *
+   * @param methodName The name of the method to call.
+   * @param request The request protobuf message.
+   * @param responseType The type of the response.
+   * @return The response.
+   */
   public <T extends Message> T get(
       String methodName, Message request, Class<T> responseType) {
     HttpGet getRequest;
@@ -67,6 +92,13 @@ public class HttpGetter {
     return responseType.cast(responseProto);
   }
 
+  /**
+   * Parses an HttpResponse to a protobuf message of the given type.
+   *
+   * @param response The HTTP response.
+   * @param type The response protobuf message type.
+   * @return The response message.
+   */
   private <T extends Message> Message parseResponse(
       HttpResponse response, Class<T> type) {
     BufferedReader br;

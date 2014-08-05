@@ -20,6 +20,8 @@ import java.util.Random;
  * <p>Due to this, each public method must have a Status return value and take
  * exactly 2 params, where the first is a proto message and the second is a
  * Callback.
+ *
+ * @author Gil Ran <gilrun@gmail.com>
  */
 public class ServiceImpl {
   /** An interface for service methods callbacks. */
@@ -41,11 +43,13 @@ public class ServiceImpl {
     /** The seek request callback. */
     private Callback callback;
 
+    /** Constructor. */
     public PendingSeek(Session session, Callback callback) {
       this.session = Preconditions.checkNotNull(session);
       this.callback = Preconditions.checkNotNull(callback);
     }
 
+    /** Matches two pending seeks, starting a game between the players. */
     public static void match(PendingSeek seek1, PendingSeek seek2) {
       boolean firstIsWhite = random.nextBoolean();
       String whitePlayer;
@@ -82,6 +86,7 @@ public class ServiceImpl {
     pendingSeek = null;
   }
 
+  /** Handles a login request. */
   public Status login(LoginRequest request, Callback callback) {
     Session session = new Session(request.getUsername());
     sessions.put(session.getToken(), session);
@@ -91,6 +96,12 @@ public class ServiceImpl {
     return Status.OK;
   }
 
+  /**
+   * Handles a seek request.
+   *
+   * <p>seek is synchronized in order to prevent race conditions when more than
+   * one seek is done in the same time, accessing pendingSeek.
+   */
   public synchronized Status seek(SeekRequest request, Callback callback) {
     Session session = sessions.get(request.getSessionToken());
     if (session == null) {
@@ -109,13 +120,15 @@ public class ServiceImpl {
     return Status.OK;
   }
 
+  /** A struct like class for a game action's information. */
   private static class GameActionInfo {
     public Game game;
     Piece.Color playerColor;
     public Status status;
   }
 
-  private <T> GameActionInfo getGameActionInfo(GameInfo gameInfo) {
+  /** Creates a game action info instance from the GameInfo protobuf message. */
+  private GameActionInfo getGameActionInfo(GameInfo gameInfo) {
     GameActionInfo gameActionInfo = new GameActionInfo();
 
     Session session = sessions.get(gameInfo.getSessionToken());
@@ -137,6 +150,7 @@ public class ServiceImpl {
     return gameActionInfo;
   }
 
+  /** Handles a move request. */
   public Status move(MoveRequest request, Callback callback) {
     GameActionInfo gameActionInfo = getGameActionInfo(request.getGameInfo());
     if (gameActionInfo.status != Status.OK) {
@@ -152,6 +166,7 @@ public class ServiceImpl {
     return Status.OK;
   }
 
+  /** Handles a getEvents request. */
   public Status getEvents(EventsRequest request, final Callback callback) {
     GameActionInfo gameActionInfo = getGameActionInfo(request.getGameInfo());
     if (gameActionInfo.status != Status.OK) {
@@ -170,6 +185,7 @@ public class ServiceImpl {
     return Status.OK;
   }
 
+  /** Handles a resign request. */
   public Status resign(GameInfo request, final Callback callback) {
     GameActionInfo gameActionInfo = getGameActionInfo(request);
     if (gameActionInfo.status != Status.OK) {
@@ -181,6 +197,7 @@ public class ServiceImpl {
     return Status.OK;
   }
 
+  /** Handles an offerDraw request. */
   public Status offerDraw(GameInfo request, final Callback callback) {
     GameActionInfo gameActionInfo = getGameActionInfo(request);
     if (gameActionInfo.status != Status.OK) {
@@ -192,6 +209,7 @@ public class ServiceImpl {
     return Status.OK;
   }
 
+  /** Handles a declineDrawOffer request. */
   public Status declineDrawOffer(GameInfo request, final Callback callback) {
     GameActionInfo gameActionInfo = getGameActionInfo(request);
     if (gameActionInfo.status != Status.OK) {
@@ -203,6 +221,7 @@ public class ServiceImpl {
     return Status.OK;
   }
 
+  /** Handles a getPosition request. */
   public Status getPosition(GameInfo request, final Callback callback) {
     GameActionInfo gameActionInfo = getGameActionInfo(request);
     if (gameActionInfo.status != Status.OK) {
