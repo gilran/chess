@@ -42,3 +42,11 @@
     The 'Shell' project is configured to include all dependencies in the
     exported jar. Due to this, the jar is a bit big, but does not need any
     classpath or other configuration in order to run.
+
+* Additional documentation:
+  + Design document:
+    - Local at doc/ChessJavaProject-DesignDocument.pdf
+    - Online at http://goo.gl/5vBez9
+  + JavaDoc:
+    - Local at doc/index.html
+    - Online at http://gilran.github.io/chess/
