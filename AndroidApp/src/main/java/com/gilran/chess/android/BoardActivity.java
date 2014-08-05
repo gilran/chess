@@ -319,7 +319,7 @@ public class BoardActivity extends Activity {
       }
     });
   }
-  
+
   /** Handles a draw offer decline or withdraw. */
   public void handleDrawOfferDecline() {
     game.setOutstandingDrawOffer(null);

@@ -13,7 +13,7 @@ class LoginTask extends AsyncGetTask<LoginResponse> {
 
   /**
    * Constructor.
-   * 
+   *
    * @param context The android context.
    * @param service The chess client service.
    * @param serverAddress The address of the server.

@@ -62,7 +62,7 @@ public abstract class AsyncGetTask<Response>
     this.actionError = Preconditions.checkNotNull(actionError);
     this.callback = callback;
   }
-  
+
   /**
    * The actual work that needs to be done for this task.
    *

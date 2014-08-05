@@ -49,7 +49,7 @@
     <string name="logging_in">Logging in&#8230;</string>
     <string name="login_failed">Login failed.</string>
     <string name="move_failed">Failed to send move.</string>
-    
+
     <string name="outstanding_draw_offer">Wating for other player to respond to draw offer.</string>
     <string name="offered_draw">offered draw.</string>
 </resources>

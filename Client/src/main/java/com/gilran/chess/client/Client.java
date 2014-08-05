@@ -20,7 +20,7 @@ public class Client {
   public interface LoggerAdapter {
     /** Log levels. */
     enum Level { DEBUG, INFO, WARNING, ERROR }
-    
+
     /** Logs the given message with the given log level. */
     void log(Level level, String message);
   }

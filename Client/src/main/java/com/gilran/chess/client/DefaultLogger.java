@@ -21,7 +21,7 @@ public class DefaultLogger implements LoggerAdapter {
       .put(Level.WARNING, java.util.logging.Level.WARNING)
       .put(Level.ERROR, java.util.logging.Level.SEVERE)
       .build();
-  
+
   /** The logger itself. */
   private Logger logger = Logger.getLogger(
       Thread.currentThread().getStackTrace()[1].getClassName());

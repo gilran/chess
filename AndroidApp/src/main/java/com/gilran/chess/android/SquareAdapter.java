@@ -258,7 +258,7 @@ public class SquareAdapter extends BaseAdapter {
   public void highlight(Iterable<Coordinate> coordinates) {
     highlight(HightlightColor.YELLOW, coordinates);
   }
-  
+
   /** Removes all yellow highlights. */
   public void resetHighlights() {
     resetHighlights(HightlightColor.YELLOW);

@@ -80,7 +80,7 @@ public class ShellClient {
     out.print(message);
     out.flush();
   }
-  
+
   /** Prints a list of available commands. */
   public void help(List<String> args) {
     print("Available commands:\n");
