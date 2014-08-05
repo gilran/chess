@@ -50,3 +50,9 @@
   + JavaDoc:
     - Local at doc/index.html
     - Online at http://gilran.github.io/chess/
+  + Android Application user manual:
+    - Local at doc/ChessAndroidApplicationUserManual.pdf
+    - Online at http://goo.gl/p4YK63
+  + Shell client user manual:
+    - Local at doc/ShellUserManual.txt
+    - Online at https://github.com/gilran/chess/blob/master/doc/ShellUserManual.txt
