@@ -145,10 +145,12 @@ public class Coordinate implements Comparable<Coordinate> {
     return index;
   }
 
+  /** Returns a string representation of the coordinate. */
   public String toString() {
     return name();
   }
 
+  @Override
   public int compareTo(Coordinate other) {
     if (this.file != other.file) {
       return this.file < other.file ? -1 : 1;

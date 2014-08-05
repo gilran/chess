@@ -7,12 +7,24 @@ import com.google.common.base.Preconditions;
 
 import android.content.Context;
 
+/**
+ * An async task for reporting to the server that a move was made.
+ *
+ * @author Gil Ran <gilrun@gmail.com>
+ */
 public class MoveTask extends AsyncGetTask<ErrorResponse> {
-  private static final String ERROR_MESSAGE = "Failed to send move.";
-
+  /** The from coordinate of the move. */
   private Coordinate from;
+  /** The to Coordinate of the move. */
   private Coordinate to;
 
+  /** Constructor.
+   *
+   * @param context The android context.
+   * @param service The chess client service.
+   * @param from The from coordinate of the move.
+   * @param to The to Coordinate of the move.
+   */
   public MoveTask(
       Context context,
       ChessClientService service,
@@ -22,7 +34,7 @@ public class MoveTask extends AsyncGetTask<ErrorResponse> {
         context,
         service,
         null /* actionMessage */,
-        ERROR_MESSAGE,
+        context.getResources().getString(R.string.move_failed),
         null /* callback */);
     this.from = Preconditions.checkNotNull(from);
     this.to = Preconditions.checkNotNull(to);

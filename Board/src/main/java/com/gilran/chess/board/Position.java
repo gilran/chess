@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * A position on the chess board.
@@ -20,9 +19,6 @@ import java.util.logging.Logger;
  * @author Gil Ran <gilrun@gmail.com>
  */
 public class Position extends PositionBase {
-  private static final Logger LOGGER = Logger.getLogger(
-      Thread.currentThread().getStackTrace()[0].getClassName());
-
   /** Rook starting positions. Used for castling. */
   private static final Map<Piece.Color, Map<CastlingRights.Side, Coordinate>>
       ROOK_INITIAL_POSITION;
@@ -329,7 +325,6 @@ public class Position extends PositionBase {
     if (numberOfTimesPositionWasSeen == null) {
       numberOfTimesPositionWasSeen = 0;
     }
-    LOGGER.info(positionId + " seen " + numberOfTimesPositionWasSeen + " time(s)");
 
     numberOfTimesPositionWasSeen++;
     previousPositions.put(positionId, numberOfTimesPositionWasSeen);

@@ -1,14 +1,13 @@
 package com.gilran.chess.android;
 
 import com.gilran.chess.Proto.LoginResponse;
+import com.gilran.chess.android.AsyncGetTask.Callback;
 import com.gilran.chess.client.Client.LoggerAdapter.Level;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,9 +17,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * The login activity of the Chess android application.
+ *
+ * @author Gil Ran <gilrun@gmail.com>
+ */
 public class LoginActivity extends Activity {
+  /** A logger adapter. */
   LoggerAdapter logger = new LoggerAdapter(getClass().getSimpleName());
-  private ChessClientService.Connection connection =
+  ChessClientService.Connection connection =
       new ChessClientService.Connection();
 
   @Override
@@ -69,9 +74,7 @@ public class LoginActivity extends Activity {
     return super.onOptionsItemSelected(item);
   }
 
-  /**
-   * A placeholder fragment containing a simple view.
-   */
+  /** The top-level fragment of the activity. */
   public static class TopLevelFragment extends Fragment {
     public View onCreateView(
         LayoutInflater inflater,
@@ -83,62 +86,29 @@ public class LoginActivity extends Activity {
     }
   }
 
-  private class LoginTask extends AsyncTask<Void, Void, LoginResponse> {
-    private ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
-    private String username;
-    private String serverAddress;
-    private Runnable callback;
-
-    public LoginTask(String serverAddress, String username, Runnable callback) {
-      super();
-      this.serverAddress = serverAddress;
-      this.username = username;
-      this.callback = callback;
-    }
-
-    @Override
-    protected void onPreExecute() {
-      dialog.setMessage("Logging in...");
-      dialog.show();
-    }
-
-    @Override
-    protected LoginResponse doInBackground(Void... params) {
-      return connection.getService().login(serverAddress, username);
-    }
-
-    @Override
-    protected void onPostExecute(LoginResponse response) {
-      dialog.dismiss();
-      if (response == null ||
-          response.getStatus() != com.gilran.chess.Proto.Status.OK) {
-        Toast.makeText(
-            LoginActivity.this, "Login failed.", Toast.LENGTH_LONG).show();
-        return;
-      }
-
-      if (callback != null) {
-        callback.run();
-      }
-    }
-  }
-
+  /** Logs-in to the server. */
   public void login(View view) {
-    EditText serverAddressEditText = (EditText) findViewById(R.id.serverAddress);
+    EditText serverAddressEditText =
+      (EditText) findViewById(R.id.serverAddress);
     EditText usernameEditText = (EditText) findViewById(R.id.loginUsername);
     final String serverAddress = serverAddressEditText.getText().toString();
     final String username = usernameEditText.getText().toString();
     if (username.isEmpty()) {
       logger.log(Level.DEBUG, "Empty user name.");
       Toast.makeText(
-          this, "Please enter a username.", Toast.LENGTH_LONG).show();
+          this,
+          getResources().getString(R.string.enter_user_name),
+          Toast.LENGTH_LONG).show();
       return;
     }
 
     LoginTask loginTask = new LoginTask(
-        serverAddress, username, new Runnable() {
+        this,
+        connection.getService(),
+        serverAddress,
+        username, new Callback<LoginResponse>() {
       @Override
-      public void run() {
+      public void run(LoginResponse response) {
         Intent boardIntent =
             new Intent(LoginActivity.this, BoardActivity.class);
         boardIntent.putExtra(BoardActivity.EXTRA_LOCAL_PLAYER_NAME, username);

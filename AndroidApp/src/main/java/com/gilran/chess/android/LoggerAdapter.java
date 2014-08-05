@@ -6,9 +6,19 @@ import com.google.common.base.Preconditions;
 
 import android.util.Log;
 
+/**
+ * An implementation of the chess client logger adapter for android log library.
+ *
+ * @author Gil Ran <gilrun@gmail.com>
+ */
 public class LoggerAdapter implements Client.LoggerAdapter {
   private String tag;
 
+  /**
+   * Constructor.
+   *
+   * @param tag The tag that will be used for all logging by this adapter.
+   */
   public LoggerAdapter(String tag) {
     this.tag = tag;
   }

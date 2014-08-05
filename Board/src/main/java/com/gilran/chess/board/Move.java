@@ -11,8 +11,9 @@ import java.util.Set;
  * @author Gil Ran <gilrun@gmail.com>
  */
 public class Move {
-  /** The coordinate from and to which the piece moves. */
+  /** The coordinate from which the piece moves. */
   private Coordinate from;
+  /** The coordinate to which the piece moves. */
   private Coordinate to;
 
   /**
@@ -160,6 +161,7 @@ public class Move {
       this.enPassantTarget == otherMove.enPassantTarget;
   }
 
+  /** Returns a string representation of the move. */
   public String toString() {
     if (getCastlingSide() == CastlingRights.Side.KING) {
       return "O-O";

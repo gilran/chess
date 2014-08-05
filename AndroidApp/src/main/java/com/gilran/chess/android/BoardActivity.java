@@ -37,9 +37,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The board activity of the Chess android application.
+ *
+ * This activity is most of the application, managing seeks and all in-game
+ * actions.
+ *
+ * @author Gil Ran <gilrun@gmail.com>
+ */
 public class BoardActivity extends Activity {
+  /** The identifier of the extra message containing the local player name. */
   static final String EXTRA_LOCAL_PLAYER_NAME =
       "com.gilran.chess.android.EXTRA_LOCAL_PLAYER_NAME";
+
+  /** A map from game statuses to the resource id of its description string. */
   static final Map<GameStatus, Integer> GAME_STATUS_MESSAGES;
 
   static {
@@ -63,13 +74,24 @@ public class BoardActivity extends Activity {
         .build();
   }
 
+  /** A connection to the chess client service. */
   private ChessClientService.Connection connection =
-      new ChessClientService.Connection ();
+      new ChessClientService.Connection();
+  /** The local player username. */
   private String username;
+  /** The active game. Used only during a game. */
   private Game game;
+  /** The piece color of the local player. Used only during a game. */
   private Piece.Color pieceColor;
+  /**
+   * The from coordinate of a move.
+   * Used only during a game, only when it's the local player's turn, and only
+   * when the user chose a source square for a move.
+   */
   private Coordinate moveSource;
+  /** A grid view used for drawing the board. */
   private GridView board;
+  /** A square adapter for the board grid view. */
   private SquareAdapter squareAdapter;
 
   @Override
@@ -95,7 +117,6 @@ public class BoardActivity extends Activity {
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.game, menu);
     return true;
@@ -112,19 +133,14 @@ public class BoardActivity extends Activity {
 
     // Seek.
     menu.getItem(0).setEnabled(!duringGame);
-
     // Resign.
     menu.getItem(1).setEnabled(duringGame);
-
     // Offer draw.
     menu.getItem(2).setEnabled(allowDrawOffer);
-
     // Accept draw offer.
     menu.getItem(3).setEnabled(hasPendingOtherPlayerDraw);
-
     // Decline draw offer.
     menu.getItem(4).setEnabled(hasPendingOtherPlayerDraw);
-
 
     return true;
   }
@@ -137,24 +153,22 @@ public class BoardActivity extends Activity {
     switch (item.getItemId()) {
       case R.id.action_seek:
         seek();
-        return true;
+        break;
       case R.id.action_resign:
         resign();
-        return true;
+        break;
       case R.id.action_draw:
       case R.id.action_accept_draw:
         offerOrAcceptDraw();
-        return true;
+        break;
       case R.id.action_decline_draw:
         declineDraw();
-        return true;
+        break;
     }
     return super.onOptionsItemSelected(item);
   }
 
-  /**
-   * A fragment for the game board.
-   */
+  /** A fragment for the game board. */
   public static class BoardFragment extends Fragment {
     @Override
     public View onCreateView(
@@ -184,9 +198,7 @@ public class BoardActivity extends Activity {
     }
   }
 
-  /**
-   * A callback for seek.
-   */
+  /** A callback for seek. */
   private class SeekTaskCallback implements SeekTask.Callback<SeekResponse> {
     @Override
     public void run(SeekResponse response) {
@@ -203,9 +215,7 @@ public class BoardActivity extends Activity {
     }
   }
 
-  /**
-   * Adds the active player marker to the active player.
-   */
+  /** Adds the active player marker to the active player. */
   private void markActivePlayer(Color activePlayer) {
     TextView localPlayerNameView =
         (TextView) findViewById(R.id.localPlayerName);
@@ -224,9 +234,7 @@ public class BoardActivity extends Activity {
     otherPlayerNameView.setText(otherPlayerName);
   }
 
-  /**
-   * Resets the board to an empty board with no game.
-   */
+  /** Resets the board to an empty board with no game. */
   private void resetBoard() {
     TextView localPlayerNameView =
         (TextView) findViewById(R.id.localPlayerName);
@@ -238,9 +246,7 @@ public class BoardActivity extends Activity {
     squareAdapter.clear();
   }
 
-  /**
-   * An event handler for the game events.
-   */
+  /** An event handler for the game events. */
   private class EventHandler implements GameEventHandler {
     @Override
     public void handle(GameEvent event) {
@@ -291,16 +297,12 @@ public class BoardActivity extends Activity {
     });
   }
 
-  /**
-   * Handles a draw offer.
-   */
+  /** Handles a draw offer. */
   public void handleDrawOffer(Piece.Color color) {
     game.setOutstandingDrawOffer(color);
   }
 
-  /**
-   * Called when the game has ended.
-   */
+  /** Called when the game has ended. */
   private void gameEnded(final GameStatus status) {
     game = null;
     board.post(new Runnable() {
@@ -322,9 +324,7 @@ public class BoardActivity extends Activity {
     });
   }
 
-  /**
-   * Seeks an opponent.
-   */
+  /** Seeks an opponent. */
   private void seek() {
     SeekTask seekTask = new SeekTask(
         this,
@@ -343,7 +343,7 @@ public class BoardActivity extends Activity {
         this,
         connection.getService(),
         null /* actionMessage */,
-        "Failed to send resignation.",
+        getResources().getString(R.string.draw_offer_failed),
         null /* callback */) {
       @Override
       protected ErrorResponse run() {
@@ -353,33 +353,30 @@ public class BoardActivity extends Activity {
     drawTask.execute();
   }
 
-  /**
-   * Declines a pending draw offer.
-   */
+  /** Declines a pending draw offer. */
   private void declineDraw() {
-    AsyncGetTask<ErrorResponse> declineDrawTask = new AsyncGetTask<ErrorResponse>(
-        this,
-        connection.getService(),
-        null /* actionMessage */,
-        "Failed to send resignation.",
-        null /* callback */) {
-      @Override
-      protected ErrorResponse run() {
-        return service.declineDrawOffer();
-      }
-    };
+    AsyncGetTask<ErrorResponse> declineDrawTask =
+      new AsyncGetTask<ErrorResponse>(
+          this,
+          connection.getService(),
+          null /* actionMessage */,
+          getResources().getString(R.string.draw_decline_failed),
+          null /* callback */) {
+        @Override
+        protected ErrorResponse run() {
+          return service.declineDrawOffer();
+        }
+      };
     declineDrawTask.execute();
   }
 
-  /**
-   * Resigns the game.
-   */
+  /** Resigns the game. */
   private void resign() {
     AsyncGetTask<ErrorResponse> resignTask = new AsyncGetTask<ErrorResponse>(
         this,
         connection.getService(),
         null /* actionMessage */,
-        "Failed to send resignation.",
+        getResources().getString(R.string.resign_failed),
         null /* callback */) {
       @Override
       protected ErrorResponse run() {
@@ -405,9 +402,7 @@ public class BoardActivity extends Activity {
     }
   }
 
-  /**
-   * Sets the current move's source.
-   */
+  /** Sets the current move's source. */
   private void setMoveSource(Coordinate coordinate) {
     if (game == null || game.getPosition().getActivePlayer() != pieceColor) {
       // Not this players turn.

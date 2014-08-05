@@ -22,13 +22,19 @@ import android.widget.ImageView;
 import java.util.List;
 import java.util.Map;
 
+/** A square adapter for a chess board grid view. */
 public class SquareAdapter extends BaseAdapter {
+  /** Hightlight colors. */
   private static enum HightlightColor { GREEN, YELLOW }
+  /** Square colors. */
   private static enum SquareColor { LIGHT, DARK }
 
+  /** A map from square color to the image id of the background image. */
   private static final Map<SquareColor, Integer> SQUARE_BACKGROUND;
+  /** A map from (highlight,square) to the image id of the background image. */
   private static final Map<HightlightColor, Map<SquareColor, Integer>>
       HIGHLIGHTED_SQUARE_BACKGROUND;
+  /** A map from piece to the image id of its image. */
   private static final Map<Piece, Integer> PIECE_IMAGE;
 
   static {
@@ -79,11 +85,16 @@ public class SquareAdapter extends BaseAdapter {
         .build();
   }
 
+  /** The android context. */
   private Context context;
+  /** A matrix of the board squares. */
   private View square[][];
+  /** The board orientation. */
   private Piece.Color orientation;
+  /** Highlights squares map. */
   private Multimap<HightlightColor, Coordinate> highlightedSquares;
 
+  /** Constructor. */
   public SquareAdapter(Context context) {
     this.context = context;
     this.orientation = Piece.Color.WHITE;
@@ -91,6 +102,7 @@ public class SquareAdapter extends BaseAdapter {
     createSquares();
   }
 
+  /** Creates the square objects. */
   private void createSquares() {
     square = new View[Coordinate.FILES][Coordinate.RANKS];
     LayoutInflater layoutInflater =
@@ -133,14 +145,17 @@ public class SquareAdapter extends BaseAdapter {
     return square[column][row];
   }
 
+  /** Returns the square color of the square at the given file and rank. */
   private SquareColor getSquareColor(int file, int rank) {
     return (file + rank) % 2 == 0 ? SquareColor.DARK : SquareColor.LIGHT;
   }
 
+  /** Returns the square color of the square at the given coordinate. */
   private SquareColor getSquareColor(Coordinate coordinate) {
     return getSquareColor(coordinate.getFile(), coordinate.getRank());
   }
 
+  /** Returns the board coordinate of the given grid-view position. */
   public Coordinate getCoordinate(int position) {
     Preconditions.checkArgument(0 <= position && position <= getCount());
     int file = -1;
@@ -158,6 +173,7 @@ public class SquareAdapter extends BaseAdapter {
     return Preconditions.checkNotNull(Coordinate.get(file, rank));
   }
 
+  /** Returns the grid-view position of the given board coordinate. */
   private int getPosition(Coordinate coordinate) {
     int position = -1;
     switch (orientation) {
@@ -177,16 +193,19 @@ public class SquareAdapter extends BaseAdapter {
     return position;
   }
 
+  /** Returns the piece image view at the given coordinate. */
   private ImageView getPieceImageView(Coordinate coordinate) {
     View square = (View) getItem(getPosition(coordinate));
     return (ImageView) square.findViewById(R.id.piece);
   }
 
+  /** Returns the background image view at the given coordinate. */
   private ImageView getBackgroundImageView(Coordinate coordinate) {
     View square = (View) getItem(getPosition(coordinate));
     return (ImageView) square.findViewById(R.id.square_background);
   }
 
+  /** Draws the board, with the given position in the given orientation. */
   public void draw(Position chessPosition, Piece.Color orientation) {
     clear();
     this.orientation = orientation;
@@ -196,6 +215,11 @@ public class SquareAdapter extends BaseAdapter {
     }
   }
 
+  /**
+   * Clears the board.
+   * Clearing the board includes removing all pieces, removing all highlights
+   * and resetting the orientation to white.
+   */
   public void clear() {
     for (int r = Coordinate.FIRST_RANK; r <= Coordinate.LAST_RANK; ++r) {
       for (int f = Coordinate.FIRST_FILE; f <= Coordinate.LAST_FILE; ++f) {
@@ -208,6 +232,7 @@ public class SquareAdapter extends BaseAdapter {
     orientation = Piece.Color.WHITE;
   }
 
+  /** Removes all highlights of the given color on the board. */
   private void resetHighlights(HightlightColor color) {
     for (Coordinate coordinate : highlightedSquares.get(color)) {
       ImageView square = getBackgroundImageView(coordinate);
@@ -217,10 +242,7 @@ public class SquareAdapter extends BaseAdapter {
     highlightedSquares.removeAll(color);
   }
 
-  public void resetHighlights() {
-    resetHighlights(HightlightColor.YELLOW);
-  }
-
+  /** Highlights the given coordinates with the given color. */
   private void highlight(
       HightlightColor color, Iterable<Coordinate> coordinates) {
     resetHighlights(color);
@@ -232,10 +254,17 @@ public class SquareAdapter extends BaseAdapter {
     }
   }
 
+  /** Highlights the given coordinates in yellow. */
   public void highlight(Iterable<Coordinate> coordinates) {
     highlight(HightlightColor.YELLOW, coordinates);
   }
+  
+  /** Removes all yellow highlights. */
+  public void resetHighlights() {
+    resetHighlights(HightlightColor.YELLOW);
+  }
 
+  /** Applies the given moves. */
   public void move(List<Move> moves) {
     List<Coordinate> coordinates = Lists.newLinkedList();
     for (Move move : moves) {

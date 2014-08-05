@@ -23,17 +23,22 @@ public class PiecesPlacement
    */
   private Map<Piece, Set<Coordinate>> pieceToCoordinates;
 
-  /** A single piece placement. */
+  /** A single piece placement in the position. */
   public static class PlacementEntry {
+    /** The piece. */
     private Piece piece;
+    /** The piece position on the board. */
     private Coordinate coordinate;
 
+    /** Constructor. */
     public PlacementEntry(Piece piece, Coordinate coordinate) {
       this.piece = piece;
       this.coordinate = coordinate;
     }
 
+    /** Returns the piece. */
     public Piece getPiece() { return piece; }
+    /** Returns the piece position on the board. */
     public Coordinate getCoordinate() { return coordinate; }
   }
 
@@ -42,20 +47,26 @@ public class PiecesPlacement
       implements Iterator<PlacementEntry> {
     private Iterator<Entry<Coordinate, Piece>> internalIterator;
 
+    /** Constractor. */
     public PlacementEntryIterator(PiecesPlacement piecePlacement) {
       internalIterator = piecePlacement.coordinateToPiece.entrySet().iterator();
     }
 
+    @Override
     public boolean hasNext() {
       return internalIterator.hasNext();
     }
 
+    @Override
     public PlacementEntry next() {
       Entry<Coordinate, Piece> entry = internalIterator.next();
       return new PlacementEntry(entry.getValue(), entry.getKey());
     }
 
+    @Override
     public void remove() {
+      // This iterator cannot be used for removing elements from the
+      // PiecesPlacement.
       assert false;
     }
   }

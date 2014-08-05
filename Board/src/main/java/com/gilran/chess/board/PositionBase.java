@@ -85,36 +85,36 @@ import java.util.Map;
    * <p>A copy is returned in order to prevent clients from changing the
    * position's internal castling rights.
    */
-  /* package */ CastlingRights getCastlingRights() {
+  private CastlingRights getCastlingRights() {
     return new CastlingRights(castlingRights);
   }
 
   /** Returns the number of halfmoves since the last capture or pawn advance. */
-  /* package */ int getHalfMovesClock() { return halfMovesClock; }
+  protected int getHalfMovesClock() { return halfMovesClock; }
 
   /**
    * Returns the target square for an en passant capture. If null, the last move
    * was not a 2 squares pawn advance.
    */
-  /* package */ Coordinate getEnPassantTarget() { return enPassantTarget; }
+  protected Coordinate getEnPassantTarget() { return enPassantTarget; }
 
   /**
    * Returns the number of the current (full) move. A game starts at move 1 (so
    * this is 1-based).
    */
-  /* package */ int getCurrentMove() { return currentMove; }
+  protected int getCurrentMove() { return currentMove; }
 
   /**
    * Returns a copy of the king position map.
    * <p>A copy is returned in order to prevent clients from changing the
    * position's internal king position map.
    */
-  /* package */ Map<Piece.Color, Coordinate> getKingPosition() {
+  private Map<Piece.Color, Coordinate> getKingPosition() {
     return Maps.newEnumMap(kingPosition);
   }
 
   /** Returns the piece at the given coordinate, or null if there isn't one. */
-  /* package */ Piece at(Coordinate coordinate) {
+  protected Piece at(Coordinate coordinate) {
     return piecesPlacement.at(coordinate);
   }
 }

@@ -110,8 +110,9 @@ public abstract class Piece {
     movesMap = movesMapBuilder.build();
   }
 
-  /** Getters and setters. */
+  /** Returns the piece type. */
   public Type getType() { return type; }
+  /** Returns the piece color. */
   public Color getColor() { return color; }
 
   /**
@@ -129,6 +130,13 @@ public abstract class Piece {
     return movesMap.get(from);
   }
 
+  /**
+   * Calcualtes the legal moves of the piece from the given coordinate.
+   * The returned moves are all of the piece's legal moves, regardless of the
+   * board position, as the piece does not know the board position. It is the
+   * role of Position to remove from the returned list any moves that are
+   * illegal in the specific board position.
+   * */
   protected abstract ImmutableList<Move> calculateMoves(Coordinate from);
 
   /** Returns the other (opposite) color from the one given. */
