@@ -252,6 +252,7 @@ public class BoardActivity extends Activity {
     public void handle(GameEvent event) {
       switch (event.getType()) {
         case MOVE_MADE:
+          handleDrawOfferDecline();
           applyMoves(event.getMoveList());
           break;
         case GAME_ENDED:
@@ -263,6 +264,9 @@ public class BoardActivity extends Activity {
         case BLACK_OFFERED_DRAW:
           handleDrawOffer(Piece.Color.BLACK);
           break;
+        case DRAW_OFFER_DECLINED:
+        case DRAW_OFFER_WITHDRAWN:
+          handleDrawOfferDecline();
         default:
           Log.w(getClass().getSimpleName(),
                 "Got unhandled event: " + event.toString());
@@ -298,8 +302,34 @@ public class BoardActivity extends Activity {
   }
 
   /** Handles a draw offer. */
-  public void handleDrawOffer(Piece.Color color) {
+  public void handleDrawOffer(final Piece.Color color) {
     game.setOutstandingDrawOffer(color);
+    final TextView gameMessageView = (TextView) findViewById(R.id.gameMessage);
+    gameMessageView.post(new Runnable() {
+      @Override
+      public void run() {
+        if (color == pieceColor) {
+          gameMessageView.setText(
+              getResources().getString(R.string.outstanding_draw_offer));
+        } else {
+          gameMessageView.setText(
+              game.getPlayer(color) + " " +
+              getResources().getString(R.string.offered_draw));
+        }
+      }
+    });
+  }
+  
+  /** Handles a draw offer decline or withdraw. */
+  public void handleDrawOfferDecline() {
+    game.setOutstandingDrawOffer(null);
+    final TextView gameMessageView = (TextView) findViewById(R.id.gameMessage);
+    gameMessageView.post(new Runnable() {
+      @Override
+      public void run() {
+        gameMessageView.setText("");
+      }
+    });
   }
 
   /** Called when the game has ended. */

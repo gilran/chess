@@ -40,13 +40,16 @@
     <string name="threefold_repetition">Threefold repetition</string>
     <string name="draw_by_agreement">Draw by agreement</string>
 
-    <string name="seeking_an_opponent">Seeking an opponent...</string>
+    <string name="seeking_an_opponent">Seeking an opponent&#8230;</string>
     <string name="seek_error_message">Seek found no match.</string>
     <string name="resign_failed">Failed to send resignation.</string>
     <string name="draw_offer_failed">Failed to offer or accept draw.</string>
     <string name="draw_decline_failed">Failed to decline draw offer.</string>
     <string name="enter_user_name">Please enter a username.</string>
-    <string name="logging_in">Logging in...</string>
+    <string name="logging_in">Logging in&#8230;</string>
     <string name="login_failed">Login failed.</string>
     <string name="move_failed">Failed to send move.</string>
+    
+    <string name="outstanding_draw_offer">Wating for other player to respond to draw offer.</string>
+    <string name="offered_draw">offered draw.</string>
 </resources>
