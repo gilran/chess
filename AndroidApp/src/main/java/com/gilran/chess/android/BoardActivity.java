@@ -240,9 +240,11 @@ public class BoardActivity extends Activity {
         (TextView) findViewById(R.id.localPlayerName);
     TextView otherPlayerNameView =
         (TextView) findViewById(R.id.otherPlayerName);
+    TextView gameMessageView = (TextView) findViewById(R.id.gameMessage);
     localPlayerNameView.setText(username);
     otherPlayerNameView.setText(
         getResources().getString(R.string.player_name_placeholder));
+    gameMessageView.setText("");
     squareAdapter.clear();
   }
 
