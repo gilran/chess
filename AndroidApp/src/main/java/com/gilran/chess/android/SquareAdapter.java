@@ -195,7 +195,7 @@ public class SquareAdapter extends BaseAdapter {
       pieceImageView.setImageResource(PIECE_IMAGE.get(entry.getPiece()));
     }
   }
-  
+
   public void clear() {
     for (int r = Coordinate.FIRST_RANK; r <= Coordinate.LAST_RANK; ++r) {
       for (int f = Coordinate.FIRST_FILE; f <= Coordinate.LAST_FILE; ++f) {

@@ -41,7 +41,7 @@ public class BoardActivity extends Activity {
   static final String EXTRA_LOCAL_PLAYER_NAME =
       "com.gilran.chess.android.EXTRA_LOCAL_PLAYER_NAME";
   static final Map<GameStatus, Integer> GAME_STATUS_MESSAGES;
-  
+
   static {
     GAME_STATUS_MESSAGES = ImmutableMap.<GameStatus, Integer>builder()
         .put(GameStatus.WHITE_TO_MOVE, R.string.white_to_move)
@@ -100,32 +100,32 @@ public class BoardActivity extends Activity {
     getMenuInflater().inflate(R.menu.game, menu);
     return true;
   }
-  
+
   @Override
   public boolean onPrepareOptionsMenu (Menu menu) {
     boolean duringGame = game != null;
     boolean allowDrawOffer =
-        duringGame && game.getOutstandingDrawOffer() == null; 
+        duringGame && game.getOutstandingDrawOffer() == null;
     boolean hasPendingOtherPlayerDraw =
         duringGame &&
         game.getOutstandingDrawOffer() == Piece.otherColor(pieceColor);
-    
+
     // Seek.
     menu.getItem(0).setEnabled(!duringGame);
-    
+
     // Resign.
     menu.getItem(1).setEnabled(duringGame);
-    
+
     // Offer draw.
     menu.getItem(2).setEnabled(allowDrawOffer);
-    
+
     // Accept draw offer.
     menu.getItem(3).setEnabled(hasPendingOtherPlayerDraw);
-    
+
     // Decline draw offer.
     menu.getItem(4).setEnabled(hasPendingOtherPlayerDraw);
-    
-    
+
+
     return true;
   }
 
@@ -197,12 +197,12 @@ public class BoardActivity extends Activity {
       TextView playerNameView =
           (TextView) findViewById(R.id.otherPlayerName);
       playerNameView.setText(game.getPlayer(Piece.otherColor(pieceColor)));
-      
+
       squareAdapter.draw(game.getPosition(), pieceColor);
       markActivePlayer(game.getPosition().getActivePlayer());
     }
   }
-  
+
   /**
    * Adds the active player marker to the active player.
    */
@@ -216,14 +216,14 @@ public class BoardActivity extends Activity {
     String activePlayerMarker =
         getResources().getString(R.string.active_player_marker);
     if (pieceColor == activePlayer) {
-      localPlayerName = activePlayerMarker + " " + localPlayerName; 
+      localPlayerName = activePlayerMarker + " " + localPlayerName;
     } else {
       otherPlayerName = activePlayerMarker + " " + otherPlayerName;
     }
     localPlayerNameView.setText(localPlayerName);
     otherPlayerNameView.setText(otherPlayerName);
   }
-  
+
   /**
    * Resets the board to an empty board with no game.
    */
@@ -290,7 +290,7 @@ public class BoardActivity extends Activity {
       }
     });
   }
-  
+
   /**
    * Handles a draw offer.
    */
@@ -333,10 +333,10 @@ public class BoardActivity extends Activity {
         new SeekTaskCallback());
     seekTask.execute();
   }
-  
+
   /**
    * Offers draw or accepts pending draw offer.
-   * Behind the scenes, both of these actions are the same. 
+   * Behind the scenes, both of these actions are the same.
    */
   private void offerOrAcceptDraw() {
     AsyncGetTask<ErrorResponse> drawTask = new AsyncGetTask<ErrorResponse>(
@@ -352,7 +352,7 @@ public class BoardActivity extends Activity {
     };
     drawTask.execute();
   }
-  
+
   /**
    * Declines a pending draw offer.
    */
@@ -370,7 +370,7 @@ public class BoardActivity extends Activity {
     };
     declineDrawTask.execute();
   }
-  
+
   /**
    * Resigns the game.
    */

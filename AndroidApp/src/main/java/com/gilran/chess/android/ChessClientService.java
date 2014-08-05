@@ -79,15 +79,15 @@ public class ChessClientService extends Service {
   public ErrorResponse move(Coordinate from, Coordinate to) {
     return client.move(from.toString(), to.toString());
   }
-  
+
   public ErrorResponse resign() {
     return client.resign();
   }
-  
+
   public ErrorResponse offerOrAcceptDraw() {
     return client.offerOrAcceptDraw();
   }
-  
+
   public ErrorResponse declineDrawOffer() {
     return client.declineDrawOffer();
   }

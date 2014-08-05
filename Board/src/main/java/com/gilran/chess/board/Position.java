@@ -70,7 +70,7 @@ public class Position extends PositionBase {
 
   /** The game's status. */
   private GameStatus status;
-  
+
   /**
    * The player who offered draw.
    * Null if none of the players offered draw.
@@ -136,7 +136,7 @@ public class Position extends PositionBase {
         return false;
     }
   }
-  
+
   /** Returns the player who offered draw, or null if there is no draw offer. */
   public Piece.Color getOutstandingDrawOffer() {
     return outstandingDrawOffer;
@@ -324,7 +324,7 @@ public class Position extends PositionBase {
     // The position identifier is the FEN string without the half-move clock and
     // the full-move counter.
     String positionId = fen.toString().replaceAll(" [^ ]+ [^ ]+$", "");
-    
+
     Integer numberOfTimesPositionWasSeen = previousPositions.get(positionId);
     if (numberOfTimesPositionWasSeen == null) {
       numberOfTimesPositionWasSeen = 0;
